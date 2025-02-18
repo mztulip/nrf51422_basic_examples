@@ -10,9 +10,10 @@
 #include "leds.h"
 
 
-static  uint8_t                     m_rx_payload_buffer[255];
+static  uint8_t rx_pdu_buffer[255];
 const uint32_t  RADIO_SHORTS_COMMON =  ( RADIO_SHORTS_READY_START_Msk | RADIO_SHORTS_END_DISABLE_Msk | \
                                 RADIO_SHORTS_ADDRESS_RSSISTART_Msk | RADIO_SHORTS_DISABLED_RSSISTOP_Msk );
+volatile uint32_t ms_counter = 0 ;
 
 void clocks_start( void )
 {
@@ -129,7 +130,7 @@ void ble_start_rx(void)
     //Reception on ADDR0
     NRF_RADIO->RXADDRESSES  = 1;
     NRF_RADIO->FREQUENCY    = 2; //2402MHz
-    NRF_RADIO->PACKETPTR    = (uint32_t)m_rx_payload_buffer;
+    NRF_RADIO->PACKETPTR    = (uint32_t)rx_pdu_buffer;
 
 
     NVIC_ClearPendingIRQ(RADIO_IRQn);
@@ -147,10 +148,10 @@ char str_buff2[255];
 
 static void show_pdu_data(void)
 {
-    uint8_t *header = &m_rx_payload_buffer[0];
+    uint8_t *header = &rx_pdu_buffer[0];
     uint8_t header0 =  header[0];
     uint8_t length = header[1];
-    uint8_t *payload = &m_rx_payload_buffer[2];
+    uint8_t *payload = &rx_pdu_buffer[2];
     uint32_t received_crc  = NRF_RADIO->RXCRC;
     uint8_t *adv_address = &payload[0];
     uint8_t pdu_type = (header0 >> 4)&0x0f;
@@ -202,9 +203,24 @@ static void on_radio_disabled_rx(void)
     led_toogle(LED4);
 }
 
+static void timer_init()
+{
+    // Configure the system timer with a 1 MHz base frequency
+    NRF_TIMER2->PRESCALER = 4;
+    NRF_TIMER2->BITMODE   = TIMER_BITMODE_BITMODE_16Bit;
+    NRF_TIMER2->CC[0] = 1000; //Capture every 1ms =1khz
+	NRF_TIMER2->SHORTS    = TIMER_SHORTS_COMPARE0_CLEAR_Msk;
+	NRF_TIMER2->INTENSET = TIMER_INTENSET_COMPARE0_Msk;
+	NVIC_ClearPendingIRQ(TIMER2_IRQn);
+    NVIC_EnableIRQ(TIMER2_IRQn);
+	NRF_TIMER2->TASKS_START = 1;
+	
+}
+
 int main()
 {
 	clocks_start();
+    timer_init();
 	led_init();
 	uart_init();
 	printf("\n\rHello Uart");
@@ -249,4 +265,10 @@ void RADIO_IRQHandler()
         on_radio_disabled_rx();
         NRF_RADIO->TASKS_RXEN  = 1;
     }
+}
+
+void TIMER2_IRQHandler(void)
+{
+	NRF_TIMER2->EVENTS_COMPARE[0] = 0;
+	ms_counter++;
 }
