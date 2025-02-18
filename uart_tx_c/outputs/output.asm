@@ -4252,30 +4252,26 @@ Disassembly of section .text:
     219e:	46c0      	nop			; (mov r8, r8)
 
 000021a0 <main>:
-
-    }
+					| ((uint32_t)GPIO_PIN_CNF_DRIVE_S0S1 << GPIO_PIN_CNF_DRIVE_Pos)
+					| ((uint32_t)GPIO_PIN_CNF_SENSE_Disabled << GPIO_PIN_CNF_SENSE_Pos);
 }
 
 int main()
-{
+{		
     21a0:	b5f0      	push	{r4, r5, r6, r7, lr}
     21a2:	46c6      	mov	lr, r8
 	NRF_GPIO->PIN_CNF[LED1] = ((uint32_t)GPIO_PIN_CNF_DIR_Output << GPIO_PIN_CNF_DIR_Pos)
     21a4:	26a0      	movs	r6, #160	; 0xa0
     21a6:	2203      	movs	r2, #3
-{
+{		
     21a8:	b500      	push	{lr}
 	NRF_GPIO->PIN_CNF[LED1] = ((uint32_t)GPIO_PIN_CNF_DIR_Output << GPIO_PIN_CNF_DIR_Pos)
     21aa:	4b18      	ldr	r3, [pc, #96]	; (220c <main+0x6c>)
     21ac:	05f6      	lsls	r6, r6, #23
     21ae:	50f2      	str	r2, [r6, r3]
-{
+{		
     21b0:	b082      	sub	sp, #8
-						| ((uint32_t)GPIO_PIN_CNF_INPUT_Disconnect << GPIO_PIN_CNF_INPUT_Pos)
-						| ((uint32_t)GPIO_PIN_CNF_PULL_Disabled << GPIO_PIN_CNF_PULL_Pos)
-						| ((uint32_t)GPIO_PIN_CNF_DRIVE_S0S1 << GPIO_PIN_CNF_DRIVE_Pos)
-						| ((uint32_t)GPIO_PIN_CNF_SENSE_Disabled << GPIO_PIN_CNF_SENSE_Pos);
-			
+	led_init();
 	uart_init();
     21b2:	f000 f8a1 	bl	22f8 <uart_init>
 
