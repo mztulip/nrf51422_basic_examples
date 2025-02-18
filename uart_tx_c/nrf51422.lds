@@ -46,6 +46,14 @@ SECTIONS
     ASSERT(_ebss + _minimum_stack_size <= _estack,
            "There is not enough space in RAM for stack.")
 
+    /*
+    .ARM.exidx is the section containing information for unwinding the stack.
+    */
+    /DISCARD/ :
+    {
+        *(.ARM.exidx*)
+    }
+
     PROVIDE(end = _ebss);
 
 }

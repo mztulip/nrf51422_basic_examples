@@ -1,5 +1,6 @@
 //Author mztulip
 //mateusz@tulip.lol
+#include <stdio.h>
 #include "nrf51.h"
 #include "nrf51_bitfields.h"
 #include "uart.h"
@@ -24,13 +25,16 @@ int main()
 			
 	uart_init();
 
+	printf("\n\rHello Uart");
+	uint32_t loop_counter = 0;
 	while(1)
 	{
 		delay();
 		NRF_GPIO->OUTCLR = (1<<LED1);
 		delay();
 		NRF_GPIO->OUTSET = (1<<LED1);
-		uart_put('b');
+		printf("\n\rloop: %ld", loop_counter);
+		loop_counter++;
 	}
 }
 

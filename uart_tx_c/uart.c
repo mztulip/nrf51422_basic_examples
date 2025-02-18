@@ -17,9 +17,13 @@ void uart_init(void)
 	NRF_UART0->PSELTXD = txd_pin;
 	NRF_UART0->ENABLE = UART_ENABLE_ENABLE_Enabled;
 	NRF_UART0->TASKS_STARTTX = 1;
+    NRF_UART0->TXD = ' '; //First character needs to be send to generate TXDRDY event and not be stuck in while loop
 }
 
 void uart_put(char c)
 {
+    while(NRF_UART0->EVENTS_TXDRDY == 0) {}
+    NRF_UART0->EVENTS_TXDRDY = 0;
     NRF_UART0->TXD = c;
+    
 }
