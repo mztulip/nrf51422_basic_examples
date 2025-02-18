@@ -26,8 +26,18 @@ void led_init(void)
 					| ((uint32_t)GPIO_PIN_CNF_SENSE_Disabled << GPIO_PIN_CNF_SENSE_Pos);
 }
 
+void clocks_start( void )
+{
+	//Start external 16MHz crystal
+    NRF_CLOCK->EVENTS_HFCLKSTARTED = 0;
+    NRF_CLOCK->TASKS_HFCLKSTART = 1;
+
+    while (NRF_CLOCK->EVENTS_HFCLKSTARTED == 0);
+}
+
 int main()
-{		
+{
+	clocks_start();
 	led_init();
 	uart_init();
 
