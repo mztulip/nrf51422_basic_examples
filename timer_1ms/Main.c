@@ -10,12 +10,10 @@
 const uint32_t LED1 = 21; //P0.21
 volatile uint32_t ms_counter = 0 ;
 
-void delay(void)
+void delay_ms(uint32_t delay_ms)
 {
-    for (volatile uint32_t i = 0; i < 123456; ++i)
-    {
-
-    }
+    uint32_t start_time = ms_counter;
+	while( (ms_counter-start_time) < delay_ms) {}
 }
 
 void led_init(void)
@@ -31,9 +29,9 @@ static void timer_init()
 {
     // Configure the system timer with a 1 MHz base frequency
     NRF_TIMER2->PRESCALER = 4;
-    NRF_TIMER2->BITMODE   = TIMER_BITMODE_BITMODE_32Bit;
+    NRF_TIMER2->BITMODE   = TIMER_BITMODE_BITMODE_16Bit;
     NRF_TIMER2->CC[0] = 1000; //Capture every 1ms =1khz
-	NRF_TIMER2->SHORTS    = TIMER_SHORTS_COMPARE1_CLEAR_Msk;
+	NRF_TIMER2->SHORTS    = TIMER_SHORTS_COMPARE0_CLEAR_Msk;
 	NRF_TIMER2->INTENSET = TIMER_INTENSET_COMPARE0_Msk;
 	NVIC_ClearPendingIRQ(TIMER2_IRQn);
     NVIC_EnableIRQ(TIMER2_IRQn);
@@ -41,8 +39,18 @@ static void timer_init()
 	
 }
 
+void clocks_start( void )
+{
+	//Start external 16MHz crystal
+    NRF_CLOCK->EVENTS_HFCLKSTARTED = 0;
+    NRF_CLOCK->TASKS_HFCLKSTART = 1;
+
+    while (NRF_CLOCK->EVENTS_HFCLKSTARTED == 0);
+}
+
 int main()
 {		
+	clocks_start();
 	led_init();
 	uart_init();
 	timer_init();
@@ -51,11 +59,11 @@ int main()
 	uint32_t loop_counter = 0;
 	while(1)
 	{
-		delay();
+		delay_ms(100);
 		NRF_GPIO->OUTCLR = (1<<LED1);
-		delay();
+		delay_ms(100);
 		NRF_GPIO->OUTSET = (1<<LED1);
-		printf("\n\rloop: %ld counter:%ld", loop_counter, ms_counter);
+		printf("\n\rloop: %ld", loop_counter);
 		loop_counter++;
 	}
 }
