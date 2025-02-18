@@ -166,14 +166,19 @@ static void show_pdu_data(void)
     }
 
     printf("\n\rLen: %d Type:0x%02x %s", length, pdu_type, str_buff);
-    printf("\t\tMAC: %02x:%02x:%02x:%02x:%02x:%02x", adv_address[5], adv_address[4], adv_address[3], adv_address[2], adv_address[1], adv_address[0]);
-    printf("\t Payload: ");
+    printf("\tMAC: %02x:%02x:%02x:%02x:%02x:%02x", adv_address[5], adv_address[4], adv_address[3], adv_address[2], adv_address[1], adv_address[0]);
+    printf("\tPayload: ");
      for(int i =0; i < length;i++)
     {
         printf("%02x", payload[i]);
     }
 
-    printf(" CRC: %08x",(unsigned int)received_crc);
+    printf("\tCRC: %08x",(unsigned int)received_crc);
+
+    uint8_t rssi = NRF_RADIO->RSSISAMPLE;
+
+    printf("\tRSSI: -%ddBm",rssi);
+
 }
 
 static void on_radio_disabled_rx(void)
@@ -182,7 +187,7 @@ static void on_radio_disabled_rx(void)
     
     if (NRF_RADIO->CRCSTATUS == 0)
     {
-        printf("\n\rWrong CRC");
+        printf("\n\rIncorrect CRC");
         return;
     }
 
