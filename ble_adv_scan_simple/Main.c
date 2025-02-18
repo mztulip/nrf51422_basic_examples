@@ -33,7 +33,6 @@ static void update_radio_crc()
 
 static void update_rf_payload_format_ble()
 {
-    //Do ble nie używam S0 lenght oraz S1 za adresem 4 bajtowym są od razu dane czyli nagłówek
     //For BLE receltion length is necessary, but before this, 8 bits of header are presented
     //S0 will be used for for first 8 bits
     //Length is used for PDU length which varies from 1 to 255, wtf? 
@@ -44,14 +43,13 @@ static void update_rf_payload_format_ble()
 
     //Bluetooth address is 4 bytes(4-1(prefix)=3)
     //Bluetooth have 2 to 257 octets of PDU therefore set maximum to 255 and static to 0
-    //anyway transciver can recevi only 254
+    //anyway transceiver can recevie only 254
     // Core_v5.3.pdf 3.2 Whitening shall be applied on
     // the PDU and CRC of all Link Layer packets and is performed after the CRC
     // generation in the transmitter. It means that ADDRESS is not whitened
     NRF_RADIO->PCNF1 = (RADIO_PCNF1_WHITEEN_Enabled    << RADIO_PCNF1_WHITEEN_Pos) |
                        (RADIO_PCNF1_ENDIAN_Little          << RADIO_PCNF1_ENDIAN_Pos)  |
                        ((3)    << RADIO_PCNF1_BALEN_Pos)   |
-                        // ((2)    << RADIO_PCNF1_BALEN_Pos)   |
                         (0                  << RADIO_PCNF1_STATLEN_Pos) |
                        (255                  << RADIO_PCNF1_MAXLEN_Pos);
 
@@ -120,7 +118,7 @@ void ble_start_rx(void)
     //Disable radio events
     NRF_RADIO->EVENTS_DISABLED = 0;
 
-    //This not work interrupt is generated infinitely TXEN, my solution to enable TXEN manually
+    //This not work, interrupt is generated infinitely, my solution to enable TXEN manually
     // NRF_RADIO->SHORTS      = RADIO_SHORTS_COMMON | RADIO_SHORTS_DISABLED_TXEN_Msk;
     NRF_RADIO->SHORTS      = RADIO_SHORTS_COMMON ;
     // NRF_RADIO->INTENSET    = RADIO_INTENSET_DISABLED_Msk | RADIO_INTENSET_READY_Msk| RADIO_INTENSET_END_Msk|RADIO_INTENSET_ADDRESS_Msk;
