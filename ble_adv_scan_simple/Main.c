@@ -3,6 +3,7 @@
 //Tested with PCA10028
 
 #include <stdio.h>
+#include <stdbool.h>
 #include "nrf51.h"
 #include "nrf51_bitfields.h"
 #include "uart.h"
@@ -144,6 +145,7 @@ void ble_start_rx(void)
 }
 
 char str_buff[255];
+char str_buff2[255];
 
 static void show_pdu_data(void)
 {
@@ -165,7 +167,14 @@ static void show_pdu_data(void)
         default: str_buff[0] = 0;
     }
 
-    printf("\n\rLen: %d Type:0x%02x %s", length, pdu_type, str_buff);
+    bool RxAdd = header0 & 0x01;
+    bool TxAdd = (header0 & 0x02)>>1;
+    bool ChSel = (header0 & 0x04)>>2;
+    bool RFU = (header0 & 0x08)>>3;
+
+    sprintf(str_buff2,"\tRFU:%d ChSel:%d, TxAdd:%d, RxAdd: %d", RFU, ChSel, TxAdd, RxAdd);
+
+    printf("\n\rLen: %d Type:0x%02x %s %s", length, pdu_type, str_buff, str_buff2);
     printf("\tMAC: %02x:%02x:%02x:%02x:%02x:%02x", adv_address[5], adv_address[4], adv_address[3], adv_address[2], adv_address[1], adv_address[0]);
     printf("\tPayload: ");
      for(int i =0; i < length;i++)
