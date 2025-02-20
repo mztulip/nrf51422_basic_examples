@@ -146,6 +146,53 @@ void ble_start_rx(void)
 char str_buff[255];
 char str_buff2[255];
 
+static void print_payload(const uint8_t *data, uint8_t length)
+{
+    for(int i =0; i < length;i++)
+    {
+        printf("%02x", data[i]);
+    }
+}
+
+static void print_ADV_IND(void)
+{
+    uint8_t *header = &rx_pdu_buffer[0];
+    uint8_t header0 =  header[0];
+    uint8_t length = header[1];
+    uint8_t *payload = &rx_pdu_buffer[2];
+
+    bool TxAdd = (header0 & 0x02)>>1;
+    bool ChSel = (header0 & 0x04)>>2;
+
+    if(ChSel ==1)
+    {
+        printf("\n\r\tLE Channel Selection Algorithm #2 supported");
+    }
+    printf("\n\r\t");
+    if(TxAdd == 0)
+    {
+        printf("Public");
+    }
+    uint8_t *AdvA = payload; //6 bytes length
+    //First is LSB byte
+    printf("address: %02x:%02x:%02x:%02x:%02x:%02x", AdvA[5], AdvA[4], AdvA[3], AdvA[2], AdvA[1], AdvA[0]);
+    uint8_t *AdvData = payload+6;
+    uint8_t advData_length = length - 6;
+    printf("\n\r\tAdvData(%d):", advData_length);
+    print_payload(AdvData, advData_length);
+}
+
+static void parse_adv_payload(void)
+{
+    uint8_t *header = &rx_pdu_buffer[0];
+    uint8_t header0 =  header[0];
+    uint8_t pdu_type = (header0 >> 4)&0x0f;
+    switch(pdu_type)
+    {
+        case 0 : print_ADV_IND(); break;
+    }
+}
+
 static void show_pdu_data(void)
 {
     uint8_t *header = &rx_pdu_buffer[0];
@@ -173,19 +220,18 @@ static void show_pdu_data(void)
 
     sprintf(str_buff2,"\tRFU:%d ChSel:%d, TxAdd:%d, RxAdd: %d", RFU, ChSel, TxAdd, RxAdd);
 
-    printf("\n\r%dms: Len: %d Type:0x%02x %s %s", ms_counter, length, pdu_type, str_buff, str_buff2);
-    printf("\tMAC: %02x:%02x:%02x:%02x:%02x:%02x", adv_address[5], adv_address[4], adv_address[3], adv_address[2], adv_address[1], adv_address[0]);
+    printf("\n\r%ldms\t: Len: %d Type:0x%02x %s %s", ms_counter, length, pdu_type, str_buff, str_buff2);
+    printf(" MAC: %02x:%02x:%02x:%02x:%02x:%02x", adv_address[5], adv_address[4], adv_address[3], adv_address[2], adv_address[1], adv_address[0]);
     printf("\tPayload: ");
-     for(int i =0; i < length;i++)
-    {
-        printf("%02x", payload[i]);
-    }
+    print_payload(payload, length);
 
     printf("\tCRC: %08x",(unsigned int)received_crc);
 
     uint8_t rssi = NRF_RADIO->RSSISAMPLE;
 
     printf("\tRSSI: -%ddBm",rssi);
+
+    parse_adv_payload();
 
 }
 
