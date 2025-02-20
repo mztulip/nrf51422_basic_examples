@@ -123,6 +123,7 @@ void ble_start_rx(uint8_t channel_number)
         case 38: freq_reg = 26; break; //2426MHz
         case 39: freq_reg = 80; break; //2480MHz
     }
+    printf("\n\rScanning channel: %d(%dMHz)", channel_number, 2400+freq_reg); 
     NRF_RADIO->FREQUENCY    = freq_reg;
 
     NRF_RADIO->PACKETPTR    = (uint32_t)rx_pdu_buffer;
