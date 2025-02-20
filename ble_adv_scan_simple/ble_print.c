@@ -1,6 +1,7 @@
 #include <stdint.h>
 #include <stdbool.h>
 #include <stdio.h>
+#include <string.h>
 #include "ble_print.h"
 #include "nrf51.h"
 #include "nrf51_bitfields.h"
@@ -22,6 +23,36 @@ static void print_payload(const uint8_t *data, uint8_t length)
     {
         printf("%02x", data[i]);
     }
+
+}
+
+static void print_payload_ascii(const uint8_t *data, uint8_t length)
+{
+    printf(" Ascii: ");
+    for(int i =0; i < length;i++)
+    {
+        if (data[i] >=32 && data[i] <127)
+        {
+            printf("%c", data[i]);
+        }
+        else 
+        {
+            printf(".");
+        }
+        
+    }
+}
+
+static void print_analyse_pdu( uint8_t *pdu , uint8_t pdu_len)
+{
+    uint8_t header[2];
+    memcpy(&header, pdu, 2);
+    // uint8_t LLID = (header[1] >> 6) &0x3;
+    uint8_t length = header[0];
+    printf("\n\r\tPDU len: %d", length);
+    // printf(" LLID: %x", LLID);
+    print_payload_ascii(pdu, pdu_len);
+
 }
 
 static void print_ADV_IND(void)
@@ -51,6 +82,7 @@ static void print_ADV_IND(void)
     uint8_t advData_length = length - 6;
     printf("\n\r\tAdvData(%d):", advData_length);
     print_payload(AdvData, advData_length);
+    print_analyse_pdu(AdvData, advData_length);
 }
 
 void print_ADV_NONCONN_IND(void)
@@ -130,7 +162,7 @@ void show_pdu_data(void)
     printf(" Payload: ");
     print_payload(payload, length);
 
-    printf("\tCRC: %08x",(unsigned int)received_crc);
+    printf("\n\r\tCRC: %08x",(unsigned int)received_crc);
 
     uint8_t rssi = NRF_RADIO->RSSISAMPLE;
 

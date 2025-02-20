@@ -96,7 +96,7 @@ void ble_init( void )
     NRF_RADIO->PREFIX0 = 0x8E;
 }
 
-void ble_start_rx(void)
+void ble_start_rx(uint8_t channel_number)
 {
     //Clear all radio interrupt flags
     NRF_RADIO->INTENCLR = 0xFFFFFFFF;
@@ -114,7 +114,17 @@ void ble_start_rx(void)
 
     //Reception on ADDR0
     NRF_RADIO->RXADDRESSES  = 1;
-    NRF_RADIO->FREQUENCY    = 2; //2402MHz
+
+    if(channel_number > 39) channel_number = 0;
+    uint8_t freq_reg = 4+channel_number*2;
+    switch(channel_number)
+    {
+        case 37: freq_reg = 2; break; //2402MHz
+        case 38: freq_reg = 26; break; //2426MHz
+        case 39: freq_reg = 80; break; //2480MHz
+    }
+    NRF_RADIO->FREQUENCY    = freq_reg;
+
     NRF_RADIO->PACKETPTR    = (uint32_t)rx_pdu_buffer;
 
 

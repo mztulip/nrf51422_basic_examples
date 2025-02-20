@@ -1,7 +1,8 @@
 #ifndef BLE_PHY__H
 #define BLE_PHY__H
+#include <stdint.h>
 
 void ble_init( void );
-void ble_start_rx(void);
+void ble_start_rx(uint8_t channel_number);
 
 #endif

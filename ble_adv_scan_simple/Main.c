@@ -43,7 +43,7 @@ int main()
 	uart_init();
 	printf("\n\rHello Uart");
 	ble_init();
-	ble_start_rx();
+	ble_start_rx(37);
 
 	while(1)
 	{
