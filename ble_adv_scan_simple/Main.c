@@ -173,7 +173,7 @@ static void show_pdu_data(void)
 
     sprintf(str_buff2,"\tRFU:%d ChSel:%d, TxAdd:%d, RxAdd: %d", RFU, ChSel, TxAdd, RxAdd);
 
-    printf("\n\rLen: %d Type:0x%02x %s %s", length, pdu_type, str_buff, str_buff2);
+    printf("\n\r%dms: Len: %d Type:0x%02x %s %s", ms_counter, length, pdu_type, str_buff, str_buff2);
     printf("\tMAC: %02x:%02x:%02x:%02x:%02x:%02x", adv_address[5], adv_address[4], adv_address[3], adv_address[2], adv_address[1], adv_address[0]);
     printf("\tPayload: ");
      for(int i =0; i < length;i++)
