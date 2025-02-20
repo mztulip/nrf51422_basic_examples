@@ -45,13 +45,21 @@ static void print_payload_ascii(const uint8_t *data, uint8_t length)
 
 static void print_analyse_pdu( uint8_t *pdu , uint8_t pdu_len)
 {
-    uint8_t header[2];
-    memcpy(&header, pdu, 2);
-    // uint8_t LLID = (header[1] >> 6) &0x3;
-    uint8_t length = header[0];
-    printf("\n\r\tPDU len: %d", length);
-    // printf(" LLID: %x", LLID);
-    print_payload_ascii(pdu, pdu_len);
+    if(pdu_len <= 3) return;
+    
+    for(int index = 0; index < pdu_len;)
+    {
+        uint8_t header[2];
+        memcpy(&header, pdu+index, 2);
+        uint8_t length = header[0];
+        uint8_t *data = pdu + 2+index;
+        printf("\n\r\tPDU len: %d(%02x) Type:0xq%02x ", length, length, header[1]);
+        //Length contains type but we do not print type, only data content
+        print_payload(data, length-1);
+        print_payload_ascii(data, length-1);
+
+        index += length+1;
+    }
 
 }
 
@@ -130,6 +138,13 @@ static void parse_adv_payload(void)
     }
 }
 
+uint64_t filtered_mac;
+
+void filter_print_by_mac(uint64_t mac)
+{
+    filtered_mac = mac;
+}
+
 void show_pdu_data(void)
 {
     uint8_t *header = &rx_pdu_buffer[0];
@@ -139,6 +154,15 @@ void show_pdu_data(void)
     uint32_t received_crc  = NRF_RADIO->RXCRC;
     uint8_t *adv_address = &payload[0];
     uint8_t pdu_type = (header0 >> 4)&0x0f;
+
+    if (filtered_mac != 0)
+    {
+        if (memcmp(&filtered_mac, adv_address, 6) != 0)
+        {
+            return ;
+        }
+    }
+
     switch(pdu_type)
     {
         case 0 : sprintf(str_buff,"ADV_IND"); break;

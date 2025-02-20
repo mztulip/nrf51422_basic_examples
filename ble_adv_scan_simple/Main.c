@@ -9,6 +9,7 @@
 #include "uart.h"
 #include "leds.h"
 #include "ble_phy.h"
+#include "ble_print.h"
 
 volatile uint32_t ms_counter = 0 ;
 
@@ -44,6 +45,8 @@ int main()
 	printf("\n\rHello Uart");
 	ble_init();
 	ble_start_rx(37);
+    uint64_t mac_to_print = 0xa4c13838ec59;
+    filter_print_by_mac(mac_to_print);
 
 	while(1)
 	{
