@@ -156,6 +156,7 @@ static void print_payload(const uint8_t *data, uint8_t length)
 
 static void print_ADV_IND(void)
 {
+    //The PDU shall only be used in connectable directed advertising events
     uint8_t *header = &rx_pdu_buffer[0];
     uint8_t header0 =  header[0];
     uint8_t length = header[1];
@@ -182,6 +183,38 @@ static void print_ADV_IND(void)
     print_payload(AdvData, advData_length);
 }
 
+void print_ADV_NONCONN_IND(void)
+{
+    //This is the same as ADV_IND
+    //Difference is that:
+    //The PDU shall only be used in non-connectable and non-scannable undirected advertising events
+    print_ADV_IND();
+}
+
+static void print_SCAN_RSP(void)
+{
+    //The PDU shall only be used in connectable directed advertising events
+    uint8_t *header = &rx_pdu_buffer[0];
+    uint8_t header0 =  header[0];
+    uint8_t length = header[1];
+    uint8_t *payload = &rx_pdu_buffer[2];
+
+    bool TxAdd = (header0 & 0x02)>>1;
+
+    printf("\n\r\t");
+    if(TxAdd == 0)
+    {
+        printf("Public");
+    }
+    uint8_t *AdvA = payload; //6 bytes length
+    //First is LSB byte
+    printf("address: %02x:%02x:%02x:%02x:%02x:%02x", AdvA[5], AdvA[4], AdvA[3], AdvA[2], AdvA[1], AdvA[0]);
+    uint8_t *ScanRspData = payload+6;
+    uint8_t ScanRspData_length = length - 6;
+    printf("\n\r\tScanRspData(%d):", ScanRspData_length);
+    print_payload(ScanRspData, ScanRspData_length);
+}
+
 static void parse_adv_payload(void)
 {
     uint8_t *header = &rx_pdu_buffer[0];
@@ -190,6 +223,8 @@ static void parse_adv_payload(void)
     switch(pdu_type)
     {
         case 0 : print_ADV_IND(); break;
+        case 0x2: print_ADV_NONCONN_IND(); break;
+        case 0x4: print_SCAN_RSP(); break;
     }
 }
 
