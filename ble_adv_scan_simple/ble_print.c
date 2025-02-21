@@ -43,6 +43,34 @@ static void print_payload_ascii(const uint8_t *data, uint8_t length)
     }
 }
 
+static void print_16bit_uuid_data(uint8_t *data, uint8_t len)
+{
+    printf("\n\r\tService Data - 16-bit UUID: "); 
+    if(len < 2) {printf("Incorrect len. Something goes wrong.");}
+    uint16_t uuid_16bit;
+    memcpy(&uuid_16bit, data, 2);
+    printf("0x%04x ", uuid_16bit);
+    printf("Service data:0x");
+    print_payload(data+2, len-2);
+}
+
+static void analyse_adv_data(uint8_t type, uint8_t *data, uint8_t len)
+{
+    //Version 5.3 | Vol 3, Part C
+    //11 ADVERTISING AND SCAN RESPONSE DATA FORMAT
+    switch(type)
+    {
+        case 0x01: printf("\n\r\tFlags: 0x"); print_payload(data, len); break;
+        case 0x09: printf("\n\r\tComplete Local Name:%*.*s", 2, len, data); break;
+        case 0x16: print_16bit_uuid_data(data, len); break;
+        default: printf("\n\r\tPDU len: %d(%02x) Type:0x%02x ", len+1, len+1, type);
+        
+        print_payload(data, len);
+        print_payload_ascii(data, len);
+    }
+
+}
+
 static void print_analyse_pdu( uint8_t *pdu , uint8_t pdu_len)
 {
     if(pdu_len <= 3) return;
@@ -55,11 +83,9 @@ static void print_analyse_pdu( uint8_t *pdu , uint8_t pdu_len)
         memcpy(&header, pdu+index, 2);
         uint8_t length = header[0];
         uint8_t *data = pdu + 2+index;
-        printf("\n\r\tPDU len: %d(%02x) Type:0xq%02x ", length, length, header[1]);
-        //Length contains type but we do not print type, only data content
-        print_payload(data, length-1);
-        print_payload_ascii(data, length-1);
-
+        uint8_t type = header[1];
+        //Length contains type but we do not pass type in data pointer, only data content
+        analyse_adv_data(type, data, length-1);
         index += length+1;
     }
 

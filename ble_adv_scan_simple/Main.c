@@ -47,7 +47,7 @@ int main()
 	ble_init(channel);
 	ble_start_rx(channel);
     uint64_t mac_to_print = 0xa4c13838ec59;
-    //filter_print_by_mac(mac_to_print);
+    // filter_print_by_mac(mac_to_print);
 
 	while(1)
 	{
