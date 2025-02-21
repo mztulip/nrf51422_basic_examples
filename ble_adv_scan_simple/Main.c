@@ -42,7 +42,7 @@ int main()
     timer_init();
 	led_init();
 	uart_init();
-	printf("\n\rHello Uart");
+	printf("\n\rHello ble single channel adv scanner");
 	uint8_t channel = 39;
 	ble_init(channel);
 	ble_start_rx(channel);
