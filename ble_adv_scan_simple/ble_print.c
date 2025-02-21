@@ -47,6 +47,8 @@ static void print_analyse_pdu( uint8_t *pdu , uint8_t pdu_len)
 {
     if(pdu_len <= 3) return;
     
+    //Types are defined in Assigned Numbers https://www.bluetooth.com/specifications/assigned-numbers/
+    //2.3 Common Data Types1
     for(int index = 0; index < pdu_len;)
     {
         uint8_t header[2];

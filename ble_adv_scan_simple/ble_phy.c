@@ -18,7 +18,7 @@ static void update_radio_crc()
     NRF_RADIO->CRCPOLY = 0x00065B;     // CRC poly:  x24 + x 10 + x 9 + x6 + x 4 + x 3 + x + 1=0b0000 0000 0000 0110 0101 1011=0x00065B
 }
 
-static void update_rf_payload_format_ble()
+static void update_rf_payload_format_ble(uint8_t channel_number)
 {
     //For BLE receltion length is necessary, but before this, 8 bits of header are presented
     //S0 will be used for for first 8 bits
@@ -56,22 +56,11 @@ static void update_rf_payload_format_ble()
     //Position6=1
     //In PHY regs bit0 is position6 bit1 at pos5 etc..
     //0110 0101 = 0x65
-    NRF_RADIO->DATAWHITEIV = 0x65;
+    NRF_RADIO->DATAWHITEIV = channel_number | (1 << 6);
+    printf("\n\rData whitening init val:0x%02lx", NRF_RADIO->DATAWHITEIV);
 }
 
-
-static void update_radio_parameters()
-{
-    NRF_RADIO->TXPOWER = RADIO_TXPOWER_TXPOWER_0dBm << RADIO_TXPOWER_TXPOWER_Pos;
-
-    //nrf radio also have proprietary 1mbit mode
-    NRF_RADIO->MODE = RADIO_MODE_MODE_Ble_1Mbit << RADIO_MODE_MODE_Pos;
-
-    update_radio_crc();
-    update_rf_payload_format_ble();
-}
-
-void ble_init( void )
+void ble_init( uint8_t channel_number )
 {
 
     if ( ((NRF_FICR->OVERRIDEEN) & FICR_OVERRIDEEN_BLE_1MBIT_Msk) == FICR_OVERRIDEEN_BLE_1MBIT_Override)
@@ -83,7 +72,13 @@ void ble_init( void )
         NRF_RADIO->OVERRIDE4 = NRF_FICR->BLE_1MBIT[4];
     }
 
-    update_radio_parameters();
+    NRF_RADIO->TXPOWER = RADIO_TXPOWER_TXPOWER_0dBm << RADIO_TXPOWER_TXPOWER_Pos;
+
+    //nrf radio also have proprietary 1mbit mode
+    NRF_RADIO->MODE = RADIO_MODE_MODE_Ble_1Mbit << RADIO_MODE_MODE_Pos;
+
+    update_radio_crc();
+    update_rf_payload_format_ble(channel_number);
 
 	const uint32_t radio_irq_priority = 1;
 	NVIC_SetPriority(RADIO_IRQn, radio_irq_priority & 0x03);
@@ -123,7 +118,7 @@ void ble_start_rx(uint8_t channel_number)
         case 38: freq_reg = 26; break; //2426MHz
         case 39: freq_reg = 80; break; //2480MHz
     }
-    printf("\n\rScanning channel: %d(%dMHz)", channel_number, 2400+freq_reg); 
+    printf("\n\rScanning channel: %d(%dMHz)", channel_number, 2400+freq_reg);
     NRF_RADIO->FREQUENCY    = freq_reg;
 
     NRF_RADIO->PACKETPTR    = (uint32_t)rx_pdu_buffer;

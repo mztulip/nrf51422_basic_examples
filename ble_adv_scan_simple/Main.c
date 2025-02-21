@@ -43,10 +43,11 @@ int main()
 	led_init();
 	uart_init();
 	printf("\n\rHello Uart");
-	ble_init();
-	ble_start_rx(37);
+	uint8_t channel = 39;
+	ble_init(channel);
+	ble_start_rx(channel);
     uint64_t mac_to_print = 0xa4c13838ec59;
-    filter_print_by_mac(mac_to_print);
+    //filter_print_by_mac(mac_to_print);
 
 	while(1)
 	{
