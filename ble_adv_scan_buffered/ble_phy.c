@@ -1,5 +1,6 @@
 #include <stdio.h>
 #include <stdbool.h>
+#include <string.h>
 #include "nrf51.h"
 #include "nrf51_bitfields.h"
 #include "ble_phy.h"
@@ -91,6 +92,24 @@ void ble_init( uint8_t channel_number )
     NRF_RADIO->PREFIX0 = 0x8E;
 }
 
+typedef struct
+{
+    uint8_t length;
+    int8_t  rssi;
+    uint8_t data[255];
+} ble_packet_struct;
+
+typedef struct
+{
+    ble_packet_struct   packet[10];
+    uint32_t            write_index;                      /**< Current start of queue. */
+    uint32_t            read_index;                       /**< Current end of queue. */
+    uint32_t            count;                            /**< Current number of elements in the queue. */
+} rx_fifo_struct;
+
+rx_fifo_struct rx_fifo;
+
+
 void ble_start_rx(uint8_t channel_number)
 {
     //Clear all radio interrupt flags
@@ -131,6 +150,10 @@ void ble_start_rx(uint8_t channel_number)
     NRF_RADIO->EVENTS_PAYLOAD = 0;
     NRF_RADIO->EVENTS_DISABLED = 0;
 
+    rx_fifo.write_index=0;
+    rx_fifo.read_index=0;
+    rx_fifo.count=0;
+
     NRF_RADIO->TASKS_RXEN  = 1;
 }
 
@@ -146,9 +169,38 @@ static void on_radio_disabled_rx(void)
         return;
     }
 
-    init_pdu_buffer_pointer(rx_pdu_buffer);
-    show_pdu_data();
     led_toogle(LED4);
+    //copy data to buffer
+    if (rx_fifo.count < 10) //Ignore write if buffer is full
+    {
+        uint8_t *header = &rx_pdu_buffer[0];;
+        uint8_t length = header[1];
+
+        uint8_t copy_lenght = length+2; //+2 because we copy it with header
+        if(copy_lenght > 255) 
+        {
+            printf("\n\r Packet truncated because it does not fit in buffer");
+            copy_lenght = 255;
+            return;
+        }
+        rx_fifo.packet[rx_fifo.write_index].rssi = NRF_RADIO->RSSISAMPLE;
+        rx_fifo.packet[rx_fifo.write_index].length = copy_lenght;
+
+        memcpy( rx_fifo.packet[rx_fifo.write_index].data,
+                &rx_pdu_buffer[0],
+                copy_lenght);
+
+        rx_fifo.write_index++;
+        if(rx_fifo.write_index >= 10)
+        {
+           rx_fifo.write_index = 0; 
+        }
+        rx_fifo.count++;
+    }
+
+    // init_pdu_buffer_pointer(rx_pdu_buffer);
+    // show_pdu_data();
+    
 }
 
 void RADIO_IRQHandler()
