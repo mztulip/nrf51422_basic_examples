@@ -173,6 +173,7 @@ static void on_radio_disabled_rx(void)
     //copy data to buffer
     if (rx_fifo.count < 10) //Ignore write if buffer is full
     {
+        printf("\n\rAdding packet to fifo. Fifo usage: %d", rx_fifo.count );
         uint8_t *header = &rx_pdu_buffer[0];;
         uint8_t length = header[1];
 
@@ -197,6 +198,11 @@ static void on_radio_disabled_rx(void)
         }
         rx_fifo.count++;
     }
+    else 
+    {
+        printf("\n\rRX FIFO full");
+    }
+
 
     // init_pdu_buffer_pointer(rx_pdu_buffer);
     // show_pdu_data();

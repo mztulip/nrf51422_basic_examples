@@ -43,7 +43,7 @@ int main()
 	led_init();
 	uart_init();
 	printf("\n\rHello ble single channel adv scanner");
-	uint8_t channel = 39;
+	uint8_t channel = 37;
 	ble_init(channel);
 	ble_start_rx(channel);
     uint64_t mac_to_print = 0xa4c13838ec59;
