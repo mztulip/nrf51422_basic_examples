@@ -52,30 +52,38 @@ int main()
 
 	while(1)
 	{
-		//FIFo shouldnt be accessed when packet is written in interrupt
-		NVIC_DisableIRQ(RADIO_IRQn);
-		//todo wait for current interrupt to finish
 
 		if(rx_fifo.count >0)
 		{
 			printf("\n\rrx_fifo not empty, printing packet Fifo count:%ld", rx_fifo.count);
-			uint8_t *data = rx_fifo.packet[rx_fifo.read_index].data;
+			volatile uint8_t *data = rx_fifo.packet[rx_fifo.read_index].data;
 
-			init_pdu_buffer_pointer(data);
+			//Casting to uint8_t discarding volatile qualifier.
+			//Here shouldnt be problem with this because as soon as read_index isnt changed
+			//this table can not be changed
+			init_pdu_buffer_pointer((uint8_t *)data);
     		show_pdu_data();
 
+			
+			rx_fifo.read_index++;
 			if(rx_fifo.read_index >= 10)
 			{
 				rx_fifo.read_index = 0;
 			}
+			//FIFo shouldnt be modified when packet is writing in interrupt
+			NVIC_DisableIRQ(RADIO_IRQn);
+			//count modyfiing is not atomic operation  and is written in interrupt also
+			//but hopefully this is signle core app therefore with disabled interrupt
+			//it always will  be executed safely
 			rx_fifo.count--;
+			NVIC_EnableIRQ(RADIO_IRQn);
 		}
 		else 
 		{
 			// printf("\n\rrx_fifo empty");
 		}
 
-		NVIC_EnableIRQ(RADIO_IRQn);
+		
 	}
 }
 

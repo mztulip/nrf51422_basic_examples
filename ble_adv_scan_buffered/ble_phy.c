@@ -149,7 +149,6 @@ static void on_radio_disabled_rx(void)
     
     if (NRF_RADIO->CRCSTATUS == 0)
     {
-        printf("\n\rIncorrect CRC");
         return;
     }
 
@@ -157,23 +156,22 @@ static void on_radio_disabled_rx(void)
     //copy data to buffer
     if (rx_fifo.count < 10) //Ignore write if buffer is full
     {
-        printf("\n\rAdding packet to fifo. Fifo usage: %ld", rx_fifo.count );
-        uint8_t *header = &rx_pdu_buffer[0];;
+        volatile uint8_t *header = &rx_pdu_buffer[0];;
         uint8_t length = header[1];
 
         uint8_t copy_lenght = length+2; //+2 because we copy it with header
         if(copy_lenght > 255) 
         {
-            printf("\n\r Packet truncated because it does not fit in buffer");
             copy_lenght = 255;
             return;
         }
         rx_fifo.packet[rx_fifo.write_index].rssi = NRF_RADIO->RSSISAMPLE;
         rx_fifo.packet[rx_fifo.write_index].length = copy_lenght;
 
-        memcpy( rx_fifo.packet[rx_fifo.write_index].data,
-                &rx_pdu_buffer[0],
-                copy_lenght);
+        for(int index=0; index < copy_lenght; index++)
+        {
+            rx_fifo.packet[rx_fifo.write_index].data[index] = rx_pdu_buffer[index];
+        } 
 
         rx_fifo.write_index++;
         if(rx_fifo.write_index >= 10)
@@ -181,10 +179,6 @@ static void on_radio_disabled_rx(void)
            rx_fifo.write_index = 0; 
         }
         rx_fifo.count++;
-    }
-    else 
-    {
-        printf("\n\rRX FIFO full");
     }
 }
 
