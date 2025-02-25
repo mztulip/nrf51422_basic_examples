@@ -6,8 +6,10 @@
 #include "ble_phy.h"
 #include "ble_print.h"
 #include "leds.h"
+#include "rx_fifo.h"
 
 static  uint8_t rx_pdu_buffer[255];
+rx_fifo_struct rx_fifo;
 const uint32_t  RADIO_SHORTS_COMMON =  ( RADIO_SHORTS_READY_START_Msk | RADIO_SHORTS_END_DISABLE_Msk | \
                                 RADIO_SHORTS_ADDRESS_RSSISTART_Msk | RADIO_SHORTS_DISABLED_RSSISTOP_Msk );
 
@@ -92,23 +94,6 @@ void ble_init( uint8_t channel_number )
     NRF_RADIO->PREFIX0 = 0x8E;
 }
 
-typedef struct
-{
-    uint8_t length;
-    int8_t  rssi;
-    uint8_t data[255];
-} ble_packet_struct;
-
-typedef struct
-{
-    ble_packet_struct   packet[10];
-    uint32_t            write_index;                      /**< Current start of queue. */
-    uint32_t            read_index;                       /**< Current end of queue. */
-    uint32_t            count;                            /**< Current number of elements in the queue. */
-} rx_fifo_struct;
-
-rx_fifo_struct rx_fifo;
-
 
 void ble_start_rx(uint8_t channel_number)
 {
@@ -158,7 +143,6 @@ void ble_start_rx(uint8_t channel_number)
 }
 
 
-
 static void on_radio_disabled_rx(void)
 {
     led_toogle(LED3);
@@ -173,7 +157,7 @@ static void on_radio_disabled_rx(void)
     //copy data to buffer
     if (rx_fifo.count < 10) //Ignore write if buffer is full
     {
-        printf("\n\rAdding packet to fifo. Fifo usage: %d", rx_fifo.count );
+        printf("\n\rAdding packet to fifo. Fifo usage: %ld", rx_fifo.count );
         uint8_t *header = &rx_pdu_buffer[0];;
         uint8_t length = header[1];
 
