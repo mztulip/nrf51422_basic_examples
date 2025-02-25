@@ -8,8 +8,8 @@
 #include "leds.h"
 #include "rx_fifo.h"
 
-static  uint8_t rx_pdu_buffer[255];
-rx_fifo_struct rx_fifo;
+static volatile uint8_t rx_pdu_buffer[255];
+volatile rx_fifo_struct rx_fifo;
 const uint32_t  RADIO_SHORTS_COMMON =  ( RADIO_SHORTS_READY_START_Msk | RADIO_SHORTS_END_DISABLE_Msk | \
                                 RADIO_SHORTS_ADDRESS_RSSISTART_Msk | RADIO_SHORTS_DISABLED_RSSISTOP_Msk );
 
@@ -186,11 +186,6 @@ static void on_radio_disabled_rx(void)
     {
         printf("\n\rRX FIFO full");
     }
-
-
-    // init_pdu_buffer_pointer(rx_pdu_buffer);
-    // show_pdu_data();
-    
 }
 
 void RADIO_IRQHandler()

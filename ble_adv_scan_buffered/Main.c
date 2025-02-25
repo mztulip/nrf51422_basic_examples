@@ -10,6 +10,7 @@
 #include "leds.h"
 #include "ble_phy.h"
 #include "ble_print.h"
+#include "rx_fifo.h"
 
 volatile uint32_t ms_counter = 0 ;
 
@@ -51,7 +52,30 @@ int main()
 
 	while(1)
 	{
+		//FIFo shouldnt be accessed when packet is written in interrupt
+		NVIC_DisableIRQ(RADIO_IRQn);
+		//todo wait for current interrupt to finish
 
+		if(rx_fifo.count >0)
+		{
+			printf("\n\rrx_fifo not empty, printing packet Fifo count:%ld", rx_fifo.count);
+			uint8_t *data = rx_fifo.packet[rx_fifo.read_index].data;
+
+			init_pdu_buffer_pointer(data);
+    		show_pdu_data();
+
+			if(rx_fifo.read_index >= 10)
+			{
+				rx_fifo.read_index = 0;
+			}
+			rx_fifo.count--;
+		}
+		else 
+		{
+			// printf("\n\rrx_fifo empty");
+		}
+
+		NVIC_EnableIRQ(RADIO_IRQn);
 	}
 }
 

@@ -16,6 +16,6 @@ typedef struct
     uint32_t            count;                            /**< Current number of elements in the queue. */
 } rx_fifo_struct;
 
-extern rx_fifo_struct rx_fifo;
+extern volatile rx_fifo_struct rx_fifo;
 
 #endif
