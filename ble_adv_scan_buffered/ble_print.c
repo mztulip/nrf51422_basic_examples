@@ -173,7 +173,7 @@ void filter_print_by_mac(uint64_t mac)
     filtered_mac = mac;
 }
 
-void show_pdu_data(void)
+void show_pdu_data(int8_t rssi)
 {
     uint8_t *header = &rx_pdu_buffer[0];
     uint8_t header0 =  header[0];
@@ -215,8 +215,6 @@ void show_pdu_data(void)
     print_payload(payload, length);
 
     printf("\n\r\tCRC: %08x",(unsigned int)received_crc);
-
-    uint8_t rssi = NRF_RADIO->RSSISAMPLE;
 
     printf("\tRSSI: -%ddBm",rssi);
 

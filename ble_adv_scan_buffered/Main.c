@@ -57,12 +57,12 @@ int main()
 		{
 			printf("\n\rrx_fifo not empty, printing packet Fifo count:%ld", rx_fifo.count);
 			volatile uint8_t *data = rx_fifo.packet[rx_fifo.read_index].data;
-
+			int8_t  rssi = rx_fifo.packet[rx_fifo.read_index].rssi;
 			//Casting to uint8_t discarding volatile qualifier.
 			//Here shouldnt be problem with this because as soon as read_index isnt changed
 			//this table can not be changed
 			init_pdu_buffer_pointer((uint8_t *)data);
-    		show_pdu_data();
+    		show_pdu_data(rssi);
 
 			
 			rx_fifo.read_index++;
@@ -78,12 +78,6 @@ int main()
 			rx_fifo.count--;
 			NVIC_EnableIRQ(RADIO_IRQn);
 		}
-		else 
-		{
-			// printf("\n\rrx_fifo empty");
-		}
-
-		
 	}
 }
 
