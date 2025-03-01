@@ -12,6 +12,58 @@ char str_buff2[255];
 static  uint8_t *rx_pdu_buffer;
 extern volatile uint32_t ms_counter;
 
+
+uint8_t received_names = 0;
+uint8_t device_mac[10][6];
+uint8_t device_name[10][100]; //Maybe allocate names on heap?
+
+uint8_t* search_device_name(uint8_t mac[])
+{
+    if(received_names == 0) return 0;
+
+    for(int index = 0 ; index < received_names; index++)
+    {
+        if(memcmp(device_mac[index], mac, 6) == 0)
+        {
+            return device_name[index];
+        }
+    }
+    return 0;
+}
+
+uint8_t str_buffer[255];
+void add_device_name(uint8_t mac[], uint8_t *name_ptr, uint8_t str_len)
+{
+    
+    if(received_names >= 10) 
+    {
+        printf("Name buffer full(10), device name %s not added", name_ptr);
+        return;
+    }
+    memcpy(device_mac[received_names], mac, 6);
+    if((str_len+1)>100)
+    {
+        str_len = 100;
+    }
+    memcpy(device_name[received_names], name_ptr, str_len);
+    device_name[received_names][str_len] = 0; //Add string end
+
+    received_names++;
+}
+
+void print_device_name(uint8_t *mac)
+{
+    uint8_t* dev_name_ptr = search_device_name(mac);
+    if(dev_name_ptr == 0)
+    {
+        printf("\n\r\tDevice name: NA");
+    }
+    else 
+    {
+        printf("\n\r\tDevice name: %s", dev_name_ptr);
+    }
+}
+
 void init_pdu_buffer_pointer(uint8_t *pointer)
 {
     rx_pdu_buffer = pointer;
@@ -54,14 +106,14 @@ static void print_16bit_uuid_data(uint8_t *data, uint8_t len)
     print_payload(data+2, len-2);
 }
 
-static void analyse_adv_data(uint8_t type, uint8_t *data, uint8_t len)
+static void analyse_adv_data(uint8_t type, uint8_t *data, uint8_t len, uint8_t *mac)
 {
     //Version 5.3 | Vol 3, Part C
     //11 ADVERTISING AND SCAN RESPONSE DATA FORMAT
     switch(type)
     {
         case 0x01: printf("\n\r\tFlags: 0x"); print_payload(data, len); break;
-        case 0x09: printf("\n\r\tComplete Local Name:%*.*s", 2, len, data); break;
+        case 0x09: printf("\n\r\tComplete Local Name:%*.*s", 2, len, data); add_device_name(mac,data,len); break;
         case 0x16: print_16bit_uuid_data(data, len); break;
         default: printf("\n\r\tPDU len: %d(%02x) Type:0x%02x ", len+1, len+1, type);
         
@@ -71,7 +123,7 @@ static void analyse_adv_data(uint8_t type, uint8_t *data, uint8_t len)
 
 }
 
-static void print_analyse_pdu( uint8_t *pdu , uint8_t pdu_len)
+static void print_analyse_pdu( uint8_t *pdu , uint8_t pdu_len, uint8_t *mac)
 {
     if(pdu_len <= 3) return;
     
@@ -85,7 +137,7 @@ static void print_analyse_pdu( uint8_t *pdu , uint8_t pdu_len)
         uint8_t *data = pdu + 2+index;
         uint8_t type = header[1];
         //Length contains type but we do not pass type in data pointer, only data content
-        analyse_adv_data(type, data, length-1);
+        analyse_adv_data(type, data, length-1, mac);
         index += length+1;
     }
 
@@ -113,12 +165,13 @@ static void print_ADV_IND(void)
     }
     uint8_t *AdvA = payload; //6 bytes length
     //First is LSB byte
-    printf("address: %02x:%02x:%02x:%02x:%02x:%02x", AdvA[5], AdvA[4], AdvA[3], AdvA[2], AdvA[1], AdvA[0]);
+    printf(" address: %02x:%02x:%02x:%02x:%02x:%02x", AdvA[5], AdvA[4], AdvA[3], AdvA[2], AdvA[1], AdvA[0]);
+    print_device_name(AdvA);
     uint8_t *AdvData = payload+6;
     uint8_t advData_length = length - 6;
     printf("\n\r\tAdvData(%d):", advData_length);
     print_payload(AdvData, advData_length);
-    print_analyse_pdu(AdvData, advData_length);
+    print_analyse_pdu(AdvData, advData_length, AdvA);
 }
 
 void print_ADV_NONCONN_IND(void)
@@ -147,10 +200,12 @@ static void print_SCAN_RSP(void)
     uint8_t *AdvA = payload; //6 bytes length
     //First is LSB byte
     printf("address: %02x:%02x:%02x:%02x:%02x:%02x", AdvA[5], AdvA[4], AdvA[3], AdvA[2], AdvA[1], AdvA[0]);
+    print_device_name(AdvA);
     uint8_t *ScanRspData = payload+6;
     uint8_t ScanRspData_length = length - 6;
     printf("\n\r\tScanRspData(%d):", ScanRspData_length);
     print_payload(ScanRspData, ScanRspData_length);
+    print_analyse_pdu(ScanRspData, ScanRspData_length, AdvA);
 }
 
 static void parse_adv_payload(void)
