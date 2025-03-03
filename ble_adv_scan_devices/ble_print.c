@@ -49,7 +49,7 @@ static void analyse_pdu( uint8_t *pdu , uint8_t pdu_len, uint8_t *mac)
 
 }
 
-static void analyse_payload(uint8_t mac[])
+static void analyse_payload(uint8_t rssi)
 {
     //The PDU shall only be used in connectable directed advertising events
     uint8_t *header = &rx_pdu_buffer[0];
@@ -59,11 +59,11 @@ static void analyse_payload(uint8_t mac[])
 
     // bool TxAdd = (header0 & 0x02)>>1;
     // bool ChSel = (header0 & 0x04)>>2;
-    // uint8_t *AdvA = payload; //6 bytes length
-
+    uint8_t *AdvA = payload; //6 bytes length
+    update_device(AdvA, rssi);
     uint8_t *AdvData = payload+6;
     uint8_t advData_length = length - 6;
-    analyse_pdu(AdvData, advData_length, mac);
+    analyse_pdu(AdvData, advData_length, AdvA);
 }
 
 void show_pdu_data(int8_t rssi)
@@ -72,15 +72,14 @@ void show_pdu_data(int8_t rssi)
     uint8_t header0 =  header[0];
     // uint8_t length = header[1];
     uint8_t *payload = &rx_pdu_buffer[2];
-    uint8_t *adv_address = &payload[0];
+    // uint8_t *adv_address = &payload[0];
     uint8_t pdu_type = (header0 >> 4)&0x0f;
 
-    update_device(adv_address, rssi);
     switch(pdu_type)
     {
-        case 0 : analyse_payload(adv_address); break;
-        case 0x2: analyse_payload(adv_address); break;
-        case 0x4: analyse_payload(adv_address); break;
+        case 0 : analyse_payload(rssi); break;
+        case 0x2: analyse_payload(rssi); break;
+        case 0x4: analyse_payload(rssi); break;
         default: printf("\n\rReceived Not implemented PDU type: %d!!!!", pdu_type);
     }
 }
