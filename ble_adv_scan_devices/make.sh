@@ -63,6 +63,11 @@ file="$TOOLCHAIN_GCC $filename.c $INLCUDES -o build/$filename.o $GCC_FLAGS"
 echo $file
 $file
 
+filename=device_store
+file="$TOOLCHAIN_GCC $filename.c $INLCUDES -o build/$filename.o $GCC_FLAGS"
+echo $file
+$file
+
 linker="$TOOLCHAIN_GCC build/*.o -nostartfiles -T$LINKER_SCRIPT -Wl,--gc-sections -mcpu=cortex-m0 -o outputs/output.elf  -Xlinker -Map=outputs/output.map"
 echo $linker
 $linker

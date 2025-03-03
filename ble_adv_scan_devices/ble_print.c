@@ -53,12 +53,12 @@ static void analyse_payload(void)
 {
     //The PDU shall only be used in connectable directed advertising events
     uint8_t *header = &rx_pdu_buffer[0];
-    uint8_t header0 =  header[0];
+    // uint8_t header0 =  header[0];
     uint8_t length = header[1];
     uint8_t *payload = &rx_pdu_buffer[2];
 
-    bool TxAdd = (header0 & 0x02)>>1;
-    bool ChSel = (header0 & 0x04)>>2;
+    // bool TxAdd = (header0 & 0x02)>>1;
+    // bool ChSel = (header0 & 0x04)>>2;
 
 
     uint8_t *AdvA = payload; //6 bytes length
@@ -72,7 +72,7 @@ void show_pdu_data(int8_t rssi)
 {
     uint8_t *header = &rx_pdu_buffer[0];
     uint8_t header0 =  header[0];
-    uint8_t length = header[1];
+    // uint8_t length = header[1];
     uint8_t *payload = &rx_pdu_buffer[2];
     uint8_t *adv_address = &payload[0];
     uint8_t pdu_type = (header0 >> 4)&0x0f;

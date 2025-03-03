@@ -23,6 +23,7 @@ int8_t find_device_by_mac(uint8_t mac[])
             return index;
         }
     }
+    return -1;
 }
 
 uint8_t* search_device_name(uint8_t mac[])
@@ -45,7 +46,7 @@ void add_device_name(uint8_t mac[], uint8_t *name_ptr, uint8_t str_len)
     
     if(stored_devices >= 10) 
     {
-        printf("Name buffer full(10), device name %s not added", name_ptr);
+        printf("\n\rName buffer full(10), device name %s not added", name_ptr);
         return;
     }
     memcpy(device_mac[stored_devices], mac, 6);
@@ -97,6 +98,7 @@ void print_device_name(uint8_t *mac)
 void print_detected_devices(void)
 {
     if(stored_devices == 0) return;
+    printf("\033[2J"); //VT100 clear screen
     for (int index = 0; index < stored_devices; index++)
     {
         uint8_t  *mac = device_mac[index];
@@ -106,8 +108,8 @@ void print_detected_devices(void)
         uint32_t last = device_last_reception_time[index];
         uint32_t previous = device_previous_reception_time[index];
         uint32_t time_diff = last - previous;
-        printf(" time diff: %ldms", time_diff);
+        printf(" frame diff: %ldms", time_diff);
         uint32_t diff_now = timer_get_time()-last;
-        printf("Not received since: %ldms", diff_now);
+        printf(" Not received since: %ldms", diff_now);
     }
 }
