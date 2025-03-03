@@ -11,8 +11,7 @@
 #include "ble_phy.h"
 #include "ble_print.h"
 #include "rx_fifo.h"
-
-volatile uint32_t ms_counter = 0 ;
+#include "timer.h"
 
 void clocks_start( void )
 {
@@ -23,19 +22,6 @@ void clocks_start( void )
     while (NRF_CLOCK->EVENTS_HFCLKSTARTED == 0);
 }
 
-static void timer_init()
-{
-    // Configure the system timer with a 1 MHz base frequency
-    NRF_TIMER2->PRESCALER = 4;
-    NRF_TIMER2->BITMODE   = TIMER_BITMODE_BITMODE_16Bit;
-    NRF_TIMER2->CC[0] = 1000; //Capture every 1ms =1khz
-	NRF_TIMER2->SHORTS    = TIMER_SHORTS_COMPARE0_CLEAR_Msk;
-	NRF_TIMER2->INTENSET = TIMER_INTENSET_COMPARE0_Msk;
-	NVIC_ClearPendingIRQ(TIMER2_IRQn);
-    NVIC_EnableIRQ(TIMER2_IRQn);
-	NRF_TIMER2->TASKS_START = 1;
-	
-}
 
 int main()
 {
@@ -84,10 +70,4 @@ int main()
 void Default_Handler(void)
 {
 	while(1);
-}
-
-void TIMER2_IRQHandler(void)
-{
-	NRF_TIMER2->EVENTS_COMPARE[0] = 0;
-	ms_counter++;
 }
