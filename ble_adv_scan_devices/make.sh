@@ -48,7 +48,7 @@ file="$TOOLCHAIN_GCC $filename.c $INLCUDES -o build/$filename.o $GCC_FLAGS"
 echo $file
 $file
 
-filename=ble_print
+filename=ble
 file="$TOOLCHAIN_GCC $filename.c $INLCUDES -o build/$filename.o $GCC_FLAGS"
 echo $file
 $file

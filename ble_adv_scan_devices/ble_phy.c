@@ -4,7 +4,7 @@
 #include "nrf51.h"
 #include "nrf51_bitfields.h"
 #include "ble_phy.h"
-#include "ble_print.h"
+#include "ble.h"
 #include "leds.h"
 #include "rx_fifo.h"
 

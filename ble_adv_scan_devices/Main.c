@@ -9,7 +9,7 @@
 #include "uart.h"
 #include "leds.h"
 #include "ble_phy.h"
-#include "ble_print.h"
+#include "ble.h"
 #include "rx_fifo.h"
 #include "timer.h"
 #include "device_store.h"

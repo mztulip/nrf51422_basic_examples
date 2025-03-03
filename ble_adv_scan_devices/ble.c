@@ -2,7 +2,7 @@
 #include <stdbool.h>
 #include <stdio.h>
 #include <string.h>
-#include "ble_print.h"
+#include "ble.h"
 #include "nrf51.h"
 #include "nrf51_bitfields.h"
 #include "timer.h"
@@ -70,9 +70,6 @@ void show_pdu_data(int8_t rssi)
 {
     uint8_t *header = &rx_pdu_buffer[0];
     uint8_t header0 =  header[0];
-    // uint8_t length = header[1];
-    uint8_t *payload = &rx_pdu_buffer[2];
-    // uint8_t *adv_address = &payload[0];
     uint8_t pdu_type = (header0 >> 4)&0x0f;
 
     switch(pdu_type)
