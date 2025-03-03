@@ -4,9 +4,11 @@
 #include <string.h>
 #include "timer.h"
 
+#define NAME_BUFFFER_LEN 100
+
 uint8_t stored_devices = 0;
 uint8_t device_mac[10][6];
-uint8_t device_name[10][100]; //Maybe allocate names on heap?
+uint8_t device_name[10][NAME_BUFFFER_LEN]; //Maybe allocate names on heap?
 uint8_t device_rssi[10];
 uint32_t device_last_reception_time[10];
 uint32_t device_previous_reception_time[10];
@@ -26,51 +28,33 @@ int8_t find_device_by_mac(uint8_t mac[])
     return -1;
 }
 
-uint8_t* search_device_name(uint8_t mac[])
-{
-    if(stored_devices == 0) return 0;
-
-    for(int index = 0 ; index < stored_devices; index++)
-    {
-        if(memcmp(device_mac[index], mac, 6) == 0)
-        {
-            return device_name[index];
-        }
-    }
-    return 0;
-}
-
 uint8_t str_buffer[255];
 void add_device_name(uint8_t mac[], uint8_t *name_ptr, uint8_t str_len)
 {
-    
-    if(stored_devices >= 10) 
+    int8_t device_index = find_device_by_mac(mac);
+    if(device_index < 0 ) return;
+    if((str_len+1)>NAME_BUFFFER_LEN)
     {
-        printf("\n\rName buffer full(10), device name %s not added", name_ptr);
-        return;
+        str_len = NAME_BUFFFER_LEN;
     }
-    memcpy(device_mac[stored_devices], mac, 6);
-    if((str_len+1)>100)
-    {
-        str_len = 100;
-    }
-    memcpy(device_name[stored_devices], name_ptr, str_len);
-    device_name[stored_devices][str_len] = 0; //Add string end
+    memcpy(device_name[device_index], name_ptr, str_len);
+    device_name[device_index
+    ][str_len] = 0; //Add string end
 
-    stored_devices++;
 }
 
 void update_device(uint8_t mac[], uint8_t rssi)
 {
     uint32_t reception_time = timer_get_time();
-    if(stored_devices >= 10) 
-    {
-        printf("buffer full(10), new device not added");
-        return;
-    }
+ 
     int8_t device_index = find_device_by_mac(mac);
     if(device_index < 0)
     {
+        if(stored_devices >= 10) 
+        {
+            printf("\n\rbuffer full(10), new device not added");
+            return;
+        }
         device_index = stored_devices;
         memcpy(device_mac[device_index], mac, 6);
         memcpy(device_name[stored_devices], "NA", 3);
@@ -82,18 +66,6 @@ void update_device(uint8_t mac[], uint8_t rssi)
 
 }
 
-void print_device_name(uint8_t *mac)
-{
-    uint8_t* dev_name_ptr = search_device_name(mac);
-    if(dev_name_ptr == 0)
-    {
-        printf("\n\r\tDevice name: NA");
-    }
-    else 
-    {
-        printf("\n\r\tDevice name: %s", dev_name_ptr);
-    }
-}
 
 void print_detected_devices(void)
 {
