@@ -5,13 +5,14 @@
 #include "timer.h"
 
 #define NAME_BUFFFER_LEN 100
+#define DEVICE_BUFFER_LEN 20
 
 uint8_t stored_devices = 0;
-uint8_t device_mac[10][6];
-uint8_t device_name[10][NAME_BUFFFER_LEN]; //Maybe allocate names on heap?
-uint8_t device_rssi[10];
-uint32_t device_last_reception_time[10];
-uint32_t device_previous_reception_time[10];
+uint8_t device_mac[DEVICE_BUFFER_LEN][6];
+uint8_t device_name[DEVICE_BUFFER_LEN][NAME_BUFFFER_LEN]; //Maybe allocate names on heap?
+uint8_t device_rssi[DEVICE_BUFFER_LEN];
+uint32_t device_last_reception_time[DEVICE_BUFFER_LEN];
+uint32_t device_previous_reception_time[DEVICE_BUFFER_LEN];
 
 
 int8_t find_device_by_mac(uint8_t mac[])
@@ -50,9 +51,9 @@ void update_device(uint8_t mac[], uint8_t rssi)
     int8_t device_index = find_device_by_mac(mac);
     if(device_index < 0)
     {
-        if(stored_devices >= 10) 
+        if(stored_devices >= DEVICE_BUFFER_LEN) 
         {
-            printf("\n\rbuffer full(10), new device not added");
+            printf("\n\rbuffer full%d), new device not added", DEVICE_BUFFER_LEN);
             return;
         }
         device_index = stored_devices;
