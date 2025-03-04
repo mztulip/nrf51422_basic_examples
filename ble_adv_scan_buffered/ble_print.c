@@ -212,7 +212,7 @@ static void parse_adv_payload(void)
 {
     uint8_t *header = &rx_pdu_buffer[0];
     uint8_t header0 =  header[0];
-    uint8_t pdu_type = (header0 >> 4)&0x0f;
+    uint8_t pdu_type = header0&0x0f;
     switch(pdu_type)
     {
         case 0 : print_ADV_IND(); break;
@@ -236,7 +236,7 @@ void show_pdu_data(int8_t rssi)
     uint8_t *payload = &rx_pdu_buffer[2];
     uint32_t received_crc  = NRF_RADIO->RXCRC;
     uint8_t *adv_address = &payload[0];
-    uint8_t pdu_type = (header0 >> 4)&0x0f;
+    uint8_t pdu_type = header0&0x0f;
 
     if (filtered_mac != 0)
     {
@@ -251,16 +251,17 @@ void show_pdu_data(int8_t rssi)
         case 0 : sprintf(str_buff,"ADV_IND"); break;
         case 0x1 : sprintf(str_buff,"ADV_DIRECT_IND"); break;
         case 0x2 : sprintf(str_buff,"ADV_NONCONN_IND"); break;
+        case 0x3: sprintf(str_buff,"SCAN_REQ"); break; 
         case 0x4 : sprintf(str_buff,"SCAN_RSP"); break;
         case 0xe : sprintf(str_buff,"ADV_EXT_IND"); break;
         case 0x8 : sprintf(str_buff,"AUX_CONNECT_RSP"); break;
         default: str_buff[0] = 0;
     }
 
-    bool RxAdd = header0 & 0x01;
-    bool TxAdd = (header0 & 0x02)>>1;
-    bool ChSel = (header0 & 0x04)>>2;
-    bool RFU = (header0 & 0x08)>>3;
+    bool RxAdd = header0 & 0x01;//Bit8
+    bool TxAdd = (header0 & 0x02)>>1;//Bit7
+    bool ChSel = (header0 & 0x20)>>5; //Bit6 10 0000
+    bool RFU = (header0 & 0x10)>>4; //BIT5   1 0000
 
     sprintf(str_buff2,"\tRFU:%d ChSel:%d, TxAdd:%d, RxAdd: %d", RFU, ChSel, TxAdd, RxAdd);
 

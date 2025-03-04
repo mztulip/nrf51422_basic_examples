@@ -100,11 +100,11 @@ void ble_start_rx(uint8_t channel_number)
     //Clear all radio interrupt flags
     NRF_RADIO->INTENCLR = 0xFFFFFFFF;
 
-    //Disable radio events
+    //Clear Disabled radio event flag
     NRF_RADIO->EVENTS_DISABLED = 0;
 
-    //This not work, interrupt is generated infinitely, my solution to enable TXEN manually
-    // NRF_RADIO->SHORTS      = RADIO_SHORTS_COMMON | RADIO_SHORTS_DISABLED_TXEN_Msk;
+    // TODO using RXEN short with generating SVC int where buffer is copied. And rx DMA buffer is switched
+    // NRF_RADIO->SHORTS      = RADIO_SHORTS_COMMON | RADIO_SHORTS_DISABLED_RXEN_Msk;
     NRF_RADIO->SHORTS      = RADIO_SHORTS_COMMON ;
     // NRF_RADIO->INTENSET    = RADIO_INTENSET_DISABLED_Msk | RADIO_INTENSET_READY_Msk| RADIO_INTENSET_END_Msk|RADIO_INTENSET_ADDRESS_Msk;
      //Enable interrupt when radio reached DIsabled state, it means that data is received
