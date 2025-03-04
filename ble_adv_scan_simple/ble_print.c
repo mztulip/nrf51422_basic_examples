@@ -264,6 +264,7 @@ void show_pdu_data(void)
         case 0 : sprintf(str_buff,"ADV_IND"); break;
         case 0x1 : sprintf(str_buff,"ADV_DIRECT_IND"); break;
         case 0x2 : sprintf(str_buff,"ADV_NONCONN_IND"); break;
+        case 0x3: sprintf(str_buff,"SCAN_REQ"); break; 
         case 0x4 : sprintf(str_buff,"SCAN_RSP"); break;
         case 0xe : sprintf(str_buff,"ADV_EXT_IND"); break;
         case 0x8 : sprintf(str_buff,"AUX_CONNECT_RSP"); break;
