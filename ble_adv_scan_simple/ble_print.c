@@ -157,12 +157,13 @@ static void parse_adv_payload(void)
 {
     uint8_t *header = &rx_pdu_buffer[0];
     uint8_t header0 =  header[0];
-    uint8_t pdu_type = (header0 >> 4)&0x0f;
+    uint8_t pdu_type = (header0)&0x0f;
     switch(pdu_type)
     {
         case 0 : print_ADV_IND(); break;
         case 0x2: print_ADV_NONCONN_IND(); break;
         case 0x4: print_SCAN_RSP(); break;
+        default: printf("Unimplemented pdu_type: %x", pdu_type);
     }
 }
 
@@ -173,6 +174,72 @@ void filter_print_by_mac(uint64_t mac)
     filtered_mac = mac;
 }
 
+void calculate_crc()
+{
+    //Core_v5.3.pdf 3.1.1 CRC generation
+    //CRC is calculated over whole PDU data
+    //IT means that preamble and ADDRESS is not used to calculate CRC
+    //It means that CRC needs to be calculated over whole rx_pdu_buffer with lenght specified in second byte + 2(header is not included in length)
+    //All bits are processed in transmitted order starting from LSB
+    //CRC poly:  x24 + x 10 + x 9 + x6 + x 4 + x 3 + x + 1
+    //where position 0 is LSB
+    //CRC in stransmitter  MSB first from position 23 to 0
+    uint8_t *header = &rx_pdu_buffer[0];
+    uint8_t length = header[1]+2;
+
+    uint8_t crc[3] = {0x55, 0x55, 0x55};
+    uint8_t bit_index, bit24, data_byte;
+
+    uint8_t *data = &rx_pdu_buffer[0];
+    //while iteruje po bajtach w pakiecie
+    //lecąc od początku tego co otrzymano
+	while(length--)
+    {
+		data_byte = *data++;
+        //ta pętla iteruje po bitach w bajcie
+        //i przesuwa bity w prawo i lecimy używając d j od LSB
+		for(bit_index = 0; bit_index < 8; bit_index++, data_byte >>= 1)
+        {
+            //dst0 zawiera wynikowe CRC
+            //tutaj t zawiera najstarszy bit
+            //i ten najstarszy bit 23 po przesunięciach stanie się pozycją 24 bo przesuwamy w lewo od LSB do MSB.
+			bit24 = crc[0] >> 7;
+            //pierwszy bajt CRC przesuwamy w lewo o 1
+            //bajt 0 to pozycje od 23 do 16, tutaj wspólczynniki wielomianu sa 0
+			crc[0] <<= 1;
+
+            //drugi bajt to pozycje od 15 do 8.
+            //sprawdzane jest czy najstarszy bajt jest 1 jeśli tak to przesuwany jest dalej do bajtu dst[0]
+			if(crc[1] & 0x80) crc[0] |= 1;
+            //przesunięcie w lewo
+			crc[1] <<= 1;
+
+            //ostatni bajt pozycje od 7 do 0
+			if(crc[2] & 0x80) crc[1] |= 1;
+			crc[2] <<= 1;
+			
+            //brany jest LSB z otrzymanego pakietu
+            //i jeśli to LSB jest różne od bitu 24 to znaczy że wyjście z ostatniego XORA między LSB danych a 24 pozycją = 1 
+            //Dla przypomnienia tabelka XOR
+            //00=0
+            //01=1
+            //10=1
+            //11=0
+            //CRC poly:  x24 + x 10 + x 9 + x6 + x 4 + x 3 + x + 1
+			if(bit24 != (data_byte & 0x01))
+            {
+                //dst[2] zawiera najższe pozycje 0101 1011
+                // B to pozycja 0 1 i 3
+                // 5 to pozycja 4 i 6
+				crc[2] ^= 0x5B;
+                // 0x6 0110 to pozycje 9 i 10 
+				crc[1] ^= 0x06;
+			}
+		}	
+	}
+    printf("\n\r\tSoft CRC:%02x%02x%02x", crc[0], crc[1], crc[2]);
+}
+
 void show_pdu_data(void)
 {
     uint8_t *header = &rx_pdu_buffer[0];
@@ -181,7 +248,8 @@ void show_pdu_data(void)
     uint8_t *payload = &rx_pdu_buffer[2];
     uint32_t received_crc  = NRF_RADIO->RXCRC;
     uint8_t *adv_address = &payload[0];
-    uint8_t pdu_type = (header0 >> 4)&0x0f;
+    //Transceiver puts Ble LSB in microcontroller LSB
+    uint8_t pdu_type = header0&0x0f;
 
     if (filtered_mac != 0)
     {
@@ -202,10 +270,11 @@ void show_pdu_data(void)
         default: str_buff[0] = 0;
     }
 
-    bool RxAdd = header0 & 0x01;
-    bool TxAdd = (header0 & 0x02)>>1;
-    bool ChSel = (header0 & 0x04)>>2;
-    bool RFU = (header0 & 0x08)>>3;
+    //This bit decoding is probably incorrect 
+    bool RxAdd = header0 & 0x01;//Bit8
+    bool TxAdd = (header0 & 0x02)>>1;//Bit7
+    bool ChSel = (header0 & 0x20)>>5; //Bit6 10 0000
+    bool RFU = (header0 & 0x10)>>4; //BIT5   1 0000
 
     sprintf(str_buff2,"\tRFU:%d ChSel:%d, TxAdd:%d, RxAdd: %d", RFU, ChSel, TxAdd, RxAdd);
 
@@ -214,12 +283,11 @@ void show_pdu_data(void)
     printf(" Payload: ");
     print_payload(payload, length);
 
-    printf("\n\r\tCRC: %08x",(unsigned int)received_crc);
-
+    printf("\n\r\tCRC: %06x",(unsigned int)received_crc);
     uint8_t rssi = NRF_RADIO->RSSISAMPLE;
 
     printf("\tRSSI: -%ddBm",rssi);
-
+    calculate_crc();
     parse_adv_payload();
 
 }
