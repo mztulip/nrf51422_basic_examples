@@ -176,6 +176,7 @@ void filter_print_by_mac(uint64_t mac)
 
 void calculate_crc()
 {
+    //https://dmitry.gr/index.php?r=05.Projects&proj=11.%20Bluetooth%20LE%20fakery
     //Core_v5.3.pdf 3.1.1 CRC generation
     //CRC is calculated over whole PDU data
     //IT means that preamble and ADDRESS is not used to calculate CRC
@@ -200,7 +201,7 @@ void calculate_crc()
         //i przesuwa bity w prawo i lecimy używając d j od LSB
 		for(bit_index = 0; bit_index < 8; bit_index++, data_byte >>= 1)
         {
-            //dst0 zawiera wynikowe CRC
+            //crc[0] zawiera wynikowe CRC
             //tutaj t zawiera najstarszy bit
             //i ten najstarszy bit 23 po przesunięciach stanie się pozycją 24 bo przesuwamy w lewo od LSB do MSB.
 			bit24 = crc[0] >> 7;
@@ -209,7 +210,7 @@ void calculate_crc()
 			crc[0] <<= 1;
 
             //drugi bajt to pozycje od 15 do 8.
-            //sprawdzane jest czy najstarszy bajt jest 1 jeśli tak to przesuwany jest dalej do bajtu dst[0]
+            //sprawdzane jest czy najstarszy bajt jest 1 jeśli tak to przesuwany jest dalej do bajtu crc[0]
 			if(crc[1] & 0x80) crc[0] |= 1;
             //przesunięcie w lewo
 			crc[1] <<= 1;
@@ -228,7 +229,7 @@ void calculate_crc()
             //CRC poly:  x24 + x 10 + x 9 + x6 + x 4 + x 3 + x + 1
 			if(bit24 != (data_byte & 0x01))
             {
-                //dst[2] zawiera najższe pozycje 0101 1011
+                //crc[2] zawiera najższe pozycje 0101 1011
                 // B to pozycja 0 1 i 3
                 // 5 to pozycja 4 i 6
 				crc[2] ^= 0x5B;
@@ -239,6 +240,36 @@ void calculate_crc()
 	}
     printf("\n\r\tSoft CRC:%02x%02x%02x", crc[0], crc[1], crc[2]);
 }
+
+void calculate_crc_2()
+{
+    uint8_t *header = &rx_pdu_buffer[0];
+    uint8_t length = header[1]+2;
+
+    uint32_t crc = 0x00555555;
+    uint8_t bit_index, data_byte;
+    uint8_t bit24;
+
+    uint8_t *data = &rx_pdu_buffer[0];
+
+	while(length--)
+    {
+		data_byte = *data++;
+    
+		for(bit_index = 0; bit_index < 8; bit_index++, data_byte >>= 1)
+        {
+			crc <<= 1UL;
+            bit24 = (uint8_t)(crc >> 23UL)&0x01;
+            //CRC poly:  x24 + x 10 + x 9 + x6 + x 4 + x 3 + x + 1
+			if(bit24 != (data_byte & 0x01))
+            {
+				crc ^= 0x065BUL;
+			}
+		}	
+	}
+    printf("\n\r\tSoft_2 CRC:%lx", crc);
+}
+
 
 void show_pdu_data(void)
 {
@@ -288,6 +319,7 @@ void show_pdu_data(void)
 
     printf("\tRSSI: -%ddBm",rssi);
     calculate_crc();
+    calculate_crc_2();
     parse_adv_payload();
 
 }
