@@ -47,7 +47,7 @@ void add_device_name(uint8_t mac[], uint8_t *name_ptr, uint8_t str_len)
 void update_device(uint8_t mac[], uint8_t rssi)
 {
     uint32_t reception_time = timer_get_time();
-    printf("\n\rUpdate MAC: %02x:%02x:%02x:%02x:%02x:%02x", mac[5], mac[4], mac[3], mac[2], mac[1], mac[0]);
+    // printf("\n\rUpdate MAC: %02x:%02x:%02x:%02x:%02x:%02x", mac[5], mac[4], mac[3], mac[2], mac[1], mac[0]);
     int8_t device_index = find_device_by_mac(mac);
     if(device_index < 0)
     {

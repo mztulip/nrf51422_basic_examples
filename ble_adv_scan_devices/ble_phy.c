@@ -10,8 +10,9 @@
 
 static volatile uint8_t rx_pdu_buffer[255];
 volatile rx_fifo_struct rx_fifo;
-const uint32_t  RADIO_SHORTS_COMMON =  ( RADIO_SHORTS_READY_START_Msk | RADIO_SHORTS_END_DISABLE_Msk | \
-                                RADIO_SHORTS_ADDRESS_RSSISTART_Msk | RADIO_SHORTS_DISABLED_RSSISTOP_Msk );
+
+const uint32_t  RADIO_SHORTS_COMMON =  ( RADIO_SHORTS_READY_START_Msk | \
+                                RADIO_SHORTS_ADDRESS_RSSISTART_Msk  );
 
 static void update_radio_crc()
 {
@@ -100,15 +101,15 @@ void ble_start_rx(uint8_t channel_number)
     //Clear all radio interrupt flags
     NRF_RADIO->INTENCLR = 0xFFFFFFFF;
 
-    //Disable radio events
+    //Clear Disable radio events
     NRF_RADIO->EVENTS_DISABLED = 0;
+    NRF_RADIO->EVENTS_END = 0;
 
-    //This not work, interrupt is generated infinitely, my solution to enable TXEN manually
-    // NRF_RADIO->SHORTS      = RADIO_SHORTS_COMMON | RADIO_SHORTS_DISABLED_TXEN_Msk;
     NRF_RADIO->SHORTS      = RADIO_SHORTS_COMMON ;
     // NRF_RADIO->INTENSET    = RADIO_INTENSET_DISABLED_Msk | RADIO_INTENSET_READY_Msk| RADIO_INTENSET_END_Msk|RADIO_INTENSET_ADDRESS_Msk;
-     //Enable interrupt when radio reached DIsabled state, it means that data is received
-    NRF_RADIO->INTENSET    = RADIO_INTENSET_DISABLED_Msk;
+
+     //Enable interrupt when radio reached end state, it means that data is received
+    NRF_RADIO->INTENSET    = RADIO_INTENSET_END_Msk;
 
 
     //Reception on ADDR0
@@ -127,13 +128,13 @@ void ble_start_rx(uint8_t channel_number)
 
     NRF_RADIO->PACKETPTR    = (uint32_t)rx_pdu_buffer;
 
-
     NVIC_ClearPendingIRQ(RADIO_IRQn);
     NVIC_EnableIRQ(RADIO_IRQn);
 
     NRF_RADIO->EVENTS_ADDRESS = 0;
     NRF_RADIO->EVENTS_PAYLOAD = 0;
     NRF_RADIO->EVENTS_DISABLED = 0;
+    NRF_RADIO->EVENTS_END = 0;
 
     rx_fifo.write_index=0;
     rx_fifo.read_index=0;
@@ -143,7 +144,7 @@ void ble_start_rx(uint8_t channel_number)
 }
 
 
-static void on_radio_disabled_rx(void)
+static void radio_copy_received(void)
 {
     led_toogle(LED3);
     
@@ -153,6 +154,17 @@ static void on_radio_disabled_rx(void)
     }
 
     led_toogle(LED4);
+
+    // uint8_t *header = &rx_pdu_buffer[0];
+    // // uint8_t header0 =  header[0];
+    // uint8_t length = header[1];
+    // uint8_t *payload = &rx_pdu_buffer[2];
+
+    // // bool TxAdd = (header0 & 0x02)>>1;
+    // // bool ChSel = (header0 & 0x04)>>2;
+    // uint8_t *AdvA = payload; //6 bytes length
+    // printf("\n\rMAC: %02x:%02x:%02x:%02x:%02x:%02x", AdvA[5], AdvA[4], AdvA[3], AdvA[2], AdvA[1], AdvA[0]);
+
     //copy data to buffer
     if (rx_fifo.count < 10) //Ignore write if buffer is full
     {
@@ -184,6 +196,7 @@ static void on_radio_disabled_rx(void)
 
 void RADIO_IRQHandler()
 {
+    NRF_RADIO->TASKS_RSSISTOP = 1;
     //Ready state/event means that radio is ready to reception and is waiting for start 
     if (NRF_RADIO->EVENTS_READY && (NRF_RADIO->INTENSET & RADIO_INTENSET_READY_Msk))
     {
@@ -194,6 +207,9 @@ void RADIO_IRQHandler()
     if (NRF_RADIO->EVENTS_END && (NRF_RADIO->INTENSET & RADIO_INTENSET_END_Msk))
     {
         NRF_RADIO->EVENTS_END = 0;
+        led_toogle(LED1);
+        radio_copy_received();
+        NRF_RADIO->TASKS_START  = 1;
     }
 
     if (NRF_RADIO->EVENTS_ADDRESS && (NRF_RADIO->INTENSET & RADIO_INTENSET_ADDRESS_Msk))
@@ -201,12 +217,8 @@ void RADIO_IRQHandler()
         NRF_RADIO->EVENTS_ADDRESS = 0;
     }
 
-    //this should work because disabled interrupt is active
     if (NRF_RADIO->EVENTS_DISABLED && (NRF_RADIO->INTENSET & RADIO_INTENSET_DISABLED_Msk))
     {
         NRF_RADIO->EVENTS_DISABLED = 0;
-        led_toogle(LED1);
-        on_radio_disabled_rx();
-        NRF_RADIO->TASKS_RXEN  = 1;
     }
 }
