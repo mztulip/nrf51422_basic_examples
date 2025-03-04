@@ -96,7 +96,7 @@ void ble_start_rx(uint8_t channel_number)
     //Clear all radio interrupt flags
     NRF_RADIO->INTENCLR = 0xFFFFFFFF;
 
-    //Disable radio events
+    //Clear Disabled radio event
     NRF_RADIO->EVENTS_DISABLED = 0;
 
     NRF_RADIO->SHORTS      = RADIO_SHORTS_COMMON ;

@@ -271,7 +271,6 @@ void show_pdu_data(void)
         default: str_buff[0] = 0;
     }
 
-    //This bit decoding is probably incorrect 
     bool RxAdd = header0 & 0x01;//Bit8
     bool TxAdd = (header0 & 0x02)>>1;//Bit7
     bool ChSel = (header0 & 0x20)>>5; //Bit6 10 0000
