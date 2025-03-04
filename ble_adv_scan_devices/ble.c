@@ -70,13 +70,14 @@ void show_pdu_data(int8_t rssi)
 {
     uint8_t *header = &rx_pdu_buffer[0];
     uint8_t header0 =  header[0];
-    uint8_t pdu_type = (header0 >> 4)&0x0f;
+    uint8_t pdu_type = header0&0x0f;
 
     switch(pdu_type)
     {
-        case 0 : analyse_payload(rssi); break;
-        case 0x2: analyse_payload(rssi); break;
-        case 0x4: analyse_payload(rssi); break;
+        case 0 : analyse_payload(rssi); break; //ADV_IND
+        case 0x2: analyse_payload(rssi); break; //ADV_NONCONN_IND
+        case 0x3: break; //SCAN_REQ
+        case 0x4: analyse_payload(rssi); break; //SCAN_RSP
         default: printf("\n\rReceived Not implemented PDU type: %d!!!!", pdu_type);
     }
 }
