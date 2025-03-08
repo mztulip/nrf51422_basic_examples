@@ -3,6 +3,7 @@
 #include <stdio.h>
 #include <string.h>
 #include "timer.h"
+#include "utils.h"
 
 #define NAME_BUFFFER_LEN 100
 #define DEVICE_BUFFER_LEN 20
@@ -13,6 +14,8 @@ static uint8_t device_name[DEVICE_BUFFER_LEN][NAME_BUFFFER_LEN]; //Maybe allocat
 static uint8_t device_rssi[DEVICE_BUFFER_LEN];
 static uint32_t device_last_reception_time[DEVICE_BUFFER_LEN];
 static uint32_t device_previous_reception_time[DEVICE_BUFFER_LEN];
+static uint8_t device_last_advdata[DEVICE_BUFFER_LEN][255];
+static uint8_t device_last_advlen[DEVICE_BUFFER_LEN];
 
 static char name_prefix[255];
 
@@ -69,7 +72,7 @@ void add_device_with_matched_name(uint8_t mac[], uint8_t *name_ptr, uint8_t str_
 
 }
 
-void update_existing_device(uint8_t mac[], uint8_t rssi)
+void update_existing_device(uint8_t mac[], uint8_t rssi, const uint8_t *adv_data, uint8_t adv_len)
 {
     uint32_t reception_time = timer_get_time();
     // printf("\n\rUpdate MAC: %02x:%02x:%02x:%02x:%02x:%02x", mac[5], mac[4], mac[3], mac[2], mac[1], mac[0]);
@@ -78,6 +81,8 @@ void update_existing_device(uint8_t mac[], uint8_t rssi)
     device_rssi[device_index] = rssi;
     device_previous_reception_time[device_index] = device_last_reception_time[device_index];
     device_last_reception_time[device_index] = reception_time;
+    memcpy(device_last_advdata[device_index], adv_data, adv_len);
+    device_last_advlen[device_index] = adv_len;
 
 }
 
@@ -98,5 +103,6 @@ void print_detected_devices(void)
         printf(" frame diff: %ldms", time_diff);
         uint32_t diff_now = timer_get_time()-last;
         printf(" Not received since: %ldms", diff_now);
+        print_payload(device_last_advdata[index], device_last_advlen[index]);
     }
 }

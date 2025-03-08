@@ -58,9 +58,9 @@ static void analyse_payload(uint8_t rssi)
     // bool TxAdd = (header0 & 0x02)>>1;
     // bool ChSel = (header0 & 0x04)>>2;
     uint8_t *AdvA = payload; //6 bytes length
-    update_existing_device(AdvA, rssi);
     uint8_t *AdvData = payload+6;
     uint8_t advData_length = length - 6;
+    update_existing_device(AdvA, rssi, AdvData, advData_length);
     analyse_pdu(AdvData, advData_length, AdvA);
 }
 
