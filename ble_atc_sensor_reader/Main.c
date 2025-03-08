@@ -17,6 +17,7 @@
 #include "rx_fifo.h"
 #include "timer.h"
 #include "device_store.h"
+#include "utils.h"
 
 void clocks_start( void )
 {
@@ -55,6 +56,31 @@ void process_rx_fifo(void)
 	}
 }
 
+static void analyse_sensor_data(uint8_t type, uint8_t *data, uint8_t len, uint8_t *mac)
+{
+	printf("\n\rMAC: %02x:%02x:%02x:%02x:%02x:%02x ", mac[5], mac[4], mac[3], mac[2], mac[1], mac[0]);
+	// printf("Adv typze: %d ", type);
+	// print_payload(data, len);
+
+	if(type == 22)
+	{
+		int16_t temp;
+		((uint8_t*)&temp)[0]= data[9];
+		((uint8_t*)&temp)[1]= data[8];
+		printf(" Tempeature:%d°C", temp/10);
+
+		uint8_t humidity = data[10];
+		printf(" Humidity:%d%%", humidity);
+
+		uint16_t battery_voltage_mv;
+		((uint8_t*)&battery_voltage_mv)[0]= data[11];
+		((uint8_t*)&battery_voltage_mv)[1]= data[12];
+
+		printf(" Battery voltage:%dmV", battery_voltage_mv);
+	}
+
+}
+
 int main()
 {
 	clocks_start();
@@ -69,13 +95,16 @@ int main()
 	uint32_t last_print = timer_get_time();
 
 	set_device_name_prefix_filter("ATC_");
+
 	while(1)
 	{
 		process_rx_fifo();
 		if((timer_get_time() - last_print) > 1000) //execute every 1s
 		{
 			last_print = timer_get_time();
-			print_detected_devices();
+			printf("\033[2J"); //VT100 clear screen
+			// print_detected_devices();
+			execute_callback_advdata_for_each_device(analyse_sensor_data);
 		}
 	}
 }

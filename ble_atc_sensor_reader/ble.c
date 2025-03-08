@@ -27,7 +27,7 @@ static void analyse_adv_data(uint8_t type, uint8_t *data, uint8_t len, uint8_t *
 
 }
 
-static void analyse_pdu( uint8_t *pdu , uint8_t pdu_len, uint8_t *mac)
+void analyse_adv_pdu( uint8_t *pdu , uint8_t pdu_len, uint8_t *mac, advdata_callback cb)
 {
     if(pdu_len <= 3) return;
     
@@ -41,7 +41,7 @@ static void analyse_pdu( uint8_t *pdu , uint8_t pdu_len, uint8_t *mac)
         uint8_t *data = pdu + 2+index;
         uint8_t type = header[1];
         //Length contains type but we do not pass type in data pointer, only data content
-        analyse_adv_data(type, data, length-1, mac);
+        cb(type, data, length-1, mac);
         index += length+1;
     }
 
@@ -61,7 +61,7 @@ static void analyse_payload(uint8_t rssi)
     uint8_t *AdvData = payload+6;
     uint8_t advData_length = length - 6;
     update_existing_device(AdvA, rssi, AdvData, advData_length);
-    analyse_pdu(AdvData, advData_length, AdvA);
+    analyse_adv_pdu(AdvData, advData_length, AdvA, analyse_adv_data);
 }
 
 void analyse_packet_data(int8_t rssi)

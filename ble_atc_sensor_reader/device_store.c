@@ -4,6 +4,7 @@
 #include <string.h>
 #include "timer.h"
 #include "utils.h"
+#include "ble.h"
 
 #define NAME_BUFFFER_LEN 100
 #define DEVICE_BUFFER_LEN 20
@@ -18,6 +19,7 @@ static uint8_t device_last_advdata[DEVICE_BUFFER_LEN][255];
 static uint8_t device_last_advlen[DEVICE_BUFFER_LEN];
 
 static char name_prefix[255];
+
 
 void set_device_name_prefix_filter(char *prefix)
 {
@@ -90,7 +92,6 @@ void update_existing_device(uint8_t mac[], uint8_t rssi, const uint8_t *adv_data
 void print_detected_devices(void)
 {
     if(stored_devices == 0) return;
-    printf("\033[2J"); //VT100 clear screen
     for (int index = 0; index < stored_devices; index++)
     {
         uint8_t  *mac = device_mac[index];
@@ -102,7 +103,17 @@ void print_detected_devices(void)
         uint32_t time_diff = last - previous;
         printf(" frame diff: %ldms", time_diff);
         uint32_t diff_now = timer_get_time()-last;
-        printf(" Not received since: %ldms", diff_now);
+        printf(" Not received since: %ldms ", diff_now);
         print_payload(device_last_advdata[index], device_last_advlen[index]);
+        print_payload_ascii(device_last_advdata[index], device_last_advlen[index]);
+    }
+}
+
+void execute_callback_advdata_for_each_device(advdata_callback cb)
+{
+    if(stored_devices == 0) return;
+    for (int index = 0; index < stored_devices; index++)
+    {
+      analyse_adv_pdu(device_last_advdata[index], device_last_advlen[index], device_mac[index], cb);
     }
 }

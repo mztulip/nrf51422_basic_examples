@@ -3,7 +3,7 @@ set -e
 
 LINKER_SCRIPT="nrf51422.lds"
 
-TOOLCHAIN="/home/tulip/gcc-arm-none-eabi-10.3-2021.10-x86_64-linux/gcc-arm-none-eabi-10.3-2021.10/bin/arm-none-eabi-"
+TOOLCHAIN=arm-none-eabi-
 TOOLCHAIN_GCC=$TOOLCHAIN"gcc"
 TOOLCHAIN_SIZE=$TOOLCHAIN"size"
 TOOLCHAIN_OBJDUMP=$TOOLCHAIN"objdump"
