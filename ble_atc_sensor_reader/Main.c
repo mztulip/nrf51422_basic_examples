@@ -2,6 +2,10 @@
 //mateusz@tulip.lol
 //Tested with PCA10028
 
+//Project aim is to read data from custom firmware https://github.com/atc1441/ATC_MiThermometer
+//used with Xiaomi Thermometer LYWSD03MMC
+//This app scans ble advertisements and prints data using UART
+
 #include <stdio.h>
 #include <stdbool.h>
 #include "nrf51.h"
@@ -33,7 +37,7 @@ void process_rx_fifo(void)
 		//Here shouldnt be problem with this because as soon as read_index isnt changed
 		//this table can not be changed
 		init_pdu_buffer_pointer((uint8_t *)data);
-		show_pdu_data(rssi);
+		analyse_packet_data(rssi);
 
 		
 		rx_fifo.read_index++;
@@ -57,13 +61,14 @@ int main()
     timer_init();
 	led_init();
 	uart_init();
-	printf("\n\rHello ble single channel adv scanner with detected devices prints");
+	printf("\n\rHello ble single channel adv scanner for LYWSD03MMC devices.");
 	uint8_t channel = 37;
 	ble_init(channel);
 	ble_start_rx(channel);
 
 	uint32_t last_print = timer_get_time();
 
+	set_device_name_prefix_filter("ATC_");
 	while(1)
 	{
 		process_rx_fifo();

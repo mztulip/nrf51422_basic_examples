@@ -7,12 +7,21 @@
 #define NAME_BUFFFER_LEN 100
 #define DEVICE_BUFFER_LEN 20
 
-uint8_t stored_devices = 0;
-uint8_t device_mac[DEVICE_BUFFER_LEN][6];
-uint8_t device_name[DEVICE_BUFFER_LEN][NAME_BUFFFER_LEN]; //Maybe allocate names on heap?
-uint8_t device_rssi[DEVICE_BUFFER_LEN];
-uint32_t device_last_reception_time[DEVICE_BUFFER_LEN];
-uint32_t device_previous_reception_time[DEVICE_BUFFER_LEN];
+static uint8_t stored_devices = 0;
+static uint8_t device_mac[DEVICE_BUFFER_LEN][6];
+static uint8_t device_name[DEVICE_BUFFER_LEN][NAME_BUFFFER_LEN]; //Maybe allocate names on heap?
+static uint8_t device_rssi[DEVICE_BUFFER_LEN];
+static uint32_t device_last_reception_time[DEVICE_BUFFER_LEN];
+static uint32_t device_previous_reception_time[DEVICE_BUFFER_LEN];
+
+static char name_prefix[255];
+
+void set_device_name_prefix_filter(char *prefix)
+{
+    size_t len = strlen(prefix);
+    if(len > 255) { name_prefix[0] = 0; return;}
+    strcpy(name_prefix, prefix);
+}
 
 
 int8_t find_device_by_mac(uint8_t mac[])
@@ -30,24 +39,14 @@ int8_t find_device_by_mac(uint8_t mac[])
 }
 
 uint8_t str_buffer[255];
-void add_device_name(uint8_t mac[], uint8_t *name_ptr, uint8_t str_len)
+void add_device_with_matched_name(uint8_t mac[], uint8_t *name_ptr, uint8_t str_len)
 {
-    int8_t device_index = find_device_by_mac(mac);
-    if(device_index < 0 ) return;
-    if((str_len+1)>NAME_BUFFFER_LEN)
+    if(strncmp(name_prefix, (char*)name_ptr, strlen(name_prefix)) != 0)
     {
-        str_len = NAME_BUFFFER_LEN;
+        // printf("\n\rPrefix: %s Discarding: %s",name_prefix, name_ptr);
+        return;
     }
-    memcpy(device_name[device_index], name_ptr, str_len);
-    device_name[device_index
-    ][str_len] = 0; //Add string end
 
-}
-
-void update_device(uint8_t mac[], uint8_t rssi)
-{
-    uint32_t reception_time = timer_get_time();
-    // printf("\n\rUpdate MAC: %02x:%02x:%02x:%02x:%02x:%02x", mac[5], mac[4], mac[3], mac[2], mac[1], mac[0]);
     int8_t device_index = find_device_by_mac(mac);
     if(device_index < 0)
     {
@@ -61,6 +60,21 @@ void update_device(uint8_t mac[], uint8_t rssi)
         memcpy(device_name[stored_devices], "NA", 3);
         stored_devices++;
     }
+    if((str_len+1)>NAME_BUFFFER_LEN)
+    {
+        str_len = NAME_BUFFFER_LEN;
+    }
+    memcpy(device_name[device_index], name_ptr, str_len);
+    device_name[device_index][str_len] = 0; //Add string end
+
+}
+
+void update_existing_device(uint8_t mac[], uint8_t rssi)
+{
+    uint32_t reception_time = timer_get_time();
+    // printf("\n\rUpdate MAC: %02x:%02x:%02x:%02x:%02x:%02x", mac[5], mac[4], mac[3], mac[2], mac[1], mac[0]);
+    int8_t device_index = find_device_by_mac(mac);
+    if(device_index < 0 ) return;
     device_rssi[device_index] = rssi;
     device_previous_reception_time[device_index] = device_last_reception_time[device_index];
     device_last_reception_time[device_index] = reception_time;

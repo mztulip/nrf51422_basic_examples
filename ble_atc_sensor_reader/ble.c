@@ -8,10 +8,8 @@
 #include "timer.h"
 #include "device_store.h"
 
-char str_buff[255];
-char str_buff2[255];
-
 static  uint8_t *rx_pdu_buffer;
+
 
 void init_pdu_buffer_pointer(uint8_t *pointer)
 {
@@ -24,7 +22,7 @@ static void analyse_adv_data(uint8_t type, uint8_t *data, uint8_t len, uint8_t *
     //11 ADVERTISING AND SCAN RESPONSE DATA FORMAT
     switch(type)
     {
-        case 0x09: add_device_name(mac,data,len); break;
+        case 0x09: add_device_with_matched_name(mac,data,len); break;
     }
 
 }
@@ -60,13 +58,13 @@ static void analyse_payload(uint8_t rssi)
     // bool TxAdd = (header0 & 0x02)>>1;
     // bool ChSel = (header0 & 0x04)>>2;
     uint8_t *AdvA = payload; //6 bytes length
-    update_device(AdvA, rssi);
+    update_existing_device(AdvA, rssi);
     uint8_t *AdvData = payload+6;
     uint8_t advData_length = length - 6;
     analyse_pdu(AdvData, advData_length, AdvA);
 }
 
-void show_pdu_data(int8_t rssi)
+void analyse_packet_data(int8_t rssi)
 {
     uint8_t *header = &rx_pdu_buffer[0];
     uint8_t header0 =  header[0];

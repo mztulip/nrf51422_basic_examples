@@ -4,7 +4,8 @@
 #include <stdint.h>
 
 void print_detected_devices(void);
-void add_device_name(uint8_t mac[], uint8_t *name_ptr, uint8_t str_len);
-void update_device(uint8_t mac[], uint8_t rssi);
+void add_device_with_matched_name(uint8_t mac[], uint8_t *name_ptr, uint8_t str_len);
+void update_existing_device(uint8_t mac[], uint8_t rssi);
+void set_device_name_prefix_filter(char *prefix);
 
 #endif
