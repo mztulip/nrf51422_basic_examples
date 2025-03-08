@@ -43,6 +43,13 @@ int8_t find_device_by_mac(uint8_t mac[])
     return -1;
 }
 
+uint8_t* get_device_name(uint8_t mac[])
+{
+    int8_t index = find_device_by_mac(mac);
+    if(index<0) return 0;
+    return device_name[index];
+}
+
 uint8_t str_buffer[255];
 void add_device_with_matched_name(uint8_t mac[], uint8_t *name_ptr, uint8_t str_len)
 {

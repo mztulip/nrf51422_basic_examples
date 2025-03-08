@@ -59,7 +59,8 @@ void process_rx_fifo(void)
 static void analyse_sensor_data(uint8_t type, uint8_t *data, uint8_t len, uint8_t *mac)
 {
 	printf("\n\rMAC: %02x:%02x:%02x:%02x:%02x:%02x ", mac[5], mac[4], mac[3], mac[2], mac[1], mac[0]);
-	// printf("Adv typze: %d ", type);
+	printf(" Dev name: %s", get_device_name(mac));
+	// printf("Adv type: %d ", type);
 	// print_payload(data, len);
 
 	if(type == 22)
