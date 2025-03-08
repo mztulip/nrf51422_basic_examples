@@ -251,7 +251,7 @@ void show_pdu_data(int8_t rssi)
         case 0 : sprintf(str_buff,"ADV_IND"); break;
         case 0x1 : sprintf(str_buff,"ADV_DIRECT_IND"); break;
         case 0x2 : sprintf(str_buff,"ADV_NONCONN_IND"); break;
-        case 0x3: sprintf(str_buff,"SCAN_REQ"); break; 
+        case 0x3: sprintf(str_buff,"\033[32;1;4mSCAN_REQ\033[0m"); break; 
         case 0x4 : sprintf(str_buff,"SCAN_RSP"); break;
         case 0xe : sprintf(str_buff,"ADV_EXT_IND"); break;
         case 0x8 : sprintf(str_buff,"AUX_CONNECT_RSP"); break;
