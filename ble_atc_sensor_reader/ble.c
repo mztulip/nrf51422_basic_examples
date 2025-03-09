@@ -76,6 +76,5 @@ void analyse_packet_data(int8_t rssi)
         case 0x2: analyse_payload(rssi); break; //ADV_NONCONN_IND
         case 0x3: break; //SCAN_REQ
         case 0x4: analyse_payload(rssi); break; //SCAN_RSP
-        default: printf("\n\rReceived Not implemented PDU type: %d!!!!", pdu_type);
     }
 }

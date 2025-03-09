@@ -68,7 +68,7 @@ static void analyse_sensor_data(uint8_t type, uint8_t *data, uint8_t len, uint8_
 		int16_t temp;
 		((uint8_t*)&temp)[0]= data[9];
 		((uint8_t*)&temp)[1]= data[8];
-		printf(" Tempeature:%d°C", temp/10);
+		printf(" Tempeature:%f°C", temp/10.0);
 
 		uint8_t humidity = data[10];
 		printf(" Humidity:%d%%", humidity);
@@ -84,11 +84,13 @@ static void analyse_sensor_data(uint8_t type, uint8_t *data, uint8_t len, uint8_
 
 int main()
 {
+	setbuf(stdout, NULL);
 	clocks_start();
     timer_init();
 	led_init();
 	uart_init();
 	printf("\n\rHello ble single channel adv scanner for LYWSD03MMC devices.");
+
 	uint8_t channel = 37;
 	ble_init(channel);
 	ble_start_rx(channel);
