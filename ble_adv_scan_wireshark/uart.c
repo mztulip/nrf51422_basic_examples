@@ -13,6 +13,7 @@ void uart_init(void)
 						| ((uint32_t)GPIO_PIN_CNF_SENSE_Disabled << GPIO_PIN_CNF_SENSE_Pos);
 
 	NRF_UART0->BAUDRATE = 0x01D7E000; //115200
+	// NRF_UART0->BAUDRATE = 0x10000000; //1000000
 	NRF_UART0->CONFIG = UART_CONFIG_PARITY_Excluded << UART_CONFIG_PARITY_Pos | UART_CONFIG_HWFC_Disabled;
 	NRF_UART0->PSELTXD = txd_pin;
 	NRF_UART0->ENABLE = UART_ENABLE_ENABLE_Enabled;
@@ -20,7 +21,7 @@ void uart_init(void)
     NRF_UART0->TXD = ' '; //First character needs to be send to generate TXDRDY event and not be stuck in while loop
 }
 
-void uart_put(char c)
+void uart_put(uint8_t c)
 {
     while(NRF_UART0->EVENTS_TXDRDY == 0) {}
     NRF_UART0->EVENTS_TXDRDY = 0;

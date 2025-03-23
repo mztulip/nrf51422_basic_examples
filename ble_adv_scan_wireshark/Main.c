@@ -18,12 +18,39 @@ void clocks_start( void )
     NRF_CLOCK->EVENTS_HFCLKSTARTED = 0;
     NRF_CLOCK->TASKS_HFCLKSTART = 1;
 
+	//Wait for crystal oscillator to start
     while (NRF_CLOCK->EVENTS_HFCLKSTARTED == 0);
 }
 
-void send_uart_pdu_data(uint8_t rssi, uint8_t *data, uint32_t timestamp)
+void send_uart_pdu_data(uint8_t rssi, uint8_t *data, uint32_t timestamp, uint8_t bytes_count)
 {
+	static uint32_t frame_counter = 0;
+	uart_put('\n');
+	uart_put('F');
+	uart_put('R');
+	uart_put('A');
+	uart_put('M');
+	uart_put('E');
 
+	for(int i=0; i < 4; i++)
+	{
+		uint8_t* pointer = ((uint8_t*)&timestamp);
+		uint8_t c = pointer[i];
+		uart_put(c);
+	}
+
+	for(int i=0; i < 4; i++)
+	{
+		uint8_t* pointer = ((uint8_t*)&frame_counter);
+		uart_put(pointer[i]);
+	}
+
+	for(int i=0; i < bytes_count; i++)
+	{
+		uart_put(data[i]);
+	}
+
+	frame_counter++;
 }
 
 void process_rx_fifo(void)
@@ -32,8 +59,9 @@ void process_rx_fifo(void)
 	{
 		volatile uint8_t *data = rx_fifo.packet[rx_fifo.read_index].data;
 		int8_t  rssi = rx_fifo.packet[rx_fifo.read_index].rssi;
+		uint8_t frame_bytes_count = rx_fifo.packet[rx_fifo.read_index].length;
 		//Casting to uint8_t discarding volatile qualifier.
-		send_uart_pdu_data(rssi, (uint8_t *)data, timer_get_time());
+		send_uart_pdu_data(rssi, (uint8_t *)data, timer_get_time(), frame_bytes_count);
 
 		
 		rx_fifo.read_index++;
@@ -67,9 +95,10 @@ int main()
 	while(1)
 	{
 		process_rx_fifo();
-		if((timer_get_time() - last_print) > 1000) //execute every 1s
+		if((timer_get_time() - last_print) > 100) //execute every 1s
 		{
 			last_print = timer_get_time();
+			// send_uart_pdu_data(1, 0, timer_get_time());
 		}
 	}
 }
