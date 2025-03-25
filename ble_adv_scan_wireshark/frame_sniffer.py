@@ -7,6 +7,7 @@ import time
 import signal
 import queue
 import struct
+import binascii
 
 stop_read = False
 exit_app = False
@@ -80,7 +81,7 @@ if __name__ == '__main__':
             if len(timestamp_bytes) == 4 and len(counter_bytes) == 4:
                 timestamp = struct.unpack("<I", timestamp_bytes)[0]
                 frame_counter = struct.unpack("<I", counter_bytes)[0]
-                print(f"Timestamp: {timestamp}ms Counter:{frame_counter} Payload:{payload}")
+                print(f"Timestamp: {timestamp}ms Counter:{frame_counter} Payload:{payload} \n\r{binascii.hexlify(bytearray(payload))}")
             else:
                 print("Lost frame, due to uart problem")
         except queue.Empty:
