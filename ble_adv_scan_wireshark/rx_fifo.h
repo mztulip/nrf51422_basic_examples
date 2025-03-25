@@ -5,6 +5,7 @@ typedef struct
 {
     uint8_t length;
     int8_t  rssi;
+    uint32_t crc;
     uint8_t data[255];
 } ble_packet_struct;
 

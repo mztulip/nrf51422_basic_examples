@@ -177,6 +177,7 @@ static void radio_copy_received(void)
             return;
         }
         rx_fifo.packet[rx_fifo.write_index].rssi = NRF_RADIO->RSSISAMPLE;
+        rx_fifo.packet[rx_fifo.write_index].crc = NRF_RADIO->RXCRC;
         rx_fifo.packet[rx_fifo.write_index].length = copy_lenght;
 
         for(int index=0; index < copy_lenght; index++)
