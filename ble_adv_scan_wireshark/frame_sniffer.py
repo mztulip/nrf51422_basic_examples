@@ -9,6 +9,7 @@ import queue
 import struct
 import binascii
 import pcaplib
+from datetime import datetime
 
 stop_read = False
 exit_app = False
@@ -72,21 +73,34 @@ if __name__ == '__main__':
 
     pcaplib.generate_new_PCAP('ble_adv_dump.pcap')
 
+    first_frame = True
+    first_sniffer_timestamp = None
+    first_system_timestamp = None
 
     while not exit_app:
         try:
             frame = frame_queue.get(timeout=1)
-            # print(frame)
             timestamp_bytes = frame[0:4]
             counter_bytes = frame[4:8]
             payload = frame[8:]
-            # print(len(timestamp_bytes),len(counter_bytes))
+          
+            
             if len(timestamp_bytes) == 4 and len(counter_bytes) == 4:
-                timestamp = struct.unpack("<I", timestamp_bytes)[0]
+                sniffer_timestamp = struct.unpack("<I", timestamp_bytes)[0]
                 frame_counter = struct.unpack("<I", counter_bytes)[0]
                 hex_payload = binascii.hexlify(bytearray(payload))
-                print(f"Timestamp: {timestamp}ms Counter:{frame_counter} \n\r{hex_payload} {len(hex_payload)}")
-                pcaplib.append_PCAP_data(payload)
+
+                if first_frame:
+                    first_sniffer_timestamp = sniffer_timestamp
+                    first_system_timestamp = time.time()
+                    print(f"First sniffer timestamp: {first_sniffer_timestamp}")
+                    first_frame = False
+
+                timestamp_ms_part = (sniffer_timestamp-first_sniffer_timestamp)/1000
+                timestamp = first_system_timestamp + timestamp_ms_part
+                date_time = datetime.fromtimestamp(timestamp)
+                print(f"{timestamp_ms_part}: Counter:{frame_counter} \n\r{hex_payload} {len(hex_payload)}")
+                pcaplib.append_PCAP_data(payload, timestamp)
             else:
                 print("Lost frame, due to uart problem")
         except queue.Empty:

@@ -1,4 +1,3 @@
-
 # https://wiki.wireshark.org/Development/LibpcapFileFormat
 # https://www.codeproject.com/Tips/612847/Generate-a-quick-and-easy-custom-pcap-file-using-P
 
@@ -19,13 +18,9 @@ pcap_global_header =   (
 
 #pcap packet header that must preface every packet
 pcap_packet_header =   ('TT TT TT TT'  #timestamp seconds
-                        '00 00 00 00'  #timestamp microseconds could not reach 1000 000   
+                        'MM MM MM MM'  #timestamp microseconds could not reach 1000 000   
                         'XX XX XX XX'   #Frame Size (little endian) # incl_len number of bytes of packet data captured and saved in file
                         'YY YY YY YY')  #Frame Size (little endian) #orig_len length of the packet as it appeared on network
-
-
-def getByteLength(str1):
-    return int(len(''.join(str1.split())) / 2)
 
 
 def createPcapFile(bytestring, filename):
@@ -35,19 +30,26 @@ def createPcapFile(bytestring, filename):
     bitout.write(bytes)
 
 
-def writeByteStringToFile(data: bytes, filename: str):
+def write_bytes__to_file(data: bytes, filename: str):
     bitout = open(filename, 'ab')
     bitout.write(data)
 
 
-def generatePcapdata(message) -> bytes:
+def generatePcapdata(message, unix_timestamp: float) -> bytes:
     pcap_len = len(message)
     hex_str = "%08x"%pcap_len
     pcaph = pcap_packet_header.replace('XX XX XX XX',hex_str)
     pcaph = pcaph.replace('YY YY YY YY',hex_str)
 
-    time_str = "%08x"%int(time.time())
+    timestamp = unix_timestamp
+    timestamp_seconds = int(timestamp)
+    timestamp_microseconds = int((timestamp - timestamp_seconds)*1e6)
+    time_str = "%08x"%timestamp_seconds
     pcaph = pcaph.replace('TT TT TT TT',time_str)
+
+    time_us_str = "%08x"%timestamp_microseconds
+    pcaph = pcaph.replace('MM MM MM MM',time_us_str)
+
     bytelist = pcaph.split()  
     pcaph_bytes = binascii.a2b_hex(''.join(bytelist))
     packet_data = pcaph_bytes + message
@@ -61,7 +63,7 @@ def generate_new_PCAP(pcapfile):
     createPcapFile(pcap_global_header, pcapfile)
 
 
-def append_PCAP_data(message):
+def append_PCAP_data(message: bytes, unix_timestamp: float):
     global pcap_filename
-    bytestring = generatePcapdata(message)
-    writeByteStringToFile(bytestring, pcap_filename)
+    bytestring = generatePcapdata(message, unix_timestamp)
+    write_bytes__to_file(bytestring, pcap_filename)
