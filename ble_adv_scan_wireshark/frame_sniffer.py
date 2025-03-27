@@ -8,6 +8,7 @@ import signal
 import queue
 import struct
 import binascii
+import pcaplib
 
 stop_read = False
 exit_app = False
@@ -69,6 +70,8 @@ if __name__ == '__main__':
     t = Thread(target=read_serial, args=[serial_handle])
     t.start()
 
+    pcaplib.generate_new_PCAP('ble_adv_dump.pcap')
+
 
     while not exit_app:
         try:
@@ -81,7 +84,9 @@ if __name__ == '__main__':
             if len(timestamp_bytes) == 4 and len(counter_bytes) == 4:
                 timestamp = struct.unpack("<I", timestamp_bytes)[0]
                 frame_counter = struct.unpack("<I", counter_bytes)[0]
-                print(f"Timestamp: {timestamp}ms Counter:{frame_counter} Payload:{payload} \n\r{binascii.hexlify(bytearray(payload))}")
+                hex_payload = binascii.hexlify(bytearray(payload))
+                print(f"Timestamp: {timestamp}ms Counter:{frame_counter} \n\r{hex_payload} {len(hex_payload)}")
+                pcaplib.append_PCAP_data(payload)
             else:
                 print("Lost frame, due to uart problem")
         except queue.Empty:
