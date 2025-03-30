@@ -6,6 +6,7 @@ import binascii
 import time
 
 pcap_filename = None
+file_handle = None
 
 pcap_global_header =   (
                         'A1 B2 C3 D4'     
@@ -24,15 +25,19 @@ pcap_packet_header =   ('TT TT TT TT'  #timestamp seconds
 
 
 def createPcapFile(bytestring, filename):
+    global file_handle
     bytelist = bytestring.split()  
     bytes = binascii.a2b_hex(''.join(bytelist))
-    bitout = open(filename, 'wb')
-    bitout.write(bytes)
+    file_handle = open(filename, 'wb')
+    file_handle.write(bytes)
+    file_handle.flush()
 
 
 def write_bytes__to_file(data: bytes, filename: str):
-    bitout = open(filename, 'ab')
-    bitout.write(data)
+    global file_handle
+    # bitout = open(filename, 'ab')
+    file_handle.write(data)
+    file_handle.flush()
 
 
 def generatePcapdata(message, unix_timestamp: float) -> bytes:
