@@ -247,6 +247,8 @@ Discarded input sections
                 0x0000000000000000        0x8 build/ble_print.o
  .text.filter_print_by_mac
                 0x0000000000000000        0xc build/ble_print.o
+ .text.calculate_crc_2
+                0x0000000000000000       0xb8 build/ble_print.o
  .debug_macro   0x0000000000000000      0xa3c build/ble_print.o
  .debug_macro   0x0000000000000000       0x22 build/ble_print.o
  .debug_macro   0x0000000000000000      0x103 build/ble_print.o
@@ -861,7 +863,7 @@ LOAD /home/tulip/gcc-arm-none-eabi-10.3-2021.10-x86_64-linux/gcc-arm-none-eabi-1
 END GROUP
                 0x0000000000000800                _minimum_stack_size = 0x800
 
-.text           0x0000000000000000     0xba8c
+.text           0x0000000000000000     0xbb54
  *(.isr_vector)
  .isr_vector    0x0000000000000000       0xc0 build/startup.o
                 0x0000000000000000                interrupt_vectors
@@ -938,407 +940,410 @@ END GROUP
                 0x00000000000026a4      0x2d0 build/ble_print.o
                 0x00000000000026a4                calculate_crc
  .text.show_pdu_data
-                0x0000000000002974      0x240 build/ble_print.o
+                0x0000000000002974      0x2f4 build/ble_print.o
                 0x0000000000002974                show_pdu_data
  .text.led_toogle
-                0x0000000000002bb4       0x28 build/leds.o
-                0x0000000000002bb4                led_toogle
+                0x0000000000002c68       0x28 build/leds.o
+                0x0000000000002c68                led_toogle
  .text.led_init
-                0x0000000000002bdc       0x3c build/leds.o
-                0x0000000000002bdc                led_init
+                0x0000000000002c90       0x3c build/leds.o
+                0x0000000000002c90                led_init
  .text.startup.main
-                0x0000000000002c18       0x7c build/Main.o
-                0x0000000000002c18                main
+                0x0000000000002ccc       0x7c build/Main.o
+                0x0000000000002ccc                main
  .text.Default_Handler
-                0x0000000000002c94        0x4 build/Main.o
-                0x0000000000002c94                Default_Handler
+                0x0000000000002d48        0x4 build/Main.o
+                0x0000000000002d48                Default_Handler
  .text.TIMER2_IRQHandler
-                0x0000000000002c98       0x1c build/Main.o
-                0x0000000000002c98                TIMER2_IRQHandler
+                0x0000000000002d4c       0x1c build/Main.o
+                0x0000000000002d4c                TIMER2_IRQHandler
  .text.Default_Handler
-                0x0000000000002cb4        0x4 build/startup.o
-                0x0000000000002cb4                SPI0_TWI0_IRQHandler
-                0x0000000000002cb4                RTC0_IRQHandler
-                0x0000000000002cb4                HardFault_Handler
-                0x0000000000002cb4                SysTick_Handler
-                0x0000000000002cb4                GPIOTE_IRQHandler
-                0x0000000000002cb4                PendSV_Handler
-                0x0000000000002cb4                NMI_Handler
-                0x0000000000002cb4                POWER_CLOCK_IRQHandler
-                0x0000000000002cb4                LPCOMP_IRQHandler
-                0x0000000000002cb4                SWI4_IRQHandler
-                0x0000000000002cb4                TEMP_IRQHandler
-                0x0000000000002cb4                QDEC_IRQHandler
-                0x0000000000002cb4                UART0_IRQHandler
-                0x0000000000002cb4                SWI5_IRQHandler
-                0x0000000000002cb4                TIMER0_IRQHandler
-                0x0000000000002cb4                SWI0_IRQHandler
-                0x0000000000002cb4                TIMER1_IRQHandler
-                0x0000000000002cb4                ECB_IRQHandler
-                0x0000000000002cb4                ADC_IRQHandler
-                0x0000000000002cb4                SWI3_IRQHandler
-                0x0000000000002cb4                CCM_AAR_IRQHandler
-                0x0000000000002cb4                WDT_IRQHandler
-                0x0000000000002cb4                SVC_Handler
-                0x0000000000002cb4                SWI2_IRQHandler
-                0x0000000000002cb4                RNG_IRQHandler
-                0x0000000000002cb4                SPI1_TWI1_IRQHandler
-                0x0000000000002cb4                RTC1_IRQHandler
-                0x0000000000002cb4                SWI1_IRQHandler
+                0x0000000000002d68        0x4 build/startup.o
+                0x0000000000002d68                SPI0_TWI0_IRQHandler
+                0x0000000000002d68                RTC0_IRQHandler
+                0x0000000000002d68                HardFault_Handler
+                0x0000000000002d68                SysTick_Handler
+                0x0000000000002d68                GPIOTE_IRQHandler
+                0x0000000000002d68                PendSV_Handler
+                0x0000000000002d68                NMI_Handler
+                0x0000000000002d68                POWER_CLOCK_IRQHandler
+                0x0000000000002d68                LPCOMP_IRQHandler
+                0x0000000000002d68                SWI4_IRQHandler
+                0x0000000000002d68                TEMP_IRQHandler
+                0x0000000000002d68                QDEC_IRQHandler
+                0x0000000000002d68                UART0_IRQHandler
+                0x0000000000002d68                SWI5_IRQHandler
+                0x0000000000002d68                TIMER0_IRQHandler
+                0x0000000000002d68                SWI0_IRQHandler
+                0x0000000000002d68                TIMER1_IRQHandler
+                0x0000000000002d68                ECB_IRQHandler
+                0x0000000000002d68                ADC_IRQHandler
+                0x0000000000002d68                SWI3_IRQHandler
+                0x0000000000002d68                CCM_AAR_IRQHandler
+                0x0000000000002d68                WDT_IRQHandler
+                0x0000000000002d68                SVC_Handler
+                0x0000000000002d68                SWI2_IRQHandler
+                0x0000000000002d68                RNG_IRQHandler
+                0x0000000000002d68                SPI1_TWI1_IRQHandler
+                0x0000000000002d68                RTC1_IRQHandler
+                0x0000000000002d68                SWI1_IRQHandler
  .text.Reset_Handler
-                0x0000000000002cb8       0x4c build/startup.o
- .text._write   0x0000000000002d04       0x1c build/stdlib_impl.o
-                0x0000000000002d04                _write
- .text._sbrk    0x0000000000002d20       0x24 build/stdlib_impl.o
-                0x0000000000002d20                _sbrk
- .text._close   0x0000000000002d44       0x10 build/stdlib_impl.o
-                0x0000000000002d44                _close
- .text._lseek   0x0000000000002d54        0x4 build/stdlib_impl.o
-                0x0000000000002d54                _lseek
- .text._read    0x0000000000002d58        0x4 build/stdlib_impl.o
-                0x0000000000002d58                _read
- .text._fstat   0x0000000000002d5c        0xc build/stdlib_impl.o
-                0x0000000000002d5c                _fstat
- .text._isatty  0x0000000000002d68        0x4 build/stdlib_impl.o
-                0x0000000000002d68                _isatty
- .text._exit    0x0000000000002d6c        0x8 build/stdlib_impl.o
-                0x0000000000002d6c                _exit
- .text._kill    0x0000000000002d74       0x10 build/stdlib_impl.o
-                0x0000000000002d74                _kill
- .text._getpid  0x0000000000002d84        0x4 build/stdlib_impl.o
-                0x0000000000002d84                _getpid
+                0x0000000000002d6c       0x4c build/startup.o
+ .text._write   0x0000000000002db8       0x1c build/stdlib_impl.o
+                0x0000000000002db8                _write
+ .text._sbrk    0x0000000000002dd4       0x24 build/stdlib_impl.o
+                0x0000000000002dd4                _sbrk
+ .text._close   0x0000000000002df8       0x10 build/stdlib_impl.o
+                0x0000000000002df8                _close
+ .text._lseek   0x0000000000002e08        0x4 build/stdlib_impl.o
+                0x0000000000002e08                _lseek
+ .text._read    0x0000000000002e0c        0x4 build/stdlib_impl.o
+                0x0000000000002e0c                _read
+ .text._fstat   0x0000000000002e10        0xc build/stdlib_impl.o
+                0x0000000000002e10                _fstat
+ .text._isatty  0x0000000000002e1c        0x4 build/stdlib_impl.o
+                0x0000000000002e1c                _isatty
+ .text._exit    0x0000000000002e20        0x8 build/stdlib_impl.o
+                0x0000000000002e20                _exit
+ .text._kill    0x0000000000002e28       0x10 build/stdlib_impl.o
+                0x0000000000002e28                _kill
+ .text._getpid  0x0000000000002e38        0x4 build/stdlib_impl.o
+                0x0000000000002e38                _getpid
  .text.uart_init
-                0x0000000000002d88       0x58 build/uart.o
-                0x0000000000002d88                uart_init
+                0x0000000000002e3c       0x58 build/uart.o
+                0x0000000000002e3c                uart_init
  .text.uart_put
-                0x0000000000002de0       0x20 build/uart.o
-                0x0000000000002de0                uart_put
- .text.memcmp   0x0000000000002e00       0x48 /home/tulip/gcc-arm-none-eabi-10.3-2021.10-x86_64-linux/gcc-arm-none-eabi-10.3-2021.10/bin/../lib/gcc/arm-none-eabi/10.3.1/../../../../arm-none-eabi/lib/thumb/v6-m/nofp/libc.a(lib_a-memcmp.o)
-                0x0000000000002e00                memcmp
- .text.memcpy   0x0000000000002e48       0xa4 /home/tulip/gcc-arm-none-eabi-10.3-2021.10-x86_64-linux/gcc-arm-none-eabi-10.3-2021.10/bin/../lib/gcc/arm-none-eabi/10.3.1/../../../../arm-none-eabi/lib/thumb/v6-m/nofp/libc.a(lib_a-memcpy-stub.o)
-                0x0000000000002e48                memcpy
- .text.memset   0x0000000000002eec       0xa8 /home/tulip/gcc-arm-none-eabi-10.3-2021.10-x86_64-linux/gcc-arm-none-eabi-10.3-2021.10/bin/../lib/gcc/arm-none-eabi/10.3.1/../../../../arm-none-eabi/lib/thumb/v6-m/nofp/libc.a(lib_a-memset.o)
-                0x0000000000002eec                memset
- .text.printf   0x0000000000002f94       0x24 /home/tulip/gcc-arm-none-eabi-10.3-2021.10-x86_64-linux/gcc-arm-none-eabi-10.3-2021.10/bin/../lib/gcc/arm-none-eabi/10.3.1/../../../../arm-none-eabi/lib/thumb/v6-m/nofp/libc.a(lib_a-printf.o)
-                0x0000000000002f94                printf
- .text.putchar  0x0000000000002fb8       0x14 /home/tulip/gcc-arm-none-eabi-10.3-2021.10-x86_64-linux/gcc-arm-none-eabi-10.3-2021.10/bin/../lib/gcc/arm-none-eabi/10.3.1/../../../../arm-none-eabi/lib/thumb/v6-m/nofp/libc.a(lib_a-putchar.o)
-                0x0000000000002fb8                putchar
- .text.sprintf  0x0000000000002fcc       0x40 /home/tulip/gcc-arm-none-eabi-10.3-2021.10-x86_64-linux/gcc-arm-none-eabi-10.3-2021.10/bin/../lib/gcc/arm-none-eabi/10.3.1/../../../../arm-none-eabi/lib/thumb/v6-m/nofp/libc.a(lib_a-sprintf.o)
-                0x0000000000002fcc                sprintf
+                0x0000000000002e94       0x20 build/uart.o
+                0x0000000000002e94                uart_put
+ .text.memcmp   0x0000000000002eb4       0x48 /home/tulip/gcc-arm-none-eabi-10.3-2021.10-x86_64-linux/gcc-arm-none-eabi-10.3-2021.10/bin/../lib/gcc/arm-none-eabi/10.3.1/../../../../arm-none-eabi/lib/thumb/v6-m/nofp/libc.a(lib_a-memcmp.o)
+                0x0000000000002eb4                memcmp
+ .text.memcpy   0x0000000000002efc       0xa4 /home/tulip/gcc-arm-none-eabi-10.3-2021.10-x86_64-linux/gcc-arm-none-eabi-10.3-2021.10/bin/../lib/gcc/arm-none-eabi/10.3.1/../../../../arm-none-eabi/lib/thumb/v6-m/nofp/libc.a(lib_a-memcpy-stub.o)
+                0x0000000000002efc                memcpy
+ .text.memset   0x0000000000002fa0       0xa8 /home/tulip/gcc-arm-none-eabi-10.3-2021.10-x86_64-linux/gcc-arm-none-eabi-10.3-2021.10/bin/../lib/gcc/arm-none-eabi/10.3.1/../../../../arm-none-eabi/lib/thumb/v6-m/nofp/libc.a(lib_a-memset.o)
+                0x0000000000002fa0                memset
+ .text.printf   0x0000000000003048       0x24 /home/tulip/gcc-arm-none-eabi-10.3-2021.10-x86_64-linux/gcc-arm-none-eabi-10.3-2021.10/bin/../lib/gcc/arm-none-eabi/10.3.1/../../../../arm-none-eabi/lib/thumb/v6-m/nofp/libc.a(lib_a-printf.o)
+                0x0000000000003048                printf
+ .text.putchar  0x000000000000306c       0x14 /home/tulip/gcc-arm-none-eabi-10.3-2021.10-x86_64-linux/gcc-arm-none-eabi-10.3-2021.10/bin/../lib/gcc/arm-none-eabi/10.3.1/../../../../arm-none-eabi/lib/thumb/v6-m/nofp/libc.a(lib_a-putchar.o)
+                0x000000000000306c                putchar
+ .text.sprintf  0x0000000000003080       0x40 /home/tulip/gcc-arm-none-eabi-10.3-2021.10-x86_64-linux/gcc-arm-none-eabi-10.3-2021.10/bin/../lib/gcc/arm-none-eabi/10.3.1/../../../../arm-none-eabi/lib/thumb/v6-m/nofp/libc.a(lib_a-sprintf.o)
+                0x0000000000003080                sprintf
  .text._svfprintf_r
-                0x000000000000300c     0x1bd4 /home/tulip/gcc-arm-none-eabi-10.3-2021.10-x86_64-linux/gcc-arm-none-eabi-10.3-2021.10/bin/../lib/gcc/arm-none-eabi/10.3.1/../../../../arm-none-eabi/lib/thumb/v6-m/nofp/libc.a(lib_a-svfprintf.o)
-                0x000000000000300c                _svfprintf_r
+                0x00000000000030c0     0x1bd4 /home/tulip/gcc-arm-none-eabi-10.3-2021.10-x86_64-linux/gcc-arm-none-eabi-10.3-2021.10/bin/../lib/gcc/arm-none-eabi/10.3.1/../../../../arm-none-eabi/lib/thumb/v6-m/nofp/libc.a(lib_a-svfprintf.o)
+                0x00000000000030c0                _svfprintf_r
  .text._vfprintf_r
-                0x0000000000004be0     0x1c44 /home/tulip/gcc-arm-none-eabi-10.3-2021.10-x86_64-linux/gcc-arm-none-eabi-10.3-2021.10/bin/../lib/gcc/arm-none-eabi/10.3.1/../../../../arm-none-eabi/lib/thumb/v6-m/nofp/libc.a(lib_a-vfprintf.o)
-                0x0000000000004be0                _vfprintf_r
+                0x0000000000004c94     0x1c44 /home/tulip/gcc-arm-none-eabi-10.3-2021.10-x86_64-linux/gcc-arm-none-eabi-10.3-2021.10/bin/../lib/gcc/arm-none-eabi/10.3.1/../../../../arm-none-eabi/lib/thumb/v6-m/nofp/libc.a(lib_a-vfprintf.o)
+                0x0000000000004c94                _vfprintf_r
  .text.__sbprintf
-                0x0000000000006824       0x8c /home/tulip/gcc-arm-none-eabi-10.3-2021.10-x86_64-linux/gcc-arm-none-eabi-10.3-2021.10/bin/../lib/gcc/arm-none-eabi/10.3.1/../../../../arm-none-eabi/lib/thumb/v6-m/nofp/libc.a(lib_a-vfprintf.o)
+                0x00000000000068d8       0x8c /home/tulip/gcc-arm-none-eabi-10.3-2021.10-x86_64-linux/gcc-arm-none-eabi-10.3-2021.10/bin/../lib/gcc/arm-none-eabi/10.3.1/../../../../arm-none-eabi/lib/thumb/v6-m/nofp/libc.a(lib_a-vfprintf.o)
  .text.__swsetup_r
-                0x00000000000068b0       0xdc /home/tulip/gcc-arm-none-eabi-10.3-2021.10-x86_64-linux/gcc-arm-none-eabi-10.3-2021.10/bin/../lib/gcc/arm-none-eabi/10.3.1/../../../../arm-none-eabi/lib/thumb/v6-m/nofp/libc.a(lib_a-wsetup.o)
-                0x00000000000068b0                __swsetup_r
- .text.quorem   0x000000000000698c      0x148 /home/tulip/gcc-arm-none-eabi-10.3-2021.10-x86_64-linux/gcc-arm-none-eabi-10.3-2021.10/bin/../lib/gcc/arm-none-eabi/10.3.1/../../../../arm-none-eabi/lib/thumb/v6-m/nofp/libc.a(lib_a-dtoa.o)
- .text._dtoa_r  0x0000000000006ad4      0xfbc /home/tulip/gcc-arm-none-eabi-10.3-2021.10-x86_64-linux/gcc-arm-none-eabi-10.3-2021.10/bin/../lib/gcc/arm-none-eabi/10.3.1/../../../../arm-none-eabi/lib/thumb/v6-m/nofp/libc.a(lib_a-dtoa.o)
-                0x0000000000006ad4                _dtoa_r
+                0x0000000000006964       0xdc /home/tulip/gcc-arm-none-eabi-10.3-2021.10-x86_64-linux/gcc-arm-none-eabi-10.3-2021.10/bin/../lib/gcc/arm-none-eabi/10.3.1/../../../../arm-none-eabi/lib/thumb/v6-m/nofp/libc.a(lib_a-wsetup.o)
+                0x0000000000006964                __swsetup_r
+ .text.quorem   0x0000000000006a40      0x148 /home/tulip/gcc-arm-none-eabi-10.3-2021.10-x86_64-linux/gcc-arm-none-eabi-10.3-2021.10/bin/../lib/gcc/arm-none-eabi/10.3.1/../../../../arm-none-eabi/lib/thumb/v6-m/nofp/libc.a(lib_a-dtoa.o)
+ .text._dtoa_r  0x0000000000006b88      0xfbc /home/tulip/gcc-arm-none-eabi-10.3-2021.10-x86_64-linux/gcc-arm-none-eabi-10.3-2021.10/bin/../lib/gcc/arm-none-eabi/10.3.1/../../../../arm-none-eabi/lib/thumb/v6-m/nofp/libc.a(lib_a-dtoa.o)
+                0x0000000000006b88                _dtoa_r
  .text.__sflush_r
-                0x0000000000007a90      0x140 /home/tulip/gcc-arm-none-eabi-10.3-2021.10-x86_64-linux/gcc-arm-none-eabi-10.3-2021.10/bin/../lib/gcc/arm-none-eabi/10.3.1/../../../../arm-none-eabi/lib/thumb/v6-m/nofp/libc.a(lib_a-fflush.o)
-                0x0000000000007a90                __sflush_r
+                0x0000000000007b44      0x140 /home/tulip/gcc-arm-none-eabi-10.3-2021.10-x86_64-linux/gcc-arm-none-eabi-10.3-2021.10/bin/../lib/gcc/arm-none-eabi/10.3.1/../../../../arm-none-eabi/lib/thumb/v6-m/nofp/libc.a(lib_a-fflush.o)
+                0x0000000000007b44                __sflush_r
  .text._fflush_r
-                0x0000000000007bd0       0x6c /home/tulip/gcc-arm-none-eabi-10.3-2021.10-x86_64-linux/gcc-arm-none-eabi-10.3-2021.10/bin/../lib/gcc/arm-none-eabi/10.3.1/../../../../arm-none-eabi/lib/thumb/v6-m/nofp/libc.a(lib_a-fflush.o)
-                0x0000000000007bd0                _fflush_r
+                0x0000000000007c84       0x6c /home/tulip/gcc-arm-none-eabi-10.3-2021.10-x86_64-linux/gcc-arm-none-eabi-10.3-2021.10/bin/../lib/gcc/arm-none-eabi/10.3.1/../../../../arm-none-eabi/lib/thumb/v6-m/nofp/libc.a(lib_a-fflush.o)
+                0x0000000000007c84                _fflush_r
  .text._cleanup_r
-                0x0000000000007c3c       0x10 /home/tulip/gcc-arm-none-eabi-10.3-2021.10-x86_64-linux/gcc-arm-none-eabi-10.3-2021.10/bin/../lib/gcc/arm-none-eabi/10.3.1/../../../../arm-none-eabi/lib/thumb/v6-m/nofp/libc.a(lib_a-findfp.o)
-                0x0000000000007c3c                _cleanup_r
- .text.__sinit  0x0000000000007c4c      0x120 /home/tulip/gcc-arm-none-eabi-10.3-2021.10-x86_64-linux/gcc-arm-none-eabi-10.3-2021.10/bin/../lib/gcc/arm-none-eabi/10.3.1/../../../../arm-none-eabi/lib/thumb/v6-m/nofp/libc.a(lib_a-findfp.o)
-                0x0000000000007c4c                __sinit
+                0x0000000000007cf0       0x10 /home/tulip/gcc-arm-none-eabi-10.3-2021.10-x86_64-linux/gcc-arm-none-eabi-10.3-2021.10/bin/../lib/gcc/arm-none-eabi/10.3.1/../../../../arm-none-eabi/lib/thumb/v6-m/nofp/libc.a(lib_a-findfp.o)
+                0x0000000000007cf0                _cleanup_r
+ .text.__sinit  0x0000000000007d00      0x120 /home/tulip/gcc-arm-none-eabi-10.3-2021.10-x86_64-linux/gcc-arm-none-eabi-10.3-2021.10/bin/../lib/gcc/arm-none-eabi/10.3.1/../../../../arm-none-eabi/lib/thumb/v6-m/nofp/libc.a(lib_a-findfp.o)
+                0x0000000000007d00                __sinit
  .text.__sfp_lock_acquire
-                0x0000000000007d6c       0x10 /home/tulip/gcc-arm-none-eabi-10.3-2021.10-x86_64-linux/gcc-arm-none-eabi-10.3-2021.10/bin/../lib/gcc/arm-none-eabi/10.3.1/../../../../arm-none-eabi/lib/thumb/v6-m/nofp/libc.a(lib_a-findfp.o)
-                0x0000000000007d6c                __sfp_lock_acquire
+                0x0000000000007e20       0x10 /home/tulip/gcc-arm-none-eabi-10.3-2021.10-x86_64-linux/gcc-arm-none-eabi-10.3-2021.10/bin/../lib/gcc/arm-none-eabi/10.3.1/../../../../arm-none-eabi/lib/thumb/v6-m/nofp/libc.a(lib_a-findfp.o)
+                0x0000000000007e20                __sfp_lock_acquire
  .text.__sfp_lock_release
-                0x0000000000007d7c       0x10 /home/tulip/gcc-arm-none-eabi-10.3-2021.10-x86_64-linux/gcc-arm-none-eabi-10.3-2021.10/bin/../lib/gcc/arm-none-eabi/10.3.1/../../../../arm-none-eabi/lib/thumb/v6-m/nofp/libc.a(lib_a-findfp.o)
-                0x0000000000007d7c                __sfp_lock_release
+                0x0000000000007e30       0x10 /home/tulip/gcc-arm-none-eabi-10.3-2021.10-x86_64-linux/gcc-arm-none-eabi-10.3-2021.10/bin/../lib/gcc/arm-none-eabi/10.3.1/../../../../arm-none-eabi/lib/thumb/v6-m/nofp/libc.a(lib_a-findfp.o)
+                0x0000000000007e30                __sfp_lock_release
  .text._malloc_trim_r
-                0x0000000000007d8c       0x9c /home/tulip/gcc-arm-none-eabi-10.3-2021.10-x86_64-linux/gcc-arm-none-eabi-10.3-2021.10/bin/../lib/gcc/arm-none-eabi/10.3.1/../../../../arm-none-eabi/lib/thumb/v6-m/nofp/libc.a(lib_a-freer.o)
-                0x0000000000007d8c                _malloc_trim_r
- .text._free_r  0x0000000000007e28      0x1c4 /home/tulip/gcc-arm-none-eabi-10.3-2021.10-x86_64-linux/gcc-arm-none-eabi-10.3-2021.10/bin/../lib/gcc/arm-none-eabi/10.3.1/../../../../arm-none-eabi/lib/thumb/v6-m/nofp/libc.a(lib_a-freer.o)
-                0x0000000000007e28                _free_r
+                0x0000000000007e40       0x9c /home/tulip/gcc-arm-none-eabi-10.3-2021.10-x86_64-linux/gcc-arm-none-eabi-10.3-2021.10/bin/../lib/gcc/arm-none-eabi/10.3.1/../../../../arm-none-eabi/lib/thumb/v6-m/nofp/libc.a(lib_a-freer.o)
+                0x0000000000007e40                _malloc_trim_r
+ .text._free_r  0x0000000000007edc      0x1c4 /home/tulip/gcc-arm-none-eabi-10.3-2021.10-x86_64-linux/gcc-arm-none-eabi-10.3-2021.10/bin/../lib/gcc/arm-none-eabi/10.3.1/../../../../arm-none-eabi/lib/thumb/v6-m/nofp/libc.a(lib_a-freer.o)
+                0x0000000000007edc                _free_r
  .text._fwalk_reent
-                0x0000000000007fec       0x48 /home/tulip/gcc-arm-none-eabi-10.3-2021.10-x86_64-linux/gcc-arm-none-eabi-10.3-2021.10/bin/../lib/gcc/arm-none-eabi/10.3.1/../../../../arm-none-eabi/lib/thumb/v6-m/nofp/libc.a(lib_a-fwalk.o)
-                0x0000000000007fec                _fwalk_reent
+                0x00000000000080a0       0x48 /home/tulip/gcc-arm-none-eabi-10.3-2021.10-x86_64-linux/gcc-arm-none-eabi-10.3-2021.10/bin/../lib/gcc/arm-none-eabi/10.3.1/../../../../arm-none-eabi/lib/thumb/v6-m/nofp/libc.a(lib_a-fwalk.o)
+                0x00000000000080a0                _fwalk_reent
  .text._localeconv_r
-                0x0000000000008034        0x8 /home/tulip/gcc-arm-none-eabi-10.3-2021.10-x86_64-linux/gcc-arm-none-eabi-10.3-2021.10/bin/../lib/gcc/arm-none-eabi/10.3.1/../../../../arm-none-eabi/lib/thumb/v6-m/nofp/libc.a(lib_a-localeconv.o)
-                0x0000000000008034                _localeconv_r
+                0x00000000000080e8        0x8 /home/tulip/gcc-arm-none-eabi-10.3-2021.10-x86_64-linux/gcc-arm-none-eabi-10.3-2021.10/bin/../lib/gcc/arm-none-eabi/10.3.1/../../../../arm-none-eabi/lib/thumb/v6-m/nofp/libc.a(lib_a-localeconv.o)
+                0x00000000000080e8                _localeconv_r
  .text.__retarget_lock_init_recursive
-                0x000000000000803c        0x4 /home/tulip/gcc-arm-none-eabi-10.3-2021.10-x86_64-linux/gcc-arm-none-eabi-10.3-2021.10/bin/../lib/gcc/arm-none-eabi/10.3.1/../../../../arm-none-eabi/lib/thumb/v6-m/nofp/libc.a(lib_a-lock.o)
-                0x000000000000803c                __retarget_lock_init_recursive
+                0x00000000000080f0        0x4 /home/tulip/gcc-arm-none-eabi-10.3-2021.10-x86_64-linux/gcc-arm-none-eabi-10.3-2021.10/bin/../lib/gcc/arm-none-eabi/10.3.1/../../../../arm-none-eabi/lib/thumb/v6-m/nofp/libc.a(lib_a-lock.o)
+                0x00000000000080f0                __retarget_lock_init_recursive
  .text.__retarget_lock_close_recursive
-                0x0000000000008040        0x4 /home/tulip/gcc-arm-none-eabi-10.3-2021.10-x86_64-linux/gcc-arm-none-eabi-10.3-2021.10/bin/../lib/gcc/arm-none-eabi/10.3.1/../../../../arm-none-eabi/lib/thumb/v6-m/nofp/libc.a(lib_a-lock.o)
-                0x0000000000008040                __retarget_lock_close_recursive
+                0x00000000000080f4        0x4 /home/tulip/gcc-arm-none-eabi-10.3-2021.10-x86_64-linux/gcc-arm-none-eabi-10.3-2021.10/bin/../lib/gcc/arm-none-eabi/10.3.1/../../../../arm-none-eabi/lib/thumb/v6-m/nofp/libc.a(lib_a-lock.o)
+                0x00000000000080f4                __retarget_lock_close_recursive
  .text.__retarget_lock_acquire_recursive
-                0x0000000000008044        0x4 /home/tulip/gcc-arm-none-eabi-10.3-2021.10-x86_64-linux/gcc-arm-none-eabi-10.3-2021.10/bin/../lib/gcc/arm-none-eabi/10.3.1/../../../../arm-none-eabi/lib/thumb/v6-m/nofp/libc.a(lib_a-lock.o)
-                0x0000000000008044                __retarget_lock_acquire_recursive
+                0x00000000000080f8        0x4 /home/tulip/gcc-arm-none-eabi-10.3-2021.10-x86_64-linux/gcc-arm-none-eabi-10.3-2021.10/bin/../lib/gcc/arm-none-eabi/10.3.1/../../../../arm-none-eabi/lib/thumb/v6-m/nofp/libc.a(lib_a-lock.o)
+                0x00000000000080f8                __retarget_lock_acquire_recursive
  .text.__retarget_lock_release_recursive
-                0x0000000000008048        0x4 /home/tulip/gcc-arm-none-eabi-10.3-2021.10-x86_64-linux/gcc-arm-none-eabi-10.3-2021.10/bin/../lib/gcc/arm-none-eabi/10.3.1/../../../../arm-none-eabi/lib/thumb/v6-m/nofp/libc.a(lib_a-lock.o)
-                0x0000000000008048                __retarget_lock_release_recursive
+                0x00000000000080fc        0x4 /home/tulip/gcc-arm-none-eabi-10.3-2021.10-x86_64-linux/gcc-arm-none-eabi-10.3-2021.10/bin/../lib/gcc/arm-none-eabi/10.3.1/../../../../arm-none-eabi/lib/thumb/v6-m/nofp/libc.a(lib_a-lock.o)
+                0x00000000000080fc                __retarget_lock_release_recursive
  .text.__smakebuf_r
-                0x000000000000804c       0xe4 /home/tulip/gcc-arm-none-eabi-10.3-2021.10-x86_64-linux/gcc-arm-none-eabi-10.3-2021.10/bin/../lib/gcc/arm-none-eabi/10.3.1/../../../../arm-none-eabi/lib/thumb/v6-m/nofp/libc.a(lib_a-makebuf.o)
-                0x000000000000804c                __smakebuf_r
+                0x0000000000008100       0xe4 /home/tulip/gcc-arm-none-eabi-10.3-2021.10-x86_64-linux/gcc-arm-none-eabi-10.3-2021.10/bin/../lib/gcc/arm-none-eabi/10.3.1/../../../../arm-none-eabi/lib/thumb/v6-m/nofp/libc.a(lib_a-makebuf.o)
+                0x0000000000008100                __smakebuf_r
  .text._malloc_r
-                0x0000000000008130      0x584 /home/tulip/gcc-arm-none-eabi-10.3-2021.10-x86_64-linux/gcc-arm-none-eabi-10.3-2021.10/bin/../lib/gcc/arm-none-eabi/10.3.1/../../../../arm-none-eabi/lib/thumb/v6-m/nofp/libc.a(lib_a-mallocr.o)
-                0x0000000000008130                _malloc_r
- .text.memchr   0x00000000000086b4       0x74 /home/tulip/gcc-arm-none-eabi-10.3-2021.10-x86_64-linux/gcc-arm-none-eabi-10.3-2021.10/bin/../lib/gcc/arm-none-eabi/10.3.1/../../../../arm-none-eabi/lib/thumb/v6-m/nofp/libc.a(lib_a-memchr-stub.o)
-                0x00000000000086b4                memchr
+                0x00000000000081e4      0x584 /home/tulip/gcc-arm-none-eabi-10.3-2021.10-x86_64-linux/gcc-arm-none-eabi-10.3-2021.10/bin/../lib/gcc/arm-none-eabi/10.3.1/../../../../arm-none-eabi/lib/thumb/v6-m/nofp/libc.a(lib_a-mallocr.o)
+                0x00000000000081e4                _malloc_r
+ .text.memchr   0x0000000000008768       0x74 /home/tulip/gcc-arm-none-eabi-10.3-2021.10-x86_64-linux/gcc-arm-none-eabi-10.3-2021.10/bin/../lib/gcc/arm-none-eabi/10.3.1/../../../../arm-none-eabi/lib/thumb/v6-m/nofp/libc.a(lib_a-memchr-stub.o)
+                0x0000000000008768                memchr
  .text.__malloc_lock
-                0x0000000000008728       0x10 /home/tulip/gcc-arm-none-eabi-10.3-2021.10-x86_64-linux/gcc-arm-none-eabi-10.3-2021.10/bin/../lib/gcc/arm-none-eabi/10.3.1/../../../../arm-none-eabi/lib/thumb/v6-m/nofp/libc.a(lib_a-mlock.o)
-                0x0000000000008728                __malloc_lock
+                0x00000000000087dc       0x10 /home/tulip/gcc-arm-none-eabi-10.3-2021.10-x86_64-linux/gcc-arm-none-eabi-10.3-2021.10/bin/../lib/gcc/arm-none-eabi/10.3.1/../../../../arm-none-eabi/lib/thumb/v6-m/nofp/libc.a(lib_a-mlock.o)
+                0x00000000000087dc                __malloc_lock
  .text.__malloc_unlock
-                0x0000000000008738       0x10 /home/tulip/gcc-arm-none-eabi-10.3-2021.10-x86_64-linux/gcc-arm-none-eabi-10.3-2021.10/bin/../lib/gcc/arm-none-eabi/10.3.1/../../../../arm-none-eabi/lib/thumb/v6-m/nofp/libc.a(lib_a-mlock.o)
-                0x0000000000008738                __malloc_unlock
- .text._Balloc  0x0000000000008748       0x50 /home/tulip/gcc-arm-none-eabi-10.3-2021.10-x86_64-linux/gcc-arm-none-eabi-10.3-2021.10/bin/../lib/gcc/arm-none-eabi/10.3.1/../../../../arm-none-eabi/lib/thumb/v6-m/nofp/libc.a(lib_a-mprec.o)
-                0x0000000000008748                _Balloc
- .text._Bfree   0x0000000000008798       0x14 /home/tulip/gcc-arm-none-eabi-10.3-2021.10-x86_64-linux/gcc-arm-none-eabi-10.3-2021.10/bin/../lib/gcc/arm-none-eabi/10.3.1/../../../../arm-none-eabi/lib/thumb/v6-m/nofp/libc.a(lib_a-mprec.o)
-                0x0000000000008798                _Bfree
+                0x00000000000087ec       0x10 /home/tulip/gcc-arm-none-eabi-10.3-2021.10-x86_64-linux/gcc-arm-none-eabi-10.3-2021.10/bin/../lib/gcc/arm-none-eabi/10.3.1/../../../../arm-none-eabi/lib/thumb/v6-m/nofp/libc.a(lib_a-mlock.o)
+                0x00000000000087ec                __malloc_unlock
+ .text._Balloc  0x00000000000087fc       0x50 /home/tulip/gcc-arm-none-eabi-10.3-2021.10-x86_64-linux/gcc-arm-none-eabi-10.3-2021.10/bin/../lib/gcc/arm-none-eabi/10.3.1/../../../../arm-none-eabi/lib/thumb/v6-m/nofp/libc.a(lib_a-mprec.o)
+                0x00000000000087fc                _Balloc
+ .text._Bfree   0x000000000000884c       0x14 /home/tulip/gcc-arm-none-eabi-10.3-2021.10-x86_64-linux/gcc-arm-none-eabi-10.3-2021.10/bin/../lib/gcc/arm-none-eabi/10.3.1/../../../../arm-none-eabi/lib/thumb/v6-m/nofp/libc.a(lib_a-mprec.o)
+                0x000000000000884c                _Bfree
  .text.__multadd
-                0x00000000000087ac       0xa8 /home/tulip/gcc-arm-none-eabi-10.3-2021.10-x86_64-linux/gcc-arm-none-eabi-10.3-2021.10/bin/../lib/gcc/arm-none-eabi/10.3.1/../../../../arm-none-eabi/lib/thumb/v6-m/nofp/libc.a(lib_a-mprec.o)
-                0x00000000000087ac                __multadd
+                0x0000000000008860       0xa8 /home/tulip/gcc-arm-none-eabi-10.3-2021.10-x86_64-linux/gcc-arm-none-eabi-10.3-2021.10/bin/../lib/gcc/arm-none-eabi/10.3.1/../../../../arm-none-eabi/lib/thumb/v6-m/nofp/libc.a(lib_a-mprec.o)
+                0x0000000000008860                __multadd
  .text.__hi0bits
-                0x0000000000008854       0x38 /home/tulip/gcc-arm-none-eabi-10.3-2021.10-x86_64-linux/gcc-arm-none-eabi-10.3-2021.10/bin/../lib/gcc/arm-none-eabi/10.3.1/../../../../arm-none-eabi/lib/thumb/v6-m/nofp/libc.a(lib_a-mprec.o)
-                0x0000000000008854                __hi0bits
+                0x0000000000008908       0x38 /home/tulip/gcc-arm-none-eabi-10.3-2021.10-x86_64-linux/gcc-arm-none-eabi-10.3-2021.10/bin/../lib/gcc/arm-none-eabi/10.3.1/../../../../arm-none-eabi/lib/thumb/v6-m/nofp/libc.a(lib_a-mprec.o)
+                0x0000000000008908                __hi0bits
  .text.__lo0bits
-                0x000000000000888c       0x5c /home/tulip/gcc-arm-none-eabi-10.3-2021.10-x86_64-linux/gcc-arm-none-eabi-10.3-2021.10/bin/../lib/gcc/arm-none-eabi/10.3.1/../../../../arm-none-eabi/lib/thumb/v6-m/nofp/libc.a(lib_a-mprec.o)
-                0x000000000000888c                __lo0bits
- .text.__i2b    0x00000000000088e8       0x60 /home/tulip/gcc-arm-none-eabi-10.3-2021.10-x86_64-linux/gcc-arm-none-eabi-10.3-2021.10/bin/../lib/gcc/arm-none-eabi/10.3.1/../../../../arm-none-eabi/lib/thumb/v6-m/nofp/libc.a(lib_a-mprec.o)
-                0x00000000000088e8                __i2b
+                0x0000000000008940       0x5c /home/tulip/gcc-arm-none-eabi-10.3-2021.10-x86_64-linux/gcc-arm-none-eabi-10.3-2021.10/bin/../lib/gcc/arm-none-eabi/10.3.1/../../../../arm-none-eabi/lib/thumb/v6-m/nofp/libc.a(lib_a-mprec.o)
+                0x0000000000008940                __lo0bits
+ .text.__i2b    0x000000000000899c       0x60 /home/tulip/gcc-arm-none-eabi-10.3-2021.10-x86_64-linux/gcc-arm-none-eabi-10.3-2021.10/bin/../lib/gcc/arm-none-eabi/10.3.1/../../../../arm-none-eabi/lib/thumb/v6-m/nofp/libc.a(lib_a-mprec.o)
+                0x000000000000899c                __i2b
  .text.__multiply
-                0x0000000000008948      0x1a4 /home/tulip/gcc-arm-none-eabi-10.3-2021.10-x86_64-linux/gcc-arm-none-eabi-10.3-2021.10/bin/../lib/gcc/arm-none-eabi/10.3.1/../../../../arm-none-eabi/lib/thumb/v6-m/nofp/libc.a(lib_a-mprec.o)
-                0x0000000000008948                __multiply
+                0x00000000000089fc      0x1a4 /home/tulip/gcc-arm-none-eabi-10.3-2021.10-x86_64-linux/gcc-arm-none-eabi-10.3-2021.10/bin/../lib/gcc/arm-none-eabi/10.3.1/../../../../arm-none-eabi/lib/thumb/v6-m/nofp/libc.a(lib_a-mprec.o)
+                0x00000000000089fc                __multiply
  .text.__pow5mult
-                0x0000000000008aec       0xd8 /home/tulip/gcc-arm-none-eabi-10.3-2021.10-x86_64-linux/gcc-arm-none-eabi-10.3-2021.10/bin/../lib/gcc/arm-none-eabi/10.3.1/../../../../arm-none-eabi/lib/thumb/v6-m/nofp/libc.a(lib_a-mprec.o)
-                0x0000000000008aec                __pow5mult
+                0x0000000000008ba0       0xd8 /home/tulip/gcc-arm-none-eabi-10.3-2021.10-x86_64-linux/gcc-arm-none-eabi-10.3-2021.10/bin/../lib/gcc/arm-none-eabi/10.3.1/../../../../arm-none-eabi/lib/thumb/v6-m/nofp/libc.a(lib_a-mprec.o)
+                0x0000000000008ba0                __pow5mult
  .text.__lshift
-                0x0000000000008bc4       0xfc /home/tulip/gcc-arm-none-eabi-10.3-2021.10-x86_64-linux/gcc-arm-none-eabi-10.3-2021.10/bin/../lib/gcc/arm-none-eabi/10.3.1/../../../../arm-none-eabi/lib/thumb/v6-m/nofp/libc.a(lib_a-mprec.o)
-                0x0000000000008bc4                __lshift
- .text.__mcmp   0x0000000000008cc0       0x34 /home/tulip/gcc-arm-none-eabi-10.3-2021.10-x86_64-linux/gcc-arm-none-eabi-10.3-2021.10/bin/../lib/gcc/arm-none-eabi/10.3.1/../../../../arm-none-eabi/lib/thumb/v6-m/nofp/libc.a(lib_a-mprec.o)
-                0x0000000000008cc0                __mcmp
- .text.__mdiff  0x0000000000008cf4      0x18c /home/tulip/gcc-arm-none-eabi-10.3-2021.10-x86_64-linux/gcc-arm-none-eabi-10.3-2021.10/bin/../lib/gcc/arm-none-eabi/10.3.1/../../../../arm-none-eabi/lib/thumb/v6-m/nofp/libc.a(lib_a-mprec.o)
-                0x0000000000008cf4                __mdiff
- .text.__d2b    0x0000000000008e80       0xd8 /home/tulip/gcc-arm-none-eabi-10.3-2021.10-x86_64-linux/gcc-arm-none-eabi-10.3-2021.10/bin/../lib/gcc/arm-none-eabi/10.3.1/../../../../arm-none-eabi/lib/thumb/v6-m/nofp/libc.a(lib_a-mprec.o)
-                0x0000000000008e80                __d2b
- .text._putc_r  0x0000000000008f58       0x74 /home/tulip/gcc-arm-none-eabi-10.3-2021.10-x86_64-linux/gcc-arm-none-eabi-10.3-2021.10/bin/../lib/gcc/arm-none-eabi/10.3.1/../../../../arm-none-eabi/lib/thumb/v6-m/nofp/libc.a(lib_a-putc.o)
-                0x0000000000008f58                _putc_r
- .text.frexp    0x0000000000008fcc       0x64 /home/tulip/gcc-arm-none-eabi-10.3-2021.10-x86_64-linux/gcc-arm-none-eabi-10.3-2021.10/bin/../lib/gcc/arm-none-eabi/10.3.1/../../../../arm-none-eabi/lib/thumb/v6-m/nofp/libc.a(lib_a-s_frexp.o)
-                0x0000000000008fcc                frexp
- .text._sbrk_r  0x0000000000009030       0x24 /home/tulip/gcc-arm-none-eabi-10.3-2021.10-x86_64-linux/gcc-arm-none-eabi-10.3-2021.10/bin/../lib/gcc/arm-none-eabi/10.3.1/../../../../arm-none-eabi/lib/thumb/v6-m/nofp/libc.a(lib_a-sbrkr.o)
-                0x0000000000009030                _sbrk_r
- .text.__sread  0x0000000000009054       0x28 /home/tulip/gcc-arm-none-eabi-10.3-2021.10-x86_64-linux/gcc-arm-none-eabi-10.3-2021.10/bin/../lib/gcc/arm-none-eabi/10.3.1/../../../../arm-none-eabi/lib/thumb/v6-m/nofp/libc.a(lib_a-stdio.o)
-                0x0000000000009054                __sread
+                0x0000000000008c78       0xfc /home/tulip/gcc-arm-none-eabi-10.3-2021.10-x86_64-linux/gcc-arm-none-eabi-10.3-2021.10/bin/../lib/gcc/arm-none-eabi/10.3.1/../../../../arm-none-eabi/lib/thumb/v6-m/nofp/libc.a(lib_a-mprec.o)
+                0x0000000000008c78                __lshift
+ .text.__mcmp   0x0000000000008d74       0x34 /home/tulip/gcc-arm-none-eabi-10.3-2021.10-x86_64-linux/gcc-arm-none-eabi-10.3-2021.10/bin/../lib/gcc/arm-none-eabi/10.3.1/../../../../arm-none-eabi/lib/thumb/v6-m/nofp/libc.a(lib_a-mprec.o)
+                0x0000000000008d74                __mcmp
+ .text.__mdiff  0x0000000000008da8      0x18c /home/tulip/gcc-arm-none-eabi-10.3-2021.10-x86_64-linux/gcc-arm-none-eabi-10.3-2021.10/bin/../lib/gcc/arm-none-eabi/10.3.1/../../../../arm-none-eabi/lib/thumb/v6-m/nofp/libc.a(lib_a-mprec.o)
+                0x0000000000008da8                __mdiff
+ .text.__d2b    0x0000000000008f34       0xd8 /home/tulip/gcc-arm-none-eabi-10.3-2021.10-x86_64-linux/gcc-arm-none-eabi-10.3-2021.10/bin/../lib/gcc/arm-none-eabi/10.3.1/../../../../arm-none-eabi/lib/thumb/v6-m/nofp/libc.a(lib_a-mprec.o)
+                0x0000000000008f34                __d2b
+ .text._putc_r  0x000000000000900c       0x74 /home/tulip/gcc-arm-none-eabi-10.3-2021.10-x86_64-linux/gcc-arm-none-eabi-10.3-2021.10/bin/../lib/gcc/arm-none-eabi/10.3.1/../../../../arm-none-eabi/lib/thumb/v6-m/nofp/libc.a(lib_a-putc.o)
+                0x000000000000900c                _putc_r
+ .text.frexp    0x0000000000009080       0x64 /home/tulip/gcc-arm-none-eabi-10.3-2021.10-x86_64-linux/gcc-arm-none-eabi-10.3-2021.10/bin/../lib/gcc/arm-none-eabi/10.3.1/../../../../arm-none-eabi/lib/thumb/v6-m/nofp/libc.a(lib_a-s_frexp.o)
+                0x0000000000009080                frexp
+ .text._sbrk_r  0x00000000000090e4       0x24 /home/tulip/gcc-arm-none-eabi-10.3-2021.10-x86_64-linux/gcc-arm-none-eabi-10.3-2021.10/bin/../lib/gcc/arm-none-eabi/10.3.1/../../../../arm-none-eabi/lib/thumb/v6-m/nofp/libc.a(lib_a-sbrkr.o)
+                0x00000000000090e4                _sbrk_r
+ .text.__sread  0x0000000000009108       0x28 /home/tulip/gcc-arm-none-eabi-10.3-2021.10-x86_64-linux/gcc-arm-none-eabi-10.3-2021.10/bin/../lib/gcc/arm-none-eabi/10.3.1/../../../../arm-none-eabi/lib/thumb/v6-m/nofp/libc.a(lib_a-stdio.o)
+                0x0000000000009108                __sread
  .text.__swrite
-                0x000000000000907c       0x40 /home/tulip/gcc-arm-none-eabi-10.3-2021.10-x86_64-linux/gcc-arm-none-eabi-10.3-2021.10/bin/../lib/gcc/arm-none-eabi/10.3.1/../../../../arm-none-eabi/lib/thumb/v6-m/nofp/libc.a(lib_a-stdio.o)
-                0x000000000000907c                __swrite
- .text.__sseek  0x00000000000090bc       0x2c /home/tulip/gcc-arm-none-eabi-10.3-2021.10-x86_64-linux/gcc-arm-none-eabi-10.3-2021.10/bin/../lib/gcc/arm-none-eabi/10.3.1/../../../../arm-none-eabi/lib/thumb/v6-m/nofp/libc.a(lib_a-stdio.o)
-                0x00000000000090bc                __sseek
+                0x0000000000009130       0x40 /home/tulip/gcc-arm-none-eabi-10.3-2021.10-x86_64-linux/gcc-arm-none-eabi-10.3-2021.10/bin/../lib/gcc/arm-none-eabi/10.3.1/../../../../arm-none-eabi/lib/thumb/v6-m/nofp/libc.a(lib_a-stdio.o)
+                0x0000000000009130                __swrite
+ .text.__sseek  0x0000000000009170       0x2c /home/tulip/gcc-arm-none-eabi-10.3-2021.10-x86_64-linux/gcc-arm-none-eabi-10.3-2021.10/bin/../lib/gcc/arm-none-eabi/10.3.1/../../../../arm-none-eabi/lib/thumb/v6-m/nofp/libc.a(lib_a-stdio.o)
+                0x0000000000009170                __sseek
  .text.__sclose
-                0x00000000000090e8        0xc /home/tulip/gcc-arm-none-eabi-10.3-2021.10-x86_64-linux/gcc-arm-none-eabi-10.3-2021.10/bin/../lib/gcc/arm-none-eabi/10.3.1/../../../../arm-none-eabi/lib/thumb/v6-m/nofp/libc.a(lib_a-stdio.o)
-                0x00000000000090e8                __sclose
- .text.strlen   0x00000000000090f4       0x5c /home/tulip/gcc-arm-none-eabi-10.3-2021.10-x86_64-linux/gcc-arm-none-eabi-10.3-2021.10/bin/../lib/gcc/arm-none-eabi/10.3.1/../../../../arm-none-eabi/lib/thumb/v6-m/nofp/libc.a(lib_a-strlen-stub.o)
-                0x00000000000090f4                strlen
- .text.strncpy  0x0000000000009150       0x6c /home/tulip/gcc-arm-none-eabi-10.3-2021.10-x86_64-linux/gcc-arm-none-eabi-10.3-2021.10/bin/../lib/gcc/arm-none-eabi/10.3.1/../../../../arm-none-eabi/lib/thumb/v6-m/nofp/libc.a(lib_a-strncpy.o)
-                0x0000000000009150                strncpy
+                0x000000000000919c        0xc /home/tulip/gcc-arm-none-eabi-10.3-2021.10-x86_64-linux/gcc-arm-none-eabi-10.3-2021.10/bin/../lib/gcc/arm-none-eabi/10.3.1/../../../../arm-none-eabi/lib/thumb/v6-m/nofp/libc.a(lib_a-stdio.o)
+                0x000000000000919c                __sclose
+ .text.strlen   0x00000000000091a8       0x5c /home/tulip/gcc-arm-none-eabi-10.3-2021.10-x86_64-linux/gcc-arm-none-eabi-10.3-2021.10/bin/../lib/gcc/arm-none-eabi/10.3.1/../../../../arm-none-eabi/lib/thumb/v6-m/nofp/libc.a(lib_a-strlen-stub.o)
+                0x00000000000091a8                strlen
+ .text.strncpy  0x0000000000009204       0x6c /home/tulip/gcc-arm-none-eabi-10.3-2021.10-x86_64-linux/gcc-arm-none-eabi-10.3-2021.10/bin/../lib/gcc/arm-none-eabi/10.3.1/../../../../arm-none-eabi/lib/thumb/v6-m/nofp/libc.a(lib_a-strncpy.o)
+                0x0000000000009204                strncpy
  .text.__ssprint_r
-                0x00000000000091bc      0x114 /home/tulip/gcc-arm-none-eabi-10.3-2021.10-x86_64-linux/gcc-arm-none-eabi-10.3-2021.10/bin/../lib/gcc/arm-none-eabi/10.3.1/../../../../arm-none-eabi/lib/thumb/v6-m/nofp/libc.a(lib_a-svfiprintf.o)
-                0x00000000000091bc                __ssprint_r
+                0x0000000000009270      0x114 /home/tulip/gcc-arm-none-eabi-10.3-2021.10-x86_64-linux/gcc-arm-none-eabi-10.3-2021.10/bin/../lib/gcc/arm-none-eabi/10.3.1/../../../../arm-none-eabi/lib/thumb/v6-m/nofp/libc.a(lib_a-svfiprintf.o)
+                0x0000000000009270                __ssprint_r
  .text.__sprint_r.part.0
-                0x00000000000092d0       0x88 /home/tulip/gcc-arm-none-eabi-10.3-2021.10-x86_64-linux/gcc-arm-none-eabi-10.3-2021.10/bin/../lib/gcc/arm-none-eabi/10.3.1/../../../../arm-none-eabi/lib/thumb/v6-m/nofp/libc.a(lib_a-vfiprintf.o)
+                0x0000000000009384       0x88 /home/tulip/gcc-arm-none-eabi-10.3-2021.10-x86_64-linux/gcc-arm-none-eabi-10.3-2021.10/bin/../lib/gcc/arm-none-eabi/10.3.1/../../../../arm-none-eabi/lib/thumb/v6-m/nofp/libc.a(lib_a-vfiprintf.o)
  .text.__sprint_r
-                0x0000000000009358       0x14 /home/tulip/gcc-arm-none-eabi-10.3-2021.10-x86_64-linux/gcc-arm-none-eabi-10.3-2021.10/bin/../lib/gcc/arm-none-eabi/10.3.1/../../../../arm-none-eabi/lib/thumb/v6-m/nofp/libc.a(lib_a-vfiprintf.o)
-                0x0000000000009358                __sprint_r
+                0x000000000000940c       0x14 /home/tulip/gcc-arm-none-eabi-10.3-2021.10-x86_64-linux/gcc-arm-none-eabi-10.3-2021.10/bin/../lib/gcc/arm-none-eabi/10.3.1/../../../../arm-none-eabi/lib/thumb/v6-m/nofp/libc.a(lib_a-vfiprintf.o)
+                0x000000000000940c                __sprint_r
  .text._vfiprintf_r
-                0x000000000000936c      0xdb8 /home/tulip/gcc-arm-none-eabi-10.3-2021.10-x86_64-linux/gcc-arm-none-eabi-10.3-2021.10/bin/../lib/gcc/arm-none-eabi/10.3.1/../../../../arm-none-eabi/lib/thumb/v6-m/nofp/libc.a(lib_a-vfiprintf.o)
-                0x000000000000936c                _vfiprintf_r
+                0x0000000000009420      0xdb8 /home/tulip/gcc-arm-none-eabi-10.3-2021.10-x86_64-linux/gcc-arm-none-eabi-10.3-2021.10/bin/../lib/gcc/arm-none-eabi/10.3.1/../../../../arm-none-eabi/lib/thumb/v6-m/nofp/libc.a(lib_a-vfiprintf.o)
+                0x0000000000009420                _vfiprintf_r
  .text.__sbprintf
-                0x000000000000a124       0x8c /home/tulip/gcc-arm-none-eabi-10.3-2021.10-x86_64-linux/gcc-arm-none-eabi-10.3-2021.10/bin/../lib/gcc/arm-none-eabi/10.3.1/../../../../arm-none-eabi/lib/thumb/v6-m/nofp/libc.a(lib_a-vfiprintf.o)
+                0x000000000000a1d8       0x8c /home/tulip/gcc-arm-none-eabi-10.3-2021.10-x86_64-linux/gcc-arm-none-eabi-10.3-2021.10/bin/../lib/gcc/arm-none-eabi/10.3.1/../../../../arm-none-eabi/lib/thumb/v6-m/nofp/libc.a(lib_a-vfiprintf.o)
  .text.__swbuf_r
-                0x000000000000a1b0       0xc8 /home/tulip/gcc-arm-none-eabi-10.3-2021.10-x86_64-linux/gcc-arm-none-eabi-10.3-2021.10/bin/../lib/gcc/arm-none-eabi/10.3.1/../../../../arm-none-eabi/lib/thumb/v6-m/nofp/libc.a(lib_a-wbuf.o)
-                0x000000000000a1b0                __swbuf_r
+                0x000000000000a264       0xc8 /home/tulip/gcc-arm-none-eabi-10.3-2021.10-x86_64-linux/gcc-arm-none-eabi-10.3-2021.10/bin/../lib/gcc/arm-none-eabi/10.3.1/../../../../arm-none-eabi/lib/thumb/v6-m/nofp/libc.a(lib_a-wbuf.o)
+                0x000000000000a264                __swbuf_r
  .text._write_r
-                0x000000000000a278       0x28 /home/tulip/gcc-arm-none-eabi-10.3-2021.10-x86_64-linux/gcc-arm-none-eabi-10.3-2021.10/bin/../lib/gcc/arm-none-eabi/10.3.1/../../../../arm-none-eabi/lib/thumb/v6-m/nofp/libc.a(lib_a-writer.o)
-                0x000000000000a278                _write_r
+                0x000000000000a32c       0x28 /home/tulip/gcc-arm-none-eabi-10.3-2021.10-x86_64-linux/gcc-arm-none-eabi-10.3-2021.10/bin/../lib/gcc/arm-none-eabi/10.3.1/../../../../arm-none-eabi/lib/thumb/v6-m/nofp/libc.a(lib_a-writer.o)
+                0x000000000000a32c                _write_r
  .text.__assert_func
-                0x000000000000a2a0       0x40 /home/tulip/gcc-arm-none-eabi-10.3-2021.10-x86_64-linux/gcc-arm-none-eabi-10.3-2021.10/bin/../lib/gcc/arm-none-eabi/10.3.1/../../../../arm-none-eabi/lib/thumb/v6-m/nofp/libc.a(lib_a-assert.o)
-                0x000000000000a2a0                __assert_func
+                0x000000000000a354       0x40 /home/tulip/gcc-arm-none-eabi-10.3-2021.10-x86_64-linux/gcc-arm-none-eabi-10.3-2021.10/bin/../lib/gcc/arm-none-eabi/10.3.1/../../../../arm-none-eabi/lib/thumb/v6-m/nofp/libc.a(lib_a-assert.o)
+                0x000000000000a354                __assert_func
  .text._calloc_r
-                0x000000000000a2e0       0x9c /home/tulip/gcc-arm-none-eabi-10.3-2021.10-x86_64-linux/gcc-arm-none-eabi-10.3-2021.10/bin/../lib/gcc/arm-none-eabi/10.3.1/../../../../arm-none-eabi/lib/thumb/v6-m/nofp/libc.a(lib_a-callocr.o)
-                0x000000000000a2e0                _calloc_r
+                0x000000000000a394       0x9c /home/tulip/gcc-arm-none-eabi-10.3-2021.10-x86_64-linux/gcc-arm-none-eabi-10.3-2021.10/bin/../lib/gcc/arm-none-eabi/10.3.1/../../../../arm-none-eabi/lib/thumb/v6-m/nofp/libc.a(lib_a-callocr.o)
+                0x000000000000a394                _calloc_r
  .text._close_r
-                0x000000000000a37c       0x24 /home/tulip/gcc-arm-none-eabi-10.3-2021.10-x86_64-linux/gcc-arm-none-eabi-10.3-2021.10/bin/../lib/gcc/arm-none-eabi/10.3.1/../../../../arm-none-eabi/lib/thumb/v6-m/nofp/libc.a(lib_a-closer.o)
-                0x000000000000a37c                _close_r
- .text.__errno  0x000000000000a3a0        0xc /home/tulip/gcc-arm-none-eabi-10.3-2021.10-x86_64-linux/gcc-arm-none-eabi-10.3-2021.10/bin/../lib/gcc/arm-none-eabi/10.3.1/../../../../arm-none-eabi/lib/thumb/v6-m/nofp/libc.a(lib_a-errno.o)
-                0x000000000000a3a0                __errno
+                0x000000000000a430       0x24 /home/tulip/gcc-arm-none-eabi-10.3-2021.10-x86_64-linux/gcc-arm-none-eabi-10.3-2021.10/bin/../lib/gcc/arm-none-eabi/10.3.1/../../../../arm-none-eabi/lib/thumb/v6-m/nofp/libc.a(lib_a-closer.o)
+                0x000000000000a430                _close_r
+ .text.__errno  0x000000000000a454        0xc /home/tulip/gcc-arm-none-eabi-10.3-2021.10-x86_64-linux/gcc-arm-none-eabi-10.3-2021.10/bin/../lib/gcc/arm-none-eabi/10.3.1/../../../../arm-none-eabi/lib/thumb/v6-m/nofp/libc.a(lib_a-errno.o)
+                0x000000000000a454                __errno
  .text._fclose_r
-                0x000000000000a3ac       0xdc /home/tulip/gcc-arm-none-eabi-10.3-2021.10-x86_64-linux/gcc-arm-none-eabi-10.3-2021.10/bin/../lib/gcc/arm-none-eabi/10.3.1/../../../../arm-none-eabi/lib/thumb/v6-m/nofp/libc.a(lib_a-fclose.o)
-                0x000000000000a3ac                _fclose_r
+                0x000000000000a460       0xdc /home/tulip/gcc-arm-none-eabi-10.3-2021.10-x86_64-linux/gcc-arm-none-eabi-10.3-2021.10/bin/../lib/gcc/arm-none-eabi/10.3.1/../../../../arm-none-eabi/lib/thumb/v6-m/nofp/libc.a(lib_a-fclose.o)
+                0x000000000000a460                _fclose_r
  .text.fiprintf
-                0x000000000000a488       0x24 /home/tulip/gcc-arm-none-eabi-10.3-2021.10-x86_64-linux/gcc-arm-none-eabi-10.3-2021.10/bin/../lib/gcc/arm-none-eabi/10.3.1/../../../../arm-none-eabi/lib/thumb/v6-m/nofp/libc.a(lib_a-fiprintf.o)
-                0x000000000000a488                fiprintf
+                0x000000000000a53c       0x24 /home/tulip/gcc-arm-none-eabi-10.3-2021.10-x86_64-linux/gcc-arm-none-eabi-10.3-2021.10/bin/../lib/gcc/arm-none-eabi/10.3.1/../../../../arm-none-eabi/lib/thumb/v6-m/nofp/libc.a(lib_a-fiprintf.o)
+                0x000000000000a53c                fiprintf
  .text.__fputwc
-                0x000000000000a4ac       0x98 /home/tulip/gcc-arm-none-eabi-10.3-2021.10-x86_64-linux/gcc-arm-none-eabi-10.3-2021.10/bin/../lib/gcc/arm-none-eabi/10.3.1/../../../../arm-none-eabi/lib/thumb/v6-m/nofp/libc.a(lib_a-fputwc.o)
-                0x000000000000a4ac                __fputwc
+                0x000000000000a560       0x98 /home/tulip/gcc-arm-none-eabi-10.3-2021.10-x86_64-linux/gcc-arm-none-eabi-10.3-2021.10/bin/../lib/gcc/arm-none-eabi/10.3.1/../../../../arm-none-eabi/lib/thumb/v6-m/nofp/libc.a(lib_a-fputwc.o)
+                0x000000000000a560                __fputwc
  .text._fputwc_r
-                0x000000000000a544       0x5c /home/tulip/gcc-arm-none-eabi-10.3-2021.10-x86_64-linux/gcc-arm-none-eabi-10.3-2021.10/bin/../lib/gcc/arm-none-eabi/10.3.1/../../../../arm-none-eabi/lib/thumb/v6-m/nofp/libc.a(lib_a-fputwc.o)
-                0x000000000000a544                _fputwc_r
+                0x000000000000a5f8       0x5c /home/tulip/gcc-arm-none-eabi-10.3-2021.10-x86_64-linux/gcc-arm-none-eabi-10.3-2021.10/bin/../lib/gcc/arm-none-eabi/10.3.1/../../../../arm-none-eabi/lib/thumb/v6-m/nofp/libc.a(lib_a-fputwc.o)
+                0x000000000000a5f8                _fputwc_r
  .text._fstat_r
-                0x000000000000a5a0       0x28 /home/tulip/gcc-arm-none-eabi-10.3-2021.10-x86_64-linux/gcc-arm-none-eabi-10.3-2021.10/bin/../lib/gcc/arm-none-eabi/10.3.1/../../../../arm-none-eabi/lib/thumb/v6-m/nofp/libc.a(lib_a-fstatr.o)
-                0x000000000000a5a0                _fstat_r
+                0x000000000000a654       0x28 /home/tulip/gcc-arm-none-eabi-10.3-2021.10-x86_64-linux/gcc-arm-none-eabi-10.3-2021.10/bin/../lib/gcc/arm-none-eabi/10.3.1/../../../../arm-none-eabi/lib/thumb/v6-m/nofp/libc.a(lib_a-fstatr.o)
+                0x000000000000a654                _fstat_r
  .text.__sfvwrite_r
-                0x000000000000a5c8      0x2f4 /home/tulip/gcc-arm-none-eabi-10.3-2021.10-x86_64-linux/gcc-arm-none-eabi-10.3-2021.10/bin/../lib/gcc/arm-none-eabi/10.3.1/../../../../arm-none-eabi/lib/thumb/v6-m/nofp/libc.a(lib_a-fvwrite.o)
-                0x000000000000a5c8                __sfvwrite_r
+                0x000000000000a67c      0x2f4 /home/tulip/gcc-arm-none-eabi-10.3-2021.10-x86_64-linux/gcc-arm-none-eabi-10.3-2021.10/bin/../lib/gcc/arm-none-eabi/10.3.1/../../../../arm-none-eabi/lib/thumb/v6-m/nofp/libc.a(lib_a-fvwrite.o)
+                0x000000000000a67c                __sfvwrite_r
  .text._isatty_r
-                0x000000000000a8bc       0x24 /home/tulip/gcc-arm-none-eabi-10.3-2021.10-x86_64-linux/gcc-arm-none-eabi-10.3-2021.10/bin/../lib/gcc/arm-none-eabi/10.3.1/../../../../arm-none-eabi/lib/thumb/v6-m/nofp/libc.a(lib_a-isattyr.o)
-                0x000000000000a8bc                _isatty_r
+                0x000000000000a970       0x24 /home/tulip/gcc-arm-none-eabi-10.3-2021.10-x86_64-linux/gcc-arm-none-eabi-10.3-2021.10/bin/../lib/gcc/arm-none-eabi/10.3.1/../../../../arm-none-eabi/lib/thumb/v6-m/nofp/libc.a(lib_a-isattyr.o)
+                0x000000000000a970                _isatty_r
  .text.__locale_mb_cur_max
-                0x000000000000a8e0       0x10 /home/tulip/gcc-arm-none-eabi-10.3-2021.10-x86_64-linux/gcc-arm-none-eabi-10.3-2021.10/bin/../lib/gcc/arm-none-eabi/10.3.1/../../../../arm-none-eabi/lib/thumb/v6-m/nofp/libc.a(lib_a-locale.o)
-                0x000000000000a8e0                __locale_mb_cur_max
+                0x000000000000a994       0x10 /home/tulip/gcc-arm-none-eabi-10.3-2021.10-x86_64-linux/gcc-arm-none-eabi-10.3-2021.10/bin/../lib/gcc/arm-none-eabi/10.3.1/../../../../arm-none-eabi/lib/thumb/v6-m/nofp/libc.a(lib_a-locale.o)
+                0x000000000000a994                __locale_mb_cur_max
  .text._lseek_r
-                0x000000000000a8f0       0x28 /home/tulip/gcc-arm-none-eabi-10.3-2021.10-x86_64-linux/gcc-arm-none-eabi-10.3-2021.10/bin/../lib/gcc/arm-none-eabi/10.3.1/../../../../arm-none-eabi/lib/thumb/v6-m/nofp/libc.a(lib_a-lseekr.o)
-                0x000000000000a8f0                _lseek_r
+                0x000000000000a9a4       0x28 /home/tulip/gcc-arm-none-eabi-10.3-2021.10-x86_64-linux/gcc-arm-none-eabi-10.3-2021.10/bin/../lib/gcc/arm-none-eabi/10.3.1/../../../../arm-none-eabi/lib/thumb/v6-m/nofp/libc.a(lib_a-lseekr.o)
+                0x000000000000a9a4                _lseek_r
  .text.__ascii_mbtowc
-                0x000000000000a918       0x2c /home/tulip/gcc-arm-none-eabi-10.3-2021.10-x86_64-linux/gcc-arm-none-eabi-10.3-2021.10/bin/../lib/gcc/arm-none-eabi/10.3.1/../../../../arm-none-eabi/lib/thumb/v6-m/nofp/libc.a(lib_a-mbtowc_r.o)
-                0x000000000000a918                __ascii_mbtowc
- .text.memmove  0x000000000000a944       0xac /home/tulip/gcc-arm-none-eabi-10.3-2021.10-x86_64-linux/gcc-arm-none-eabi-10.3-2021.10/bin/../lib/gcc/arm-none-eabi/10.3.1/../../../../arm-none-eabi/lib/thumb/v6-m/nofp/libc.a(lib_a-memmove.o)
-                0x000000000000a944                memmove
- .text._read_r  0x000000000000a9f0       0x28 /home/tulip/gcc-arm-none-eabi-10.3-2021.10-x86_64-linux/gcc-arm-none-eabi-10.3-2021.10/bin/../lib/gcc/arm-none-eabi/10.3.1/../../../../arm-none-eabi/lib/thumb/v6-m/nofp/libc.a(lib_a-readr.o)
-                0x000000000000a9f0                _read_r
+                0x000000000000a9cc       0x2c /home/tulip/gcc-arm-none-eabi-10.3-2021.10-x86_64-linux/gcc-arm-none-eabi-10.3-2021.10/bin/../lib/gcc/arm-none-eabi/10.3.1/../../../../arm-none-eabi/lib/thumb/v6-m/nofp/libc.a(lib_a-mbtowc_r.o)
+                0x000000000000a9cc                __ascii_mbtowc
+ .text.memmove  0x000000000000a9f8       0xac /home/tulip/gcc-arm-none-eabi-10.3-2021.10-x86_64-linux/gcc-arm-none-eabi-10.3-2021.10/bin/../lib/gcc/arm-none-eabi/10.3.1/../../../../arm-none-eabi/lib/thumb/v6-m/nofp/libc.a(lib_a-memmove.o)
+                0x000000000000a9f8                memmove
+ .text._read_r  0x000000000000aaa4       0x28 /home/tulip/gcc-arm-none-eabi-10.3-2021.10-x86_64-linux/gcc-arm-none-eabi-10.3-2021.10/bin/../lib/gcc/arm-none-eabi/10.3.1/../../../../arm-none-eabi/lib/thumb/v6-m/nofp/libc.a(lib_a-readr.o)
+                0x000000000000aaa4                _read_r
  .text._realloc_r
-                0x000000000000aa18      0x354 /home/tulip/gcc-arm-none-eabi-10.3-2021.10-x86_64-linux/gcc-arm-none-eabi-10.3-2021.10/bin/../lib/gcc/arm-none-eabi/10.3.1/../../../../arm-none-eabi/lib/thumb/v6-m/nofp/libc.a(lib_a-reallocr.o)
-                0x000000000000aa18                _realloc_r
+                0x000000000000aacc      0x354 /home/tulip/gcc-arm-none-eabi-10.3-2021.10-x86_64-linux/gcc-arm-none-eabi-10.3-2021.10/bin/../lib/gcc/arm-none-eabi/10.3.1/../../../../arm-none-eabi/lib/thumb/v6-m/nofp/libc.a(lib_a-reallocr.o)
+                0x000000000000aacc                _realloc_r
  .text._wcrtomb_r
-                0x000000000000ad6c       0x40 /home/tulip/gcc-arm-none-eabi-10.3-2021.10-x86_64-linux/gcc-arm-none-eabi-10.3-2021.10/bin/../lib/gcc/arm-none-eabi/10.3.1/../../../../arm-none-eabi/lib/thumb/v6-m/nofp/libc.a(lib_a-wcrtomb.o)
-                0x000000000000ad6c                _wcrtomb_r
+                0x000000000000ae20       0x40 /home/tulip/gcc-arm-none-eabi-10.3-2021.10-x86_64-linux/gcc-arm-none-eabi-10.3-2021.10/bin/../lib/gcc/arm-none-eabi/10.3.1/../../../../arm-none-eabi/lib/thumb/v6-m/nofp/libc.a(lib_a-wcrtomb.o)
+                0x000000000000ae20                _wcrtomb_r
  .text.__ascii_wctomb
-                0x000000000000adac       0x1c /home/tulip/gcc-arm-none-eabi-10.3-2021.10-x86_64-linux/gcc-arm-none-eabi-10.3-2021.10/bin/../lib/gcc/arm-none-eabi/10.3.1/../../../../arm-none-eabi/lib/thumb/v6-m/nofp/libc.a(lib_a-wctomb_r.o)
-                0x000000000000adac                __ascii_wctomb
- .text.abort    0x000000000000adc8       0x10 /home/tulip/gcc-arm-none-eabi-10.3-2021.10-x86_64-linux/gcc-arm-none-eabi-10.3-2021.10/bin/../lib/gcc/arm-none-eabi/10.3.1/../../../../arm-none-eabi/lib/thumb/v6-m/nofp/libc.a(lib_a-abort.o)
-                0x000000000000adc8                abort
- .text.raise    0x000000000000add8       0x60 /home/tulip/gcc-arm-none-eabi-10.3-2021.10-x86_64-linux/gcc-arm-none-eabi-10.3-2021.10/bin/../lib/gcc/arm-none-eabi/10.3.1/../../../../arm-none-eabi/lib/thumb/v6-m/nofp/libc.a(lib_a-signal.o)
-                0x000000000000add8                raise
- .text._kill_r  0x000000000000ae38       0x28 /home/tulip/gcc-arm-none-eabi-10.3-2021.10-x86_64-linux/gcc-arm-none-eabi-10.3-2021.10/bin/../lib/gcc/arm-none-eabi/10.3.1/../../../../arm-none-eabi/lib/thumb/v6-m/nofp/libc.a(lib_a-signalr.o)
-                0x000000000000ae38                _kill_r
+                0x000000000000ae60       0x1c /home/tulip/gcc-arm-none-eabi-10.3-2021.10-x86_64-linux/gcc-arm-none-eabi-10.3-2021.10/bin/../lib/gcc/arm-none-eabi/10.3.1/../../../../arm-none-eabi/lib/thumb/v6-m/nofp/libc.a(lib_a-wctomb_r.o)
+                0x000000000000ae60                __ascii_wctomb
+ .text.abort    0x000000000000ae7c       0x10 /home/tulip/gcc-arm-none-eabi-10.3-2021.10-x86_64-linux/gcc-arm-none-eabi-10.3-2021.10/bin/../lib/gcc/arm-none-eabi/10.3.1/../../../../arm-none-eabi/lib/thumb/v6-m/nofp/libc.a(lib_a-abort.o)
+                0x000000000000ae7c                abort
+ .text.raise    0x000000000000ae8c       0x60 /home/tulip/gcc-arm-none-eabi-10.3-2021.10-x86_64-linux/gcc-arm-none-eabi-10.3-2021.10/bin/../lib/gcc/arm-none-eabi/10.3.1/../../../../arm-none-eabi/lib/thumb/v6-m/nofp/libc.a(lib_a-signal.o)
+                0x000000000000ae8c                raise
+ .text._kill_r  0x000000000000aeec       0x28 /home/tulip/gcc-arm-none-eabi-10.3-2021.10-x86_64-linux/gcc-arm-none-eabi-10.3-2021.10/bin/../lib/gcc/arm-none-eabi/10.3.1/../../../../arm-none-eabi/lib/thumb/v6-m/nofp/libc.a(lib_a-signalr.o)
+                0x000000000000aeec                _kill_r
  .text._getpid_r
-                0x000000000000ae60        0x8 /home/tulip/gcc-arm-none-eabi-10.3-2021.10-x86_64-linux/gcc-arm-none-eabi-10.3-2021.10/bin/../lib/gcc/arm-none-eabi/10.3.1/../../../../arm-none-eabi/lib/thumb/v6-m/nofp/libc.a(lib_a-signalr.o)
-                0x000000000000ae60                _getpid_r
+                0x000000000000af14        0x8 /home/tulip/gcc-arm-none-eabi-10.3-2021.10-x86_64-linux/gcc-arm-none-eabi-10.3-2021.10/bin/../lib/gcc/arm-none-eabi/10.3.1/../../../../arm-none-eabi/lib/thumb/v6-m/nofp/libc.a(lib_a-signalr.o)
+                0x000000000000af14                _getpid_r
  *(.rodata)
- .rodata        0x000000000000ae68       0x40 /home/tulip/gcc-arm-none-eabi-10.3-2021.10-x86_64-linux/gcc-arm-none-eabi-10.3-2021.10/bin/../lib/gcc/arm-none-eabi/10.3.1/thumb/v6-m/nofp/libgcc.a(divdf3.o)
- .rodata        0x000000000000aea8       0x40 /home/tulip/gcc-arm-none-eabi-10.3-2021.10-x86_64-linux/gcc-arm-none-eabi-10.3-2021.10/bin/../lib/gcc/arm-none-eabi/10.3.1/thumb/v6-m/nofp/libgcc.a(muldf3.o)
+ .rodata        0x000000000000af1c       0x40 /home/tulip/gcc-arm-none-eabi-10.3-2021.10-x86_64-linux/gcc-arm-none-eabi-10.3-2021.10/bin/../lib/gcc/arm-none-eabi/10.3.1/thumb/v6-m/nofp/libgcc.a(divdf3.o)
+ .rodata        0x000000000000af5c       0x40 /home/tulip/gcc-arm-none-eabi-10.3-2021.10-x86_64-linux/gcc-arm-none-eabi-10.3-2021.10/bin/../lib/gcc/arm-none-eabi/10.3.1/thumb/v6-m/nofp/libgcc.a(muldf3.o)
  *(.rodata.*)
  .rodata.ble_init.str1.4
-                0x000000000000aee8       0x22 build/ble_phy.o
- *fill*         0x000000000000af0a        0x2 ff
+                0x000000000000af9c       0x22 build/ble_phy.o
+ *fill*         0x000000000000afbe        0x2 ff
  .rodata.ble_start_rx.str1.4
-                0x000000000000af0c       0x1e build/ble_phy.o
- *fill*         0x000000000000af2a        0x2 ff
+                0x000000000000afc0       0x1e build/ble_phy.o
+ *fill*         0x000000000000afde        0x2 ff
  .rodata.RADIO_IRQHandler.str1.4
-                0x000000000000af2c       0x10 build/ble_phy.o
+                0x000000000000afe0       0x10 build/ble_phy.o
  .rodata.CSWTCH.20
-                0x000000000000af3c        0x3 build/ble_phy.o
- *fill*         0x000000000000af3f        0x1 ff
+                0x000000000000aff0        0x3 build/ble_phy.o
+ *fill*         0x000000000000aff3        0x1 ff
  .rodata.print_ADV_IND.str1.4
-                0x000000000000af40      0x131 build/ble_print.o
+                0x000000000000aff4      0x131 build/ble_print.o
                                         0x139 (size before relaxing)
- *fill*         0x000000000000b071        0x3 ff
+ *fill*         0x000000000000b125        0x3 ff
  .rodata.calculate_crc.str1.4
-                0x000000000000b074       0x19 build/ble_print.o
- *fill*         0x000000000000b08d        0x3 ff
+                0x000000000000b128       0x19 build/ble_print.o
+ *fill*         0x000000000000b141        0x3 ff
+ .rodata.calculate_crc_2.str1.4
+                0x000000000000b144       0x12 build/ble_print.o
+ *fill*         0x000000000000b156        0x2 ff
  .rodata.show_pdu_data.str1.4
-                0x000000000000b090      0x12b build/ble_print.o
- *fill*         0x000000000000b1bb        0x1 ff
+                0x000000000000b158      0x12b build/ble_print.o
+ *fill*         0x000000000000b283        0x1 ff
  .rodata.show_pdu_data
-                0x000000000000b1bc       0x3c build/ble_print.o
- .rodata.LED1   0x000000000000b1f8        0x4 build/leds.o
-                0x000000000000b1f8                LED1
- .rodata.LED3   0x000000000000b1fc        0x4 build/leds.o
-                0x000000000000b1fc                LED3
- .rodata.LED4   0x000000000000b200        0x4 build/leds.o
-                0x000000000000b200                LED4
+                0x000000000000b284       0x3c build/ble_print.o
+ .rodata.LED1   0x000000000000b2c0        0x4 build/leds.o
+                0x000000000000b2c0                LED1
+ .rodata.LED3   0x000000000000b2c4        0x4 build/leds.o
+                0x000000000000b2c4                LED3
+ .rodata.LED4   0x000000000000b2c8        0x4 build/leds.o
+                0x000000000000b2c8                LED4
  .rodata.main.str1.4
-                0x000000000000b204       0x27 build/Main.o
- *fill*         0x000000000000b22b        0x1 ff
+                0x000000000000b2cc       0x27 build/Main.o
+ *fill*         0x000000000000b2f3        0x1 ff
  .rodata._svfprintf_r.str1.4
-                0x000000000000b22c       0x42 /home/tulip/gcc-arm-none-eabi-10.3-2021.10-x86_64-linux/gcc-arm-none-eabi-10.3-2021.10/bin/../lib/gcc/arm-none-eabi/10.3.1/../../../../arm-none-eabi/lib/thumb/v6-m/nofp/libc.a(lib_a-svfprintf.o)
- *fill*         0x000000000000b26e        0x2 ff
+                0x000000000000b2f4       0x42 /home/tulip/gcc-arm-none-eabi-10.3-2021.10-x86_64-linux/gcc-arm-none-eabi-10.3-2021.10/bin/../lib/gcc/arm-none-eabi/10.3.1/../../../../arm-none-eabi/lib/thumb/v6-m/nofp/libc.a(lib_a-svfprintf.o)
+ *fill*         0x000000000000b336        0x2 ff
  .rodata._svfprintf_r
-                0x000000000000b270      0x16c /home/tulip/gcc-arm-none-eabi-10.3-2021.10-x86_64-linux/gcc-arm-none-eabi-10.3-2021.10/bin/../lib/gcc/arm-none-eabi/10.3.1/../../../../arm-none-eabi/lib/thumb/v6-m/nofp/libc.a(lib_a-svfprintf.o)
+                0x000000000000b338      0x16c /home/tulip/gcc-arm-none-eabi-10.3-2021.10-x86_64-linux/gcc-arm-none-eabi-10.3-2021.10/bin/../lib/gcc/arm-none-eabi/10.3.1/../../../../arm-none-eabi/lib/thumb/v6-m/nofp/libc.a(lib_a-svfprintf.o)
  .rodata.blanks.1
-                0x000000000000b3dc       0x10 /home/tulip/gcc-arm-none-eabi-10.3-2021.10-x86_64-linux/gcc-arm-none-eabi-10.3-2021.10/bin/../lib/gcc/arm-none-eabi/10.3.1/../../../../arm-none-eabi/lib/thumb/v6-m/nofp/libc.a(lib_a-svfprintf.o)
+                0x000000000000b4a4       0x10 /home/tulip/gcc-arm-none-eabi-10.3-2021.10-x86_64-linux/gcc-arm-none-eabi-10.3-2021.10/bin/../lib/gcc/arm-none-eabi/10.3.1/../../../../arm-none-eabi/lib/thumb/v6-m/nofp/libc.a(lib_a-svfprintf.o)
  .rodata.zeroes.0
-                0x000000000000b3ec       0x10 /home/tulip/gcc-arm-none-eabi-10.3-2021.10-x86_64-linux/gcc-arm-none-eabi-10.3-2021.10/bin/../lib/gcc/arm-none-eabi/10.3.1/../../../../arm-none-eabi/lib/thumb/v6-m/nofp/libc.a(lib_a-svfprintf.o)
+                0x000000000000b4b4       0x10 /home/tulip/gcc-arm-none-eabi-10.3-2021.10-x86_64-linux/gcc-arm-none-eabi-10.3-2021.10/bin/../lib/gcc/arm-none-eabi/10.3.1/../../../../arm-none-eabi/lib/thumb/v6-m/nofp/libc.a(lib_a-svfprintf.o)
  .rodata._vfprintf_r.str1.4
-                0x000000000000b3fc       0x42 /home/tulip/gcc-arm-none-eabi-10.3-2021.10-x86_64-linux/gcc-arm-none-eabi-10.3-2021.10/bin/../lib/gcc/arm-none-eabi/10.3.1/../../../../arm-none-eabi/lib/thumb/v6-m/nofp/libc.a(lib_a-vfprintf.o)
+                0x000000000000b4c4       0x42 /home/tulip/gcc-arm-none-eabi-10.3-2021.10-x86_64-linux/gcc-arm-none-eabi-10.3-2021.10/bin/../lib/gcc/arm-none-eabi/10.3.1/../../../../arm-none-eabi/lib/thumb/v6-m/nofp/libc.a(lib_a-vfprintf.o)
  .rodata._vfprintf_r
-                0x000000000000b3fc      0x16c /home/tulip/gcc-arm-none-eabi-10.3-2021.10-x86_64-linux/gcc-arm-none-eabi-10.3-2021.10/bin/../lib/gcc/arm-none-eabi/10.3.1/../../../../arm-none-eabi/lib/thumb/v6-m/nofp/libc.a(lib_a-vfprintf.o)
+                0x000000000000b4c4      0x16c /home/tulip/gcc-arm-none-eabi-10.3-2021.10-x86_64-linux/gcc-arm-none-eabi-10.3-2021.10/bin/../lib/gcc/arm-none-eabi/10.3.1/../../../../arm-none-eabi/lib/thumb/v6-m/nofp/libc.a(lib_a-vfprintf.o)
  .rodata.blanks.1
-                0x000000000000b568       0x10 /home/tulip/gcc-arm-none-eabi-10.3-2021.10-x86_64-linux/gcc-arm-none-eabi-10.3-2021.10/bin/../lib/gcc/arm-none-eabi/10.3.1/../../../../arm-none-eabi/lib/thumb/v6-m/nofp/libc.a(lib_a-vfprintf.o)
+                0x000000000000b630       0x10 /home/tulip/gcc-arm-none-eabi-10.3-2021.10-x86_64-linux/gcc-arm-none-eabi-10.3-2021.10/bin/../lib/gcc/arm-none-eabi/10.3.1/../../../../arm-none-eabi/lib/thumb/v6-m/nofp/libc.a(lib_a-vfprintf.o)
  .rodata.zeroes.0
-                0x000000000000b578       0x10 /home/tulip/gcc-arm-none-eabi-10.3-2021.10-x86_64-linux/gcc-arm-none-eabi-10.3-2021.10/bin/../lib/gcc/arm-none-eabi/10.3.1/../../../../arm-none-eabi/lib/thumb/v6-m/nofp/libc.a(lib_a-vfprintf.o)
+                0x000000000000b640       0x10 /home/tulip/gcc-arm-none-eabi-10.3-2021.10-x86_64-linux/gcc-arm-none-eabi-10.3-2021.10/bin/../lib/gcc/arm-none-eabi/10.3.1/../../../../arm-none-eabi/lib/thumb/v6-m/nofp/libc.a(lib_a-vfprintf.o)
  .rodata._dtoa_r.str1.4
-                0x000000000000b588       0xa2 /home/tulip/gcc-arm-none-eabi-10.3-2021.10-x86_64-linux/gcc-arm-none-eabi-10.3-2021.10/bin/../lib/gcc/arm-none-eabi/10.3.1/../../../../arm-none-eabi/lib/thumb/v6-m/nofp/libc.a(lib_a-dtoa.o)
+                0x000000000000b650       0xa2 /home/tulip/gcc-arm-none-eabi-10.3-2021.10-x86_64-linux/gcc-arm-none-eabi-10.3-2021.10/bin/../lib/gcc/arm-none-eabi/10.3.1/../../../../arm-none-eabi/lib/thumb/v6-m/nofp/libc.a(lib_a-dtoa.o)
                                          0xa6 (size before relaxing)
- *fill*         0x000000000000b62a        0x2 ff
+ *fill*         0x000000000000b6f2        0x2 ff
  .rodata.__multadd.str1.4
-                0x000000000000b62c       0x7f /home/tulip/gcc-arm-none-eabi-10.3-2021.10-x86_64-linux/gcc-arm-none-eabi-10.3-2021.10/bin/../lib/gcc/arm-none-eabi/10.3.1/../../../../arm-none-eabi/lib/thumb/v6-m/nofp/libc.a(lib_a-mprec.o)
+                0x000000000000b6f4       0x7f /home/tulip/gcc-arm-none-eabi-10.3-2021.10-x86_64-linux/gcc-arm-none-eabi-10.3-2021.10/bin/../lib/gcc/arm-none-eabi/10.3.1/../../../../arm-none-eabi/lib/thumb/v6-m/nofp/libc.a(lib_a-mprec.o)
                                          0x93 (size before relaxing)
- *fill*         0x000000000000b6ab        0x5 ff
+ *fill*         0x000000000000b773        0x5 ff
  .rodata.__mprec_bigtens
-                0x000000000000b6b0       0x28 /home/tulip/gcc-arm-none-eabi-10.3-2021.10-x86_64-linux/gcc-arm-none-eabi-10.3-2021.10/bin/../lib/gcc/arm-none-eabi/10.3.1/../../../../arm-none-eabi/lib/thumb/v6-m/nofp/libc.a(lib_a-mprec.o)
-                0x000000000000b6b0                __mprec_bigtens
+                0x000000000000b778       0x28 /home/tulip/gcc-arm-none-eabi-10.3-2021.10-x86_64-linux/gcc-arm-none-eabi-10.3-2021.10/bin/../lib/gcc/arm-none-eabi/10.3.1/../../../../arm-none-eabi/lib/thumb/v6-m/nofp/libc.a(lib_a-mprec.o)
+                0x000000000000b778                __mprec_bigtens
  .rodata.__mprec_tens
-                0x000000000000b6d8       0xc8 /home/tulip/gcc-arm-none-eabi-10.3-2021.10-x86_64-linux/gcc-arm-none-eabi-10.3-2021.10/bin/../lib/gcc/arm-none-eabi/10.3.1/../../../../arm-none-eabi/lib/thumb/v6-m/nofp/libc.a(lib_a-mprec.o)
-                0x000000000000b6d8                __mprec_tens
- .rodata.p05.0  0x000000000000b7a0        0xc /home/tulip/gcc-arm-none-eabi-10.3-2021.10-x86_64-linux/gcc-arm-none-eabi-10.3-2021.10/bin/../lib/gcc/arm-none-eabi/10.3.1/../../../../arm-none-eabi/lib/thumb/v6-m/nofp/libc.a(lib_a-mprec.o)
+                0x000000000000b7a0       0xc8 /home/tulip/gcc-arm-none-eabi-10.3-2021.10-x86_64-linux/gcc-arm-none-eabi-10.3-2021.10/bin/../lib/gcc/arm-none-eabi/10.3.1/../../../../arm-none-eabi/lib/thumb/v6-m/nofp/libc.a(lib_a-mprec.o)
+                0x000000000000b7a0                __mprec_tens
+ .rodata.p05.0  0x000000000000b868        0xc /home/tulip/gcc-arm-none-eabi-10.3-2021.10-x86_64-linux/gcc-arm-none-eabi-10.3-2021.10/bin/../lib/gcc/arm-none-eabi/10.3.1/../../../../arm-none-eabi/lib/thumb/v6-m/nofp/libc.a(lib_a-mprec.o)
  .rodata._vfiprintf_r.str1.4
-                0x000000000000b7ac       0x2f /home/tulip/gcc-arm-none-eabi-10.3-2021.10-x86_64-linux/gcc-arm-none-eabi-10.3-2021.10/bin/../lib/gcc/arm-none-eabi/10.3.1/../../../../arm-none-eabi/lib/thumb/v6-m/nofp/libc.a(lib_a-vfiprintf.o)
+                0x000000000000b874       0x2f /home/tulip/gcc-arm-none-eabi-10.3-2021.10-x86_64-linux/gcc-arm-none-eabi-10.3-2021.10/bin/../lib/gcc/arm-none-eabi/10.3.1/../../../../arm-none-eabi/lib/thumb/v6-m/nofp/libc.a(lib_a-vfiprintf.o)
  .rodata._vfiprintf_r
-                0x000000000000b7ac      0x16c /home/tulip/gcc-arm-none-eabi-10.3-2021.10-x86_64-linux/gcc-arm-none-eabi-10.3-2021.10/bin/../lib/gcc/arm-none-eabi/10.3.1/../../../../arm-none-eabi/lib/thumb/v6-m/nofp/libc.a(lib_a-vfiprintf.o)
+                0x000000000000b874      0x16c /home/tulip/gcc-arm-none-eabi-10.3-2021.10-x86_64-linux/gcc-arm-none-eabi-10.3-2021.10/bin/../lib/gcc/arm-none-eabi/10.3.1/../../../../arm-none-eabi/lib/thumb/v6-m/nofp/libc.a(lib_a-vfiprintf.o)
  .rodata.blanks.1
-                0x000000000000b918       0x10 /home/tulip/gcc-arm-none-eabi-10.3-2021.10-x86_64-linux/gcc-arm-none-eabi-10.3-2021.10/bin/../lib/gcc/arm-none-eabi/10.3.1/../../../../arm-none-eabi/lib/thumb/v6-m/nofp/libc.a(lib_a-vfiprintf.o)
+                0x000000000000b9e0       0x10 /home/tulip/gcc-arm-none-eabi-10.3-2021.10-x86_64-linux/gcc-arm-none-eabi-10.3-2021.10/bin/../lib/gcc/arm-none-eabi/10.3.1/../../../../arm-none-eabi/lib/thumb/v6-m/nofp/libc.a(lib_a-vfiprintf.o)
  .rodata.zeroes.0
-                0x000000000000b928       0x10 /home/tulip/gcc-arm-none-eabi-10.3-2021.10-x86_64-linux/gcc-arm-none-eabi-10.3-2021.10/bin/../lib/gcc/arm-none-eabi/10.3.1/../../../../arm-none-eabi/lib/thumb/v6-m/nofp/libc.a(lib_a-vfiprintf.o)
+                0x000000000000b9f0       0x10 /home/tulip/gcc-arm-none-eabi-10.3-2021.10-x86_64-linux/gcc-arm-none-eabi-10.3-2021.10/bin/../lib/gcc/arm-none-eabi/10.3.1/../../../../arm-none-eabi/lib/thumb/v6-m/nofp/libc.a(lib_a-vfiprintf.o)
  .rodata.__assert_func.str1.4
-                0x000000000000b938       0x3f /home/tulip/gcc-arm-none-eabi-10.3-2021.10-x86_64-linux/gcc-arm-none-eabi-10.3-2021.10/bin/../lib/gcc/arm-none-eabi/10.3.1/../../../../arm-none-eabi/lib/thumb/v6-m/nofp/libc.a(lib_a-assert.o)
+                0x000000000000ba00       0x3f /home/tulip/gcc-arm-none-eabi-10.3-2021.10-x86_64-linux/gcc-arm-none-eabi-10.3-2021.10/bin/../lib/gcc/arm-none-eabi/10.3.1/../../../../arm-none-eabi/lib/thumb/v6-m/nofp/libc.a(lib_a-assert.o)
                                          0x43 (size before relaxing)
- *fill*         0x000000000000b977        0x1 ff
+ *fill*         0x000000000000ba3f        0x1 ff
  .rodata._setlocale_r.str1.4
-                0x000000000000b978        0xa /home/tulip/gcc-arm-none-eabi-10.3-2021.10-x86_64-linux/gcc-arm-none-eabi-10.3-2021.10/bin/../lib/gcc/arm-none-eabi/10.3.1/../../../../arm-none-eabi/lib/thumb/v6-m/nofp/libc.a(lib_a-locale.o)
+                0x000000000000ba40        0xa /home/tulip/gcc-arm-none-eabi-10.3-2021.10-x86_64-linux/gcc-arm-none-eabi-10.3-2021.10/bin/../lib/gcc/arm-none-eabi/10.3.1/../../../../arm-none-eabi/lib/thumb/v6-m/nofp/libc.a(lib_a-locale.o)
                                           0xd (size before relaxing)
- *fill*         0x000000000000b982        0x2 ff
+ *fill*         0x000000000000ba4a        0x2 ff
  .rodata.str1.4
-                0x000000000000b984        0x2 /home/tulip/gcc-arm-none-eabi-10.3-2021.10-x86_64-linux/gcc-arm-none-eabi-10.3-2021.10/bin/../lib/gcc/arm-none-eabi/10.3.1/../../../../arm-none-eabi/lib/thumb/v6-m/nofp/libc.a(lib_a-locale.o)
- *fill*         0x000000000000b986        0x2 ff
+                0x000000000000ba4c        0x2 /home/tulip/gcc-arm-none-eabi-10.3-2021.10-x86_64-linux/gcc-arm-none-eabi-10.3-2021.10/bin/../lib/gcc/arm-none-eabi/10.3.1/../../../../arm-none-eabi/lib/thumb/v6-m/nofp/libc.a(lib_a-locale.o)
+ *fill*         0x000000000000ba4e        0x2 ff
  .rodata._ctype_
-                0x000000000000b988      0x101 /home/tulip/gcc-arm-none-eabi-10.3-2021.10-x86_64-linux/gcc-arm-none-eabi-10.3-2021.10/bin/../lib/gcc/arm-none-eabi/10.3.1/../../../../arm-none-eabi/lib/thumb/v6-m/nofp/libc.a(lib_a-ctype_.o)
-                0x000000000000b988                _ctype_
-                0x000000000000ba8c                . = ALIGN (0x4)
- *fill*         0x000000000000ba89        0x3 ff
-                0x000000000000ba8c                _etext = .
-                0x000000000000ba8c                _sidata = _etext
+                0x000000000000ba50      0x101 /home/tulip/gcc-arm-none-eabi-10.3-2021.10-x86_64-linux/gcc-arm-none-eabi-10.3-2021.10/bin/../lib/gcc/arm-none-eabi/10.3.1/../../../../arm-none-eabi/lib/thumb/v6-m/nofp/libc.a(lib_a-ctype_.o)
+                0x000000000000ba50                _ctype_
+                0x000000000000bb54                . = ALIGN (0x4)
+ *fill*         0x000000000000bb51        0x3 ff
+                0x000000000000bb54                _etext = .
+                0x000000000000bb54                _sidata = _etext
 
-.glue_7         0x000000000000ba8c        0x0
- .glue_7        0x000000000000ba8c        0x0 linker stubs
+.glue_7         0x000000000000bb54        0x0
+ .glue_7        0x000000000000bb54        0x0 linker stubs
 
-.glue_7t        0x000000000000ba8c        0x0
- .glue_7t       0x000000000000ba8c        0x0 linker stubs
+.glue_7t        0x000000000000bb54        0x0
+ .glue_7t       0x000000000000bb54        0x0 linker stubs
 
-.vfp11_veneer   0x000000000000ba8c        0x0
- .vfp11_veneer  0x000000000000ba8c        0x0 linker stubs
+.vfp11_veneer   0x000000000000bb54        0x0
+ .vfp11_veneer  0x000000000000bb54        0x0 linker stubs
 
-.v4_bx          0x000000000000ba8c        0x0
- .v4_bx         0x000000000000ba8c        0x0 linker stubs
+.v4_bx          0x000000000000bb54        0x0
+ .v4_bx         0x000000000000bb54        0x0 linker stubs
 
-.iplt           0x000000000000ba8c        0x0
- .iplt          0x000000000000ba8c        0x0 build/ble_phy.o
+.iplt           0x000000000000bb54        0x0
+ .iplt          0x000000000000bb54        0x0 build/ble_phy.o
 
-.rel.dyn        0x000000000000ba8c        0x0
- .rel.iplt      0x000000000000ba8c        0x0 build/ble_phy.o
+.rel.dyn        0x000000000000bb54        0x0
+ .rel.iplt      0x000000000000bb54        0x0 build/ble_phy.o
 
-.data           0x0000000020000000      0x9ac load address 0x000000000000ba8c
+.data           0x0000000020000000      0x9ac load address 0x000000000000bb54
                 0x0000000020000000                . = ALIGN (0x4)
                 0x0000000020000000                _sdata = .
  *(.data)
@@ -1364,10 +1369,10 @@ END GROUP
                 0x00000000200009ac                . = ALIGN (0x4)
                 0x00000000200009ac                _edata = .
 
-.igot.plt       0x00000000200009ac        0x0 load address 0x000000000000c438
+.igot.plt       0x00000000200009ac        0x0 load address 0x000000000000c500
  .igot.plt      0x00000000200009ac        0x0 build/ble_phy.o
 
-.bss            0x00000000200009b0      0xb58 load address 0x000000000000c440
+.bss            0x00000000200009b0      0xb58 load address 0x000000000000c508
                 0x00000000200009b0                . = ALIGN (0x4)
                 0x00000000200009b0                _sbss = .
  *(.bss)
@@ -1431,55 +1436,55 @@ END GROUP
 OUTPUT(outputs/output.elf elf32-littlearm)
 LOAD linker stubs
 
-.debug_info     0x0000000000000000     0x37a8
+.debug_info     0x0000000000000000     0x391e
  .debug_info    0x0000000000000000      0xd08 build/ble_phy.o
- .debug_info    0x0000000000000d08     0x12d1 build/ble_print.o
- .debug_info    0x0000000000001fd9      0x2f6 build/leds.o
- .debug_info    0x00000000000022cf      0x8e1 build/Main.o
- .debug_info    0x0000000000002bb0      0x141 build/startup.o
- .debug_info    0x0000000000002cf1      0x58e build/stdlib_impl.o
- .debug_info    0x000000000000327f      0x529 build/uart.o
+ .debug_info    0x0000000000000d08     0x1447 build/ble_print.o
+ .debug_info    0x000000000000214f      0x2f6 build/leds.o
+ .debug_info    0x0000000000002445      0x8e1 build/Main.o
+ .debug_info    0x0000000000002d26      0x141 build/startup.o
+ .debug_info    0x0000000000002e67      0x58e build/stdlib_impl.o
+ .debug_info    0x00000000000033f5      0x529 build/uart.o
 
-.debug_abbrev   0x0000000000000000      0xd95
+.debug_abbrev   0x0000000000000000      0xddc
  .debug_abbrev  0x0000000000000000      0x2d4 build/ble_phy.o
- .debug_abbrev  0x00000000000002d4      0x319 build/ble_print.o
- .debug_abbrev  0x00000000000005ed      0x1a8 build/leds.o
- .debug_abbrev  0x0000000000000795      0x25b build/Main.o
- .debug_abbrev  0x00000000000009f0       0xfa build/startup.o
- .debug_abbrev  0x0000000000000aea      0x19d build/stdlib_impl.o
- .debug_abbrev  0x0000000000000c87      0x10e build/uart.o
+ .debug_abbrev  0x00000000000002d4      0x360 build/ble_print.o
+ .debug_abbrev  0x0000000000000634      0x1a8 build/leds.o
+ .debug_abbrev  0x00000000000007dc      0x25b build/Main.o
+ .debug_abbrev  0x0000000000000a37       0xfa build/startup.o
+ .debug_abbrev  0x0000000000000b31      0x19d build/stdlib_impl.o
+ .debug_abbrev  0x0000000000000cce      0x10e build/uart.o
 
-.debug_loc      0x0000000000000000     0x1a71
+.debug_loc      0x0000000000000000     0x1ff3
  .debug_loc     0x0000000000000000      0x105 build/ble_phy.o
- .debug_loc     0x0000000000000105     0x16bb build/ble_print.o
- .debug_loc     0x00000000000017c0       0x92 build/leds.o
- .debug_loc     0x0000000000001852       0x2c build/Main.o
- .debug_loc     0x000000000000187e      0x1f3 build/stdlib_impl.o
+ .debug_loc     0x0000000000000105     0x1c3d build/ble_print.o
+ .debug_loc     0x0000000000001d42       0x92 build/leds.o
+ .debug_loc     0x0000000000001dd4       0x2c build/Main.o
+ .debug_loc     0x0000000000001e00      0x1f3 build/stdlib_impl.o
 
-.debug_aranges  0x0000000000000000      0x190
+.debug_aranges  0x0000000000000000      0x198
  .debug_aranges
                 0x0000000000000000       0x30 build/ble_phy.o
  .debug_aranges
-                0x0000000000000030       0x48 build/ble_print.o
+                0x0000000000000030       0x50 build/ble_print.o
  .debug_aranges
-                0x0000000000000078       0x28 build/leds.o
+                0x0000000000000080       0x28 build/leds.o
  .debug_aranges
-                0x00000000000000a0       0x38 build/Main.o
+                0x00000000000000a8       0x38 build/Main.o
  .debug_aranges
-                0x00000000000000d8       0x28 build/startup.o
+                0x00000000000000e0       0x28 build/startup.o
  .debug_aranges
-                0x0000000000000100       0x68 build/stdlib_impl.o
+                0x0000000000000108       0x68 build/stdlib_impl.o
  .debug_aranges
-                0x0000000000000168       0x28 build/uart.o
+                0x0000000000000170       0x28 build/uart.o
 
-.debug_ranges   0x0000000000000000      0x440
+.debug_ranges   0x0000000000000000      0x448
  .debug_ranges  0x0000000000000000       0x50 build/ble_phy.o
- .debug_ranges  0x0000000000000050      0x2f8 build/ble_print.o
- .debug_ranges  0x0000000000000348       0x30 build/leds.o
- .debug_ranges  0x0000000000000378       0x40 build/Main.o
- .debug_ranges  0x00000000000003b8       0x18 build/startup.o
- .debug_ranges  0x00000000000003d0       0x58 build/stdlib_impl.o
- .debug_ranges  0x0000000000000428       0x18 build/uart.o
+ .debug_ranges  0x0000000000000050      0x300 build/ble_print.o
+ .debug_ranges  0x0000000000000350       0x30 build/leds.o
+ .debug_ranges  0x0000000000000380       0x40 build/Main.o
+ .debug_ranges  0x00000000000003c0       0x18 build/startup.o
+ .debug_ranges  0x00000000000003d8       0x58 build/stdlib_impl.o
+ .debug_ranges  0x0000000000000430       0x18 build/uart.o
 
 .debug_macro    0x0000000000000000     0x94a9
  .debug_macro   0x0000000000000000      0x223 build/ble_phy.o
@@ -1543,29 +1548,29 @@ LOAD linker stubs
  .debug_macro   0x00000000000092c6      0x12c build/stdlib_impl.o
  .debug_macro   0x00000000000093f2       0xb7 build/uart.o
 
-.debug_line     0x0000000000000000     0x2756
+.debug_line     0x0000000000000000     0x2aa4
  .debug_line    0x0000000000000000      0x6d4 build/ble_phy.o
- .debug_line    0x00000000000006d4      0xd92 build/ble_print.o
- .debug_line    0x0000000000001466      0x3a2 build/leds.o
- .debug_line    0x0000000000001808      0x5a5 build/Main.o
- .debug_line    0x0000000000001dad       0xba build/startup.o
- .debug_line    0x0000000000001e67      0x575 build/stdlib_impl.o
- .debug_line    0x00000000000023dc      0x37a build/uart.o
+ .debug_line    0x00000000000006d4     0x10e0 build/ble_print.o
+ .debug_line    0x00000000000017b4      0x3a2 build/leds.o
+ .debug_line    0x0000000000001b56      0x5a5 build/Main.o
+ .debug_line    0x00000000000020fb       0xba build/startup.o
+ .debug_line    0x00000000000021b5      0x575 build/stdlib_impl.o
+ .debug_line    0x000000000000272a      0x37a build/uart.o
 
-.debug_str      0x0000000000000000    0x2c384
+.debug_str      0x0000000000000000    0x2c394
  .debug_str     0x0000000000000000    0x2b26e build/ble_phy.o
                                       0x2b488 (size before relaxing)
- .debug_str     0x000000000002b26e      0x224 build/ble_print.o
-                                      0x2b35c (size before relaxing)
- .debug_str     0x000000000002b492       0x66 build/leds.o
+ .debug_str     0x000000000002b26e      0x234 build/ble_print.o
+                                      0x2b36c (size before relaxing)
+ .debug_str     0x000000000002b4a2       0x66 build/leds.o
                                       0x272fa (size before relaxing)
- .debug_str     0x000000000002b4f8      0x1d3 build/Main.o
+ .debug_str     0x000000000002b508      0x1d3 build/Main.o
                                       0x2b2ba (size before relaxing)
- .debug_str     0x000000000002b6cb       0x9b build/startup.o
+ .debug_str     0x000000000002b6db       0x9b build/startup.o
                                        0x2c92 (size before relaxing)
- .debug_str     0x000000000002b766      0xb26 build/stdlib_impl.o
+ .debug_str     0x000000000002b776      0xb26 build/stdlib_impl.o
                                        0x7819 (size before relaxing)
- .debug_str     0x000000000002c28c       0xf8 build/uart.o
+ .debug_str     0x000000000002c29c       0xf8 build/uart.o
                                       0x2743c (size before relaxing)
 
 .comment        0x0000000000000000       0x49
@@ -1743,78 +1748,78 @@ LOAD linker stubs
  .ARM.attributes
                 0x0000000000000d6c       0x1e /home/tulip/gcc-arm-none-eabi-10.3-2021.10-x86_64-linux/gcc-arm-none-eabi-10.3-2021.10/bin/../lib/gcc/arm-none-eabi/10.3.1/thumb/v6-m/nofp/libgcc.a(_clzdi2.o)
 
-.debug_frame    0x0000000000000000     0x1820
+.debug_frame    0x0000000000000000     0x1840
  .debug_frame   0x0000000000000000       0x58 build/ble_phy.o
- .debug_frame   0x0000000000000058       0xcc build/ble_print.o
- .debug_frame   0x0000000000000124       0x38 build/leds.o
- .debug_frame   0x000000000000015c       0x58 build/Main.o
- .debug_frame   0x00000000000001b4       0x38 build/startup.o
- .debug_frame   0x00000000000001ec       0xc4 build/stdlib_impl.o
- .debug_frame   0x00000000000002b0       0x30 build/uart.o
- .debug_frame   0x00000000000002e0       0x2c /home/tulip/gcc-arm-none-eabi-10.3-2021.10-x86_64-linux/gcc-arm-none-eabi-10.3-2021.10/bin/../lib/gcc/arm-none-eabi/10.3.1/../../../../arm-none-eabi/lib/thumb/v6-m/nofp/libc.a(lib_a-memcmp.o)
- .debug_frame   0x000000000000030c       0x34 /home/tulip/gcc-arm-none-eabi-10.3-2021.10-x86_64-linux/gcc-arm-none-eabi-10.3-2021.10/bin/../lib/gcc/arm-none-eabi/10.3.1/../../../../arm-none-eabi/lib/thumb/v6-m/nofp/libc.a(lib_a-memcpy-stub.o)
- .debug_frame   0x0000000000000340       0x30 /home/tulip/gcc-arm-none-eabi-10.3-2021.10-x86_64-linux/gcc-arm-none-eabi-10.3-2021.10/bin/../lib/gcc/arm-none-eabi/10.3.1/../../../../arm-none-eabi/lib/thumb/v6-m/nofp/libc.a(lib_a-memset.o)
- .debug_frame   0x0000000000000370       0x48 /home/tulip/gcc-arm-none-eabi-10.3-2021.10-x86_64-linux/gcc-arm-none-eabi-10.3-2021.10/bin/../lib/gcc/arm-none-eabi/10.3.1/../../../../arm-none-eabi/lib/thumb/v6-m/nofp/libc.a(lib_a-printf.o)
- .debug_frame   0x00000000000003b8       0x40 /home/tulip/gcc-arm-none-eabi-10.3-2021.10-x86_64-linux/gcc-arm-none-eabi-10.3-2021.10/bin/../lib/gcc/arm-none-eabi/10.3.1/../../../../arm-none-eabi/lib/thumb/v6-m/nofp/libc.a(lib_a-putchar.o)
- .debug_frame   0x00000000000003f8       0x50 /home/tulip/gcc-arm-none-eabi-10.3-2021.10-x86_64-linux/gcc-arm-none-eabi-10.3-2021.10/bin/../lib/gcc/arm-none-eabi/10.3.1/../../../../arm-none-eabi/lib/thumb/v6-m/nofp/libc.a(lib_a-reent.o)
- .debug_frame   0x0000000000000448       0x48 /home/tulip/gcc-arm-none-eabi-10.3-2021.10-x86_64-linux/gcc-arm-none-eabi-10.3-2021.10/bin/../lib/gcc/arm-none-eabi/10.3.1/../../../../arm-none-eabi/lib/thumb/v6-m/nofp/libc.a(lib_a-sprintf.o)
- .debug_frame   0x0000000000000490       0x3c /home/tulip/gcc-arm-none-eabi-10.3-2021.10-x86_64-linux/gcc-arm-none-eabi-10.3-2021.10/bin/../lib/gcc/arm-none-eabi/10.3.1/../../../../arm-none-eabi/lib/thumb/v6-m/nofp/libc.a(lib_a-svfprintf.o)
- .debug_frame   0x00000000000004cc       0x78 /home/tulip/gcc-arm-none-eabi-10.3-2021.10-x86_64-linux/gcc-arm-none-eabi-10.3-2021.10/bin/../lib/gcc/arm-none-eabi/10.3.1/../../../../arm-none-eabi/lib/thumb/v6-m/nofp/libc.a(lib_a-vfprintf.o)
- .debug_frame   0x0000000000000544       0x2c /home/tulip/gcc-arm-none-eabi-10.3-2021.10-x86_64-linux/gcc-arm-none-eabi-10.3-2021.10/bin/../lib/gcc/arm-none-eabi/10.3.1/../../../../arm-none-eabi/lib/thumb/v6-m/nofp/libc.a(lib_a-wsetup.o)
- .debug_frame   0x0000000000000570       0x68 /home/tulip/gcc-arm-none-eabi-10.3-2021.10-x86_64-linux/gcc-arm-none-eabi-10.3-2021.10/bin/../lib/gcc/arm-none-eabi/10.3.1/../../../../arm-none-eabi/lib/thumb/v6-m/nofp/libc.a(lib_a-dtoa.o)
- .debug_frame   0x00000000000005d8       0x6c /home/tulip/gcc-arm-none-eabi-10.3-2021.10-x86_64-linux/gcc-arm-none-eabi-10.3-2021.10/bin/../lib/gcc/arm-none-eabi/10.3.1/../../../../arm-none-eabi/lib/thumb/v6-m/nofp/libc.a(lib_a-fflush.o)
- .debug_frame   0x0000000000000644      0x170 /home/tulip/gcc-arm-none-eabi-10.3-2021.10-x86_64-linux/gcc-arm-none-eabi-10.3-2021.10/bin/../lib/gcc/arm-none-eabi/10.3.1/../../../../arm-none-eabi/lib/thumb/v6-m/nofp/libc.a(lib_a-findfp.o)
- .debug_frame   0x00000000000007b4       0x54 /home/tulip/gcc-arm-none-eabi-10.3-2021.10-x86_64-linux/gcc-arm-none-eabi-10.3-2021.10/bin/../lib/gcc/arm-none-eabi/10.3.1/../../../../arm-none-eabi/lib/thumb/v6-m/nofp/libc.a(lib_a-freer.o)
- .debug_frame   0x0000000000000808       0x5c /home/tulip/gcc-arm-none-eabi-10.3-2021.10-x86_64-linux/gcc-arm-none-eabi-10.3-2021.10/bin/../lib/gcc/arm-none-eabi/10.3.1/../../../../arm-none-eabi/lib/thumb/v6-m/nofp/libc.a(lib_a-fwalk.o)
- .debug_frame   0x0000000000000864       0x40 /home/tulip/gcc-arm-none-eabi-10.3-2021.10-x86_64-linux/gcc-arm-none-eabi-10.3-2021.10/bin/../lib/gcc/arm-none-eabi/10.3.1/../../../../arm-none-eabi/lib/thumb/v6-m/nofp/libc.a(lib_a-localeconv.o)
- .debug_frame   0x00000000000008a4       0xb0 /home/tulip/gcc-arm-none-eabi-10.3-2021.10-x86_64-linux/gcc-arm-none-eabi-10.3-2021.10/bin/../lib/gcc/arm-none-eabi/10.3.1/../../../../arm-none-eabi/lib/thumb/v6-m/nofp/libc.a(lib_a-lock.o)
- .debug_frame   0x0000000000000954       0x58 /home/tulip/gcc-arm-none-eabi-10.3-2021.10-x86_64-linux/gcc-arm-none-eabi-10.3-2021.10/bin/../lib/gcc/arm-none-eabi/10.3.1/../../../../arm-none-eabi/lib/thumb/v6-m/nofp/libc.a(lib_a-makebuf.o)
- .debug_frame   0x00000000000009ac       0x3c /home/tulip/gcc-arm-none-eabi-10.3-2021.10-x86_64-linux/gcc-arm-none-eabi-10.3-2021.10/bin/../lib/gcc/arm-none-eabi/10.3.1/../../../../arm-none-eabi/lib/thumb/v6-m/nofp/libc.a(lib_a-mallocr.o)
- .debug_frame   0x00000000000009e8       0x2c /home/tulip/gcc-arm-none-eabi-10.3-2021.10-x86_64-linux/gcc-arm-none-eabi-10.3-2021.10/bin/../lib/gcc/arm-none-eabi/10.3.1/../../../../arm-none-eabi/lib/thumb/v6-m/nofp/libc.a(lib_a-memchr-stub.o)
- .debug_frame   0x0000000000000a14       0x40 /home/tulip/gcc-arm-none-eabi-10.3-2021.10-x86_64-linux/gcc-arm-none-eabi-10.3-2021.10/bin/../lib/gcc/arm-none-eabi/10.3.1/../../../../arm-none-eabi/lib/thumb/v6-m/nofp/libc.a(lib_a-mlock.o)
- .debug_frame   0x0000000000000a54      0x258 /home/tulip/gcc-arm-none-eabi-10.3-2021.10-x86_64-linux/gcc-arm-none-eabi-10.3-2021.10/bin/../lib/gcc/arm-none-eabi/10.3.1/../../../../arm-none-eabi/lib/thumb/v6-m/nofp/libc.a(lib_a-mprec.o)
- .debug_frame   0x0000000000000cac       0x48 /home/tulip/gcc-arm-none-eabi-10.3-2021.10-x86_64-linux/gcc-arm-none-eabi-10.3-2021.10/bin/../lib/gcc/arm-none-eabi/10.3.1/../../../../arm-none-eabi/lib/thumb/v6-m/nofp/libc.a(lib_a-putc.o)
- .debug_frame   0x0000000000000cf4       0x2c /home/tulip/gcc-arm-none-eabi-10.3-2021.10-x86_64-linux/gcc-arm-none-eabi-10.3-2021.10/bin/../lib/gcc/arm-none-eabi/10.3.1/../../../../arm-none-eabi/lib/thumb/v6-m/nofp/libc.a(lib_a-s_frexp.o)
- .debug_frame   0x0000000000000d20       0x2c /home/tulip/gcc-arm-none-eabi-10.3-2021.10-x86_64-linux/gcc-arm-none-eabi-10.3-2021.10/bin/../lib/gcc/arm-none-eabi/10.3.1/../../../../arm-none-eabi/lib/thumb/v6-m/nofp/libc.a(lib_a-sbrkr.o)
- .debug_frame   0x0000000000000d4c       0x90 /home/tulip/gcc-arm-none-eabi-10.3-2021.10-x86_64-linux/gcc-arm-none-eabi-10.3-2021.10/bin/../lib/gcc/arm-none-eabi/10.3.1/../../../../arm-none-eabi/lib/thumb/v6-m/nofp/libc.a(lib_a-stdio.o)
- .debug_frame   0x0000000000000ddc       0x28 /home/tulip/gcc-arm-none-eabi-10.3-2021.10-x86_64-linux/gcc-arm-none-eabi-10.3-2021.10/bin/../lib/gcc/arm-none-eabi/10.3.1/../../../../arm-none-eabi/lib/thumb/v6-m/nofp/libc.a(lib_a-strlen-stub.o)
- .debug_frame   0x0000000000000e04       0x30 /home/tulip/gcc-arm-none-eabi-10.3-2021.10-x86_64-linux/gcc-arm-none-eabi-10.3-2021.10/bin/../lib/gcc/arm-none-eabi/10.3.1/../../../../arm-none-eabi/lib/thumb/v6-m/nofp/libc.a(lib_a-strncpy.o)
- .debug_frame   0x0000000000000e34       0x68 /home/tulip/gcc-arm-none-eabi-10.3-2021.10-x86_64-linux/gcc-arm-none-eabi-10.3-2021.10/bin/../lib/gcc/arm-none-eabi/10.3.1/../../../../arm-none-eabi/lib/thumb/v6-m/nofp/libc.a(lib_a-svfiprintf.o)
- .debug_frame   0x0000000000000e9c       0xbc /home/tulip/gcc-arm-none-eabi-10.3-2021.10-x86_64-linux/gcc-arm-none-eabi-10.3-2021.10/bin/../lib/gcc/arm-none-eabi/10.3.1/../../../../arm-none-eabi/lib/thumb/v6-m/nofp/libc.a(lib_a-vfiprintf.o)
- .debug_frame   0x0000000000000f58       0x48 /home/tulip/gcc-arm-none-eabi-10.3-2021.10-x86_64-linux/gcc-arm-none-eabi-10.3-2021.10/bin/../lib/gcc/arm-none-eabi/10.3.1/../../../../arm-none-eabi/lib/thumb/v6-m/nofp/libc.a(lib_a-wbuf.o)
- .debug_frame   0x0000000000000fa0       0x2c /home/tulip/gcc-arm-none-eabi-10.3-2021.10-x86_64-linux/gcc-arm-none-eabi-10.3-2021.10/bin/../lib/gcc/arm-none-eabi/10.3.1/../../../../arm-none-eabi/lib/thumb/v6-m/nofp/libc.a(lib_a-writer.o)
- .debug_frame   0x0000000000000fcc       0x44 /home/tulip/gcc-arm-none-eabi-10.3-2021.10-x86_64-linux/gcc-arm-none-eabi-10.3-2021.10/bin/../lib/gcc/arm-none-eabi/10.3.1/../../../../arm-none-eabi/lib/thumb/v6-m/nofp/libc.a(lib_a-assert.o)
- .debug_frame   0x0000000000001010       0x2c /home/tulip/gcc-arm-none-eabi-10.3-2021.10-x86_64-linux/gcc-arm-none-eabi-10.3-2021.10/bin/../lib/gcc/arm-none-eabi/10.3.1/../../../../arm-none-eabi/lib/thumb/v6-m/nofp/libc.a(lib_a-callocr.o)
- .debug_frame   0x000000000000103c       0x2c /home/tulip/gcc-arm-none-eabi-10.3-2021.10-x86_64-linux/gcc-arm-none-eabi-10.3-2021.10/bin/../lib/gcc/arm-none-eabi/10.3.1/../../../../arm-none-eabi/lib/thumb/v6-m/nofp/libc.a(lib_a-closer.o)
- .debug_frame   0x0000000000001068       0x20 /home/tulip/gcc-arm-none-eabi-10.3-2021.10-x86_64-linux/gcc-arm-none-eabi-10.3-2021.10/bin/../lib/gcc/arm-none-eabi/10.3.1/../../../../arm-none-eabi/lib/thumb/v6-m/nofp/libc.a(lib_a-errno.o)
- .debug_frame   0x0000000000001088       0x48 /home/tulip/gcc-arm-none-eabi-10.3-2021.10-x86_64-linux/gcc-arm-none-eabi-10.3-2021.10/bin/../lib/gcc/arm-none-eabi/10.3.1/../../../../arm-none-eabi/lib/thumb/v6-m/nofp/libc.a(lib_a-fclose.o)
- .debug_frame   0x00000000000010d0       0x48 /home/tulip/gcc-arm-none-eabi-10.3-2021.10-x86_64-linux/gcc-arm-none-eabi-10.3-2021.10/bin/../lib/gcc/arm-none-eabi/10.3.1/../../../../arm-none-eabi/lib/thumb/v6-m/nofp/libc.a(lib_a-fiprintf.o)
- .debug_frame   0x0000000000001118       0x70 /home/tulip/gcc-arm-none-eabi-10.3-2021.10-x86_64-linux/gcc-arm-none-eabi-10.3-2021.10/bin/../lib/gcc/arm-none-eabi/10.3.1/../../../../arm-none-eabi/lib/thumb/v6-m/nofp/libc.a(lib_a-fputwc.o)
- .debug_frame   0x0000000000001188       0x2c /home/tulip/gcc-arm-none-eabi-10.3-2021.10-x86_64-linux/gcc-arm-none-eabi-10.3-2021.10/bin/../lib/gcc/arm-none-eabi/10.3.1/../../../../arm-none-eabi/lib/thumb/v6-m/nofp/libc.a(lib_a-fstatr.o)
- .debug_frame   0x00000000000011b4       0x3c /home/tulip/gcc-arm-none-eabi-10.3-2021.10-x86_64-linux/gcc-arm-none-eabi-10.3-2021.10/bin/../lib/gcc/arm-none-eabi/10.3.1/../../../../arm-none-eabi/lib/thumb/v6-m/nofp/libc.a(lib_a-fvwrite.o)
- .debug_frame   0x00000000000011f0       0x2c /home/tulip/gcc-arm-none-eabi-10.3-2021.10-x86_64-linux/gcc-arm-none-eabi-10.3-2021.10/bin/../lib/gcc/arm-none-eabi/10.3.1/../../../../arm-none-eabi/lib/thumb/v6-m/nofp/libc.a(lib_a-isattyr.o)
- .debug_frame   0x000000000000121c       0x58 /home/tulip/gcc-arm-none-eabi-10.3-2021.10-x86_64-linux/gcc-arm-none-eabi-10.3-2021.10/bin/../lib/gcc/arm-none-eabi/10.3.1/../../../../arm-none-eabi/lib/thumb/v6-m/nofp/libc.a(lib_a-locale.o)
- .debug_frame   0x0000000000001274       0x2c /home/tulip/gcc-arm-none-eabi-10.3-2021.10-x86_64-linux/gcc-arm-none-eabi-10.3-2021.10/bin/../lib/gcc/arm-none-eabi/10.3.1/../../../../arm-none-eabi/lib/thumb/v6-m/nofp/libc.a(lib_a-lseekr.o)
- .debug_frame   0x00000000000012a0       0x40 /home/tulip/gcc-arm-none-eabi-10.3-2021.10-x86_64-linux/gcc-arm-none-eabi-10.3-2021.10/bin/../lib/gcc/arm-none-eabi/10.3.1/../../../../arm-none-eabi/lib/thumb/v6-m/nofp/libc.a(lib_a-mbtowc_r.o)
- .debug_frame   0x00000000000012e0       0x30 /home/tulip/gcc-arm-none-eabi-10.3-2021.10-x86_64-linux/gcc-arm-none-eabi-10.3-2021.10/bin/../lib/gcc/arm-none-eabi/10.3.1/../../../../arm-none-eabi/lib/thumb/v6-m/nofp/libc.a(lib_a-memmove.o)
- .debug_frame   0x0000000000001310       0x2c /home/tulip/gcc-arm-none-eabi-10.3-2021.10-x86_64-linux/gcc-arm-none-eabi-10.3-2021.10/bin/../lib/gcc/arm-none-eabi/10.3.1/../../../../arm-none-eabi/lib/thumb/v6-m/nofp/libc.a(lib_a-readr.o)
- .debug_frame   0x000000000000133c       0x3c /home/tulip/gcc-arm-none-eabi-10.3-2021.10-x86_64-linux/gcc-arm-none-eabi-10.3-2021.10/bin/../lib/gcc/arm-none-eabi/10.3.1/../../../../arm-none-eabi/lib/thumb/v6-m/nofp/libc.a(lib_a-reallocr.o)
- .debug_frame   0x0000000000001378       0x50 /home/tulip/gcc-arm-none-eabi-10.3-2021.10-x86_64-linux/gcc-arm-none-eabi-10.3-2021.10/bin/../lib/gcc/arm-none-eabi/10.3.1/../../../../arm-none-eabi/lib/thumb/v6-m/nofp/libc.a(lib_a-wcrtomb.o)
- .debug_frame   0x00000000000013c8       0x3c /home/tulip/gcc-arm-none-eabi-10.3-2021.10-x86_64-linux/gcc-arm-none-eabi-10.3-2021.10/bin/../lib/gcc/arm-none-eabi/10.3.1/../../../../arm-none-eabi/lib/thumb/v6-m/nofp/libc.a(lib_a-wctomb_r.o)
- .debug_frame   0x0000000000001404       0x28 /home/tulip/gcc-arm-none-eabi-10.3-2021.10-x86_64-linux/gcc-arm-none-eabi-10.3-2021.10/bin/../lib/gcc/arm-none-eabi/10.3.1/../../../../arm-none-eabi/lib/thumb/v6-m/nofp/libc.a(lib_a-abort.o)
- .debug_frame   0x000000000000142c       0xfc /home/tulip/gcc-arm-none-eabi-10.3-2021.10-x86_64-linux/gcc-arm-none-eabi-10.3-2021.10/bin/../lib/gcc/arm-none-eabi/10.3.1/../../../../arm-none-eabi/lib/thumb/v6-m/nofp/libc.a(lib_a-signal.o)
- .debug_frame   0x0000000000001528       0x44 /home/tulip/gcc-arm-none-eabi-10.3-2021.10-x86_64-linux/gcc-arm-none-eabi-10.3-2021.10/bin/../lib/gcc/arm-none-eabi/10.3.1/../../../../arm-none-eabi/lib/thumb/v6-m/nofp/libc.a(lib_a-signalr.o)
- .debug_frame   0x000000000000156c       0x20 /home/tulip/gcc-arm-none-eabi-10.3-2021.10-x86_64-linux/gcc-arm-none-eabi-10.3-2021.10/bin/../lib/gcc/arm-none-eabi/10.3.1/thumb/v6-m/nofp/libgcc.a(_udivsi3.o)
- .debug_frame   0x000000000000158c       0x20 /home/tulip/gcc-arm-none-eabi-10.3-2021.10-x86_64-linux/gcc-arm-none-eabi-10.3-2021.10/bin/../lib/gcc/arm-none-eabi/10.3.1/thumb/v6-m/nofp/libgcc.a(_divsi3.o)
- .debug_frame   0x00000000000015ac       0x3c /home/tulip/gcc-arm-none-eabi-10.3-2021.10-x86_64-linux/gcc-arm-none-eabi-10.3-2021.10/bin/../lib/gcc/arm-none-eabi/10.3.1/thumb/v6-m/nofp/libgcc.a(_udivmoddi4.o)
- .debug_frame   0x00000000000015e8       0x38 /home/tulip/gcc-arm-none-eabi-10.3-2021.10-x86_64-linux/gcc-arm-none-eabi-10.3-2021.10/bin/../lib/gcc/arm-none-eabi/10.3.1/thumb/v6-m/nofp/libgcc.a(adddf3.o)
- .debug_frame   0x0000000000001620       0x3c /home/tulip/gcc-arm-none-eabi-10.3-2021.10-x86_64-linux/gcc-arm-none-eabi-10.3-2021.10/bin/../lib/gcc/arm-none-eabi/10.3.1/thumb/v6-m/nofp/libgcc.a(divdf3.o)
- .debug_frame   0x000000000000165c       0x38 /home/tulip/gcc-arm-none-eabi-10.3-2021.10-x86_64-linux/gcc-arm-none-eabi-10.3-2021.10/bin/../lib/gcc/arm-none-eabi/10.3.1/thumb/v6-m/nofp/libgcc.a(eqdf2.o)
- .debug_frame   0x0000000000001694       0x34 /home/tulip/gcc-arm-none-eabi-10.3-2021.10-x86_64-linux/gcc-arm-none-eabi-10.3-2021.10/bin/../lib/gcc/arm-none-eabi/10.3.1/thumb/v6-m/nofp/libgcc.a(gedf2.o)
- .debug_frame   0x00000000000016c8       0x34 /home/tulip/gcc-arm-none-eabi-10.3-2021.10-x86_64-linux/gcc-arm-none-eabi-10.3-2021.10/bin/../lib/gcc/arm-none-eabi/10.3.1/thumb/v6-m/nofp/libgcc.a(ledf2.o)
- .debug_frame   0x00000000000016fc       0x3c /home/tulip/gcc-arm-none-eabi-10.3-2021.10-x86_64-linux/gcc-arm-none-eabi-10.3-2021.10/bin/../lib/gcc/arm-none-eabi/10.3.1/thumb/v6-m/nofp/libgcc.a(muldf3.o)
- .debug_frame   0x0000000000001738       0x3c /home/tulip/gcc-arm-none-eabi-10.3-2021.10-x86_64-linux/gcc-arm-none-eabi-10.3-2021.10/bin/../lib/gcc/arm-none-eabi/10.3.1/thumb/v6-m/nofp/libgcc.a(subdf3.o)
- .debug_frame   0x0000000000001774       0x2c /home/tulip/gcc-arm-none-eabi-10.3-2021.10-x86_64-linux/gcc-arm-none-eabi-10.3-2021.10/bin/../lib/gcc/arm-none-eabi/10.3.1/thumb/v6-m/nofp/libgcc.a(unorddf2.o)
- .debug_frame   0x00000000000017a0       0x2c /home/tulip/gcc-arm-none-eabi-10.3-2021.10-x86_64-linux/gcc-arm-none-eabi-10.3-2021.10/bin/../lib/gcc/arm-none-eabi/10.3.1/thumb/v6-m/nofp/libgcc.a(fixdfsi.o)
- .debug_frame   0x00000000000017cc       0x2c /home/tulip/gcc-arm-none-eabi-10.3-2021.10-x86_64-linux/gcc-arm-none-eabi-10.3-2021.10/bin/../lib/gcc/arm-none-eabi/10.3.1/thumb/v6-m/nofp/libgcc.a(floatsidf.o)
- .debug_frame   0x00000000000017f8       0x28 /home/tulip/gcc-arm-none-eabi-10.3-2021.10-x86_64-linux/gcc-arm-none-eabi-10.3-2021.10/bin/../lib/gcc/arm-none-eabi/10.3.1/thumb/v6-m/nofp/libgcc.a(floatunsidf.o)
+ .debug_frame   0x0000000000000058       0xec build/ble_print.o
+ .debug_frame   0x0000000000000144       0x38 build/leds.o
+ .debug_frame   0x000000000000017c       0x58 build/Main.o
+ .debug_frame   0x00000000000001d4       0x38 build/startup.o
+ .debug_frame   0x000000000000020c       0xc4 build/stdlib_impl.o
+ .debug_frame   0x00000000000002d0       0x30 build/uart.o
+ .debug_frame   0x0000000000000300       0x2c /home/tulip/gcc-arm-none-eabi-10.3-2021.10-x86_64-linux/gcc-arm-none-eabi-10.3-2021.10/bin/../lib/gcc/arm-none-eabi/10.3.1/../../../../arm-none-eabi/lib/thumb/v6-m/nofp/libc.a(lib_a-memcmp.o)
+ .debug_frame   0x000000000000032c       0x34 /home/tulip/gcc-arm-none-eabi-10.3-2021.10-x86_64-linux/gcc-arm-none-eabi-10.3-2021.10/bin/../lib/gcc/arm-none-eabi/10.3.1/../../../../arm-none-eabi/lib/thumb/v6-m/nofp/libc.a(lib_a-memcpy-stub.o)
+ .debug_frame   0x0000000000000360       0x30 /home/tulip/gcc-arm-none-eabi-10.3-2021.10-x86_64-linux/gcc-arm-none-eabi-10.3-2021.10/bin/../lib/gcc/arm-none-eabi/10.3.1/../../../../arm-none-eabi/lib/thumb/v6-m/nofp/libc.a(lib_a-memset.o)
+ .debug_frame   0x0000000000000390       0x48 /home/tulip/gcc-arm-none-eabi-10.3-2021.10-x86_64-linux/gcc-arm-none-eabi-10.3-2021.10/bin/../lib/gcc/arm-none-eabi/10.3.1/../../../../arm-none-eabi/lib/thumb/v6-m/nofp/libc.a(lib_a-printf.o)
+ .debug_frame   0x00000000000003d8       0x40 /home/tulip/gcc-arm-none-eabi-10.3-2021.10-x86_64-linux/gcc-arm-none-eabi-10.3-2021.10/bin/../lib/gcc/arm-none-eabi/10.3.1/../../../../arm-none-eabi/lib/thumb/v6-m/nofp/libc.a(lib_a-putchar.o)
+ .debug_frame   0x0000000000000418       0x50 /home/tulip/gcc-arm-none-eabi-10.3-2021.10-x86_64-linux/gcc-arm-none-eabi-10.3-2021.10/bin/../lib/gcc/arm-none-eabi/10.3.1/../../../../arm-none-eabi/lib/thumb/v6-m/nofp/libc.a(lib_a-reent.o)
+ .debug_frame   0x0000000000000468       0x48 /home/tulip/gcc-arm-none-eabi-10.3-2021.10-x86_64-linux/gcc-arm-none-eabi-10.3-2021.10/bin/../lib/gcc/arm-none-eabi/10.3.1/../../../../arm-none-eabi/lib/thumb/v6-m/nofp/libc.a(lib_a-sprintf.o)
+ .debug_frame   0x00000000000004b0       0x3c /home/tulip/gcc-arm-none-eabi-10.3-2021.10-x86_64-linux/gcc-arm-none-eabi-10.3-2021.10/bin/../lib/gcc/arm-none-eabi/10.3.1/../../../../arm-none-eabi/lib/thumb/v6-m/nofp/libc.a(lib_a-svfprintf.o)
+ .debug_frame   0x00000000000004ec       0x78 /home/tulip/gcc-arm-none-eabi-10.3-2021.10-x86_64-linux/gcc-arm-none-eabi-10.3-2021.10/bin/../lib/gcc/arm-none-eabi/10.3.1/../../../../arm-none-eabi/lib/thumb/v6-m/nofp/libc.a(lib_a-vfprintf.o)
+ .debug_frame   0x0000000000000564       0x2c /home/tulip/gcc-arm-none-eabi-10.3-2021.10-x86_64-linux/gcc-arm-none-eabi-10.3-2021.10/bin/../lib/gcc/arm-none-eabi/10.3.1/../../../../arm-none-eabi/lib/thumb/v6-m/nofp/libc.a(lib_a-wsetup.o)
+ .debug_frame   0x0000000000000590       0x68 /home/tulip/gcc-arm-none-eabi-10.3-2021.10-x86_64-linux/gcc-arm-none-eabi-10.3-2021.10/bin/../lib/gcc/arm-none-eabi/10.3.1/../../../../arm-none-eabi/lib/thumb/v6-m/nofp/libc.a(lib_a-dtoa.o)
+ .debug_frame   0x00000000000005f8       0x6c /home/tulip/gcc-arm-none-eabi-10.3-2021.10-x86_64-linux/gcc-arm-none-eabi-10.3-2021.10/bin/../lib/gcc/arm-none-eabi/10.3.1/../../../../arm-none-eabi/lib/thumb/v6-m/nofp/libc.a(lib_a-fflush.o)
+ .debug_frame   0x0000000000000664      0x170 /home/tulip/gcc-arm-none-eabi-10.3-2021.10-x86_64-linux/gcc-arm-none-eabi-10.3-2021.10/bin/../lib/gcc/arm-none-eabi/10.3.1/../../../../arm-none-eabi/lib/thumb/v6-m/nofp/libc.a(lib_a-findfp.o)
+ .debug_frame   0x00000000000007d4       0x54 /home/tulip/gcc-arm-none-eabi-10.3-2021.10-x86_64-linux/gcc-arm-none-eabi-10.3-2021.10/bin/../lib/gcc/arm-none-eabi/10.3.1/../../../../arm-none-eabi/lib/thumb/v6-m/nofp/libc.a(lib_a-freer.o)
+ .debug_frame   0x0000000000000828       0x5c /home/tulip/gcc-arm-none-eabi-10.3-2021.10-x86_64-linux/gcc-arm-none-eabi-10.3-2021.10/bin/../lib/gcc/arm-none-eabi/10.3.1/../../../../arm-none-eabi/lib/thumb/v6-m/nofp/libc.a(lib_a-fwalk.o)
+ .debug_frame   0x0000000000000884       0x40 /home/tulip/gcc-arm-none-eabi-10.3-2021.10-x86_64-linux/gcc-arm-none-eabi-10.3-2021.10/bin/../lib/gcc/arm-none-eabi/10.3.1/../../../../arm-none-eabi/lib/thumb/v6-m/nofp/libc.a(lib_a-localeconv.o)
+ .debug_frame   0x00000000000008c4       0xb0 /home/tulip/gcc-arm-none-eabi-10.3-2021.10-x86_64-linux/gcc-arm-none-eabi-10.3-2021.10/bin/../lib/gcc/arm-none-eabi/10.3.1/../../../../arm-none-eabi/lib/thumb/v6-m/nofp/libc.a(lib_a-lock.o)
+ .debug_frame   0x0000000000000974       0x58 /home/tulip/gcc-arm-none-eabi-10.3-2021.10-x86_64-linux/gcc-arm-none-eabi-10.3-2021.10/bin/../lib/gcc/arm-none-eabi/10.3.1/../../../../arm-none-eabi/lib/thumb/v6-m/nofp/libc.a(lib_a-makebuf.o)
+ .debug_frame   0x00000000000009cc       0x3c /home/tulip/gcc-arm-none-eabi-10.3-2021.10-x86_64-linux/gcc-arm-none-eabi-10.3-2021.10/bin/../lib/gcc/arm-none-eabi/10.3.1/../../../../arm-none-eabi/lib/thumb/v6-m/nofp/libc.a(lib_a-mallocr.o)
+ .debug_frame   0x0000000000000a08       0x2c /home/tulip/gcc-arm-none-eabi-10.3-2021.10-x86_64-linux/gcc-arm-none-eabi-10.3-2021.10/bin/../lib/gcc/arm-none-eabi/10.3.1/../../../../arm-none-eabi/lib/thumb/v6-m/nofp/libc.a(lib_a-memchr-stub.o)
+ .debug_frame   0x0000000000000a34       0x40 /home/tulip/gcc-arm-none-eabi-10.3-2021.10-x86_64-linux/gcc-arm-none-eabi-10.3-2021.10/bin/../lib/gcc/arm-none-eabi/10.3.1/../../../../arm-none-eabi/lib/thumb/v6-m/nofp/libc.a(lib_a-mlock.o)
+ .debug_frame   0x0000000000000a74      0x258 /home/tulip/gcc-arm-none-eabi-10.3-2021.10-x86_64-linux/gcc-arm-none-eabi-10.3-2021.10/bin/../lib/gcc/arm-none-eabi/10.3.1/../../../../arm-none-eabi/lib/thumb/v6-m/nofp/libc.a(lib_a-mprec.o)
+ .debug_frame   0x0000000000000ccc       0x48 /home/tulip/gcc-arm-none-eabi-10.3-2021.10-x86_64-linux/gcc-arm-none-eabi-10.3-2021.10/bin/../lib/gcc/arm-none-eabi/10.3.1/../../../../arm-none-eabi/lib/thumb/v6-m/nofp/libc.a(lib_a-putc.o)
+ .debug_frame   0x0000000000000d14       0x2c /home/tulip/gcc-arm-none-eabi-10.3-2021.10-x86_64-linux/gcc-arm-none-eabi-10.3-2021.10/bin/../lib/gcc/arm-none-eabi/10.3.1/../../../../arm-none-eabi/lib/thumb/v6-m/nofp/libc.a(lib_a-s_frexp.o)
+ .debug_frame   0x0000000000000d40       0x2c /home/tulip/gcc-arm-none-eabi-10.3-2021.10-x86_64-linux/gcc-arm-none-eabi-10.3-2021.10/bin/../lib/gcc/arm-none-eabi/10.3.1/../../../../arm-none-eabi/lib/thumb/v6-m/nofp/libc.a(lib_a-sbrkr.o)
+ .debug_frame   0x0000000000000d6c       0x90 /home/tulip/gcc-arm-none-eabi-10.3-2021.10-x86_64-linux/gcc-arm-none-eabi-10.3-2021.10/bin/../lib/gcc/arm-none-eabi/10.3.1/../../../../arm-none-eabi/lib/thumb/v6-m/nofp/libc.a(lib_a-stdio.o)
+ .debug_frame   0x0000000000000dfc       0x28 /home/tulip/gcc-arm-none-eabi-10.3-2021.10-x86_64-linux/gcc-arm-none-eabi-10.3-2021.10/bin/../lib/gcc/arm-none-eabi/10.3.1/../../../../arm-none-eabi/lib/thumb/v6-m/nofp/libc.a(lib_a-strlen-stub.o)
+ .debug_frame   0x0000000000000e24       0x30 /home/tulip/gcc-arm-none-eabi-10.3-2021.10-x86_64-linux/gcc-arm-none-eabi-10.3-2021.10/bin/../lib/gcc/arm-none-eabi/10.3.1/../../../../arm-none-eabi/lib/thumb/v6-m/nofp/libc.a(lib_a-strncpy.o)
+ .debug_frame   0x0000000000000e54       0x68 /home/tulip/gcc-arm-none-eabi-10.3-2021.10-x86_64-linux/gcc-arm-none-eabi-10.3-2021.10/bin/../lib/gcc/arm-none-eabi/10.3.1/../../../../arm-none-eabi/lib/thumb/v6-m/nofp/libc.a(lib_a-svfiprintf.o)
+ .debug_frame   0x0000000000000ebc       0xbc /home/tulip/gcc-arm-none-eabi-10.3-2021.10-x86_64-linux/gcc-arm-none-eabi-10.3-2021.10/bin/../lib/gcc/arm-none-eabi/10.3.1/../../../../arm-none-eabi/lib/thumb/v6-m/nofp/libc.a(lib_a-vfiprintf.o)
+ .debug_frame   0x0000000000000f78       0x48 /home/tulip/gcc-arm-none-eabi-10.3-2021.10-x86_64-linux/gcc-arm-none-eabi-10.3-2021.10/bin/../lib/gcc/arm-none-eabi/10.3.1/../../../../arm-none-eabi/lib/thumb/v6-m/nofp/libc.a(lib_a-wbuf.o)
+ .debug_frame   0x0000000000000fc0       0x2c /home/tulip/gcc-arm-none-eabi-10.3-2021.10-x86_64-linux/gcc-arm-none-eabi-10.3-2021.10/bin/../lib/gcc/arm-none-eabi/10.3.1/../../../../arm-none-eabi/lib/thumb/v6-m/nofp/libc.a(lib_a-writer.o)
+ .debug_frame   0x0000000000000fec       0x44 /home/tulip/gcc-arm-none-eabi-10.3-2021.10-x86_64-linux/gcc-arm-none-eabi-10.3-2021.10/bin/../lib/gcc/arm-none-eabi/10.3.1/../../../../arm-none-eabi/lib/thumb/v6-m/nofp/libc.a(lib_a-assert.o)
+ .debug_frame   0x0000000000001030       0x2c /home/tulip/gcc-arm-none-eabi-10.3-2021.10-x86_64-linux/gcc-arm-none-eabi-10.3-2021.10/bin/../lib/gcc/arm-none-eabi/10.3.1/../../../../arm-none-eabi/lib/thumb/v6-m/nofp/libc.a(lib_a-callocr.o)
+ .debug_frame   0x000000000000105c       0x2c /home/tulip/gcc-arm-none-eabi-10.3-2021.10-x86_64-linux/gcc-arm-none-eabi-10.3-2021.10/bin/../lib/gcc/arm-none-eabi/10.3.1/../../../../arm-none-eabi/lib/thumb/v6-m/nofp/libc.a(lib_a-closer.o)
+ .debug_frame   0x0000000000001088       0x20 /home/tulip/gcc-arm-none-eabi-10.3-2021.10-x86_64-linux/gcc-arm-none-eabi-10.3-2021.10/bin/../lib/gcc/arm-none-eabi/10.3.1/../../../../arm-none-eabi/lib/thumb/v6-m/nofp/libc.a(lib_a-errno.o)
+ .debug_frame   0x00000000000010a8       0x48 /home/tulip/gcc-arm-none-eabi-10.3-2021.10-x86_64-linux/gcc-arm-none-eabi-10.3-2021.10/bin/../lib/gcc/arm-none-eabi/10.3.1/../../../../arm-none-eabi/lib/thumb/v6-m/nofp/libc.a(lib_a-fclose.o)
+ .debug_frame   0x00000000000010f0       0x48 /home/tulip/gcc-arm-none-eabi-10.3-2021.10-x86_64-linux/gcc-arm-none-eabi-10.3-2021.10/bin/../lib/gcc/arm-none-eabi/10.3.1/../../../../arm-none-eabi/lib/thumb/v6-m/nofp/libc.a(lib_a-fiprintf.o)
+ .debug_frame   0x0000000000001138       0x70 /home/tulip/gcc-arm-none-eabi-10.3-2021.10-x86_64-linux/gcc-arm-none-eabi-10.3-2021.10/bin/../lib/gcc/arm-none-eabi/10.3.1/../../../../arm-none-eabi/lib/thumb/v6-m/nofp/libc.a(lib_a-fputwc.o)
+ .debug_frame   0x00000000000011a8       0x2c /home/tulip/gcc-arm-none-eabi-10.3-2021.10-x86_64-linux/gcc-arm-none-eabi-10.3-2021.10/bin/../lib/gcc/arm-none-eabi/10.3.1/../../../../arm-none-eabi/lib/thumb/v6-m/nofp/libc.a(lib_a-fstatr.o)
+ .debug_frame   0x00000000000011d4       0x3c /home/tulip/gcc-arm-none-eabi-10.3-2021.10-x86_64-linux/gcc-arm-none-eabi-10.3-2021.10/bin/../lib/gcc/arm-none-eabi/10.3.1/../../../../arm-none-eabi/lib/thumb/v6-m/nofp/libc.a(lib_a-fvwrite.o)
+ .debug_frame   0x0000000000001210       0x2c /home/tulip/gcc-arm-none-eabi-10.3-2021.10-x86_64-linux/gcc-arm-none-eabi-10.3-2021.10/bin/../lib/gcc/arm-none-eabi/10.3.1/../../../../arm-none-eabi/lib/thumb/v6-m/nofp/libc.a(lib_a-isattyr.o)
+ .debug_frame   0x000000000000123c       0x58 /home/tulip/gcc-arm-none-eabi-10.3-2021.10-x86_64-linux/gcc-arm-none-eabi-10.3-2021.10/bin/../lib/gcc/arm-none-eabi/10.3.1/../../../../arm-none-eabi/lib/thumb/v6-m/nofp/libc.a(lib_a-locale.o)
+ .debug_frame   0x0000000000001294       0x2c /home/tulip/gcc-arm-none-eabi-10.3-2021.10-x86_64-linux/gcc-arm-none-eabi-10.3-2021.10/bin/../lib/gcc/arm-none-eabi/10.3.1/../../../../arm-none-eabi/lib/thumb/v6-m/nofp/libc.a(lib_a-lseekr.o)
+ .debug_frame   0x00000000000012c0       0x40 /home/tulip/gcc-arm-none-eabi-10.3-2021.10-x86_64-linux/gcc-arm-none-eabi-10.3-2021.10/bin/../lib/gcc/arm-none-eabi/10.3.1/../../../../arm-none-eabi/lib/thumb/v6-m/nofp/libc.a(lib_a-mbtowc_r.o)
+ .debug_frame   0x0000000000001300       0x30 /home/tulip/gcc-arm-none-eabi-10.3-2021.10-x86_64-linux/gcc-arm-none-eabi-10.3-2021.10/bin/../lib/gcc/arm-none-eabi/10.3.1/../../../../arm-none-eabi/lib/thumb/v6-m/nofp/libc.a(lib_a-memmove.o)
+ .debug_frame   0x0000000000001330       0x2c /home/tulip/gcc-arm-none-eabi-10.3-2021.10-x86_64-linux/gcc-arm-none-eabi-10.3-2021.10/bin/../lib/gcc/arm-none-eabi/10.3.1/../../../../arm-none-eabi/lib/thumb/v6-m/nofp/libc.a(lib_a-readr.o)
+ .debug_frame   0x000000000000135c       0x3c /home/tulip/gcc-arm-none-eabi-10.3-2021.10-x86_64-linux/gcc-arm-none-eabi-10.3-2021.10/bin/../lib/gcc/arm-none-eabi/10.3.1/../../../../arm-none-eabi/lib/thumb/v6-m/nofp/libc.a(lib_a-reallocr.o)
+ .debug_frame   0x0000000000001398       0x50 /home/tulip/gcc-arm-none-eabi-10.3-2021.10-x86_64-linux/gcc-arm-none-eabi-10.3-2021.10/bin/../lib/gcc/arm-none-eabi/10.3.1/../../../../arm-none-eabi/lib/thumb/v6-m/nofp/libc.a(lib_a-wcrtomb.o)
+ .debug_frame   0x00000000000013e8       0x3c /home/tulip/gcc-arm-none-eabi-10.3-2021.10-x86_64-linux/gcc-arm-none-eabi-10.3-2021.10/bin/../lib/gcc/arm-none-eabi/10.3.1/../../../../arm-none-eabi/lib/thumb/v6-m/nofp/libc.a(lib_a-wctomb_r.o)
+ .debug_frame   0x0000000000001424       0x28 /home/tulip/gcc-arm-none-eabi-10.3-2021.10-x86_64-linux/gcc-arm-none-eabi-10.3-2021.10/bin/../lib/gcc/arm-none-eabi/10.3.1/../../../../arm-none-eabi/lib/thumb/v6-m/nofp/libc.a(lib_a-abort.o)
+ .debug_frame   0x000000000000144c       0xfc /home/tulip/gcc-arm-none-eabi-10.3-2021.10-x86_64-linux/gcc-arm-none-eabi-10.3-2021.10/bin/../lib/gcc/arm-none-eabi/10.3.1/../../../../arm-none-eabi/lib/thumb/v6-m/nofp/libc.a(lib_a-signal.o)
+ .debug_frame   0x0000000000001548       0x44 /home/tulip/gcc-arm-none-eabi-10.3-2021.10-x86_64-linux/gcc-arm-none-eabi-10.3-2021.10/bin/../lib/gcc/arm-none-eabi/10.3.1/../../../../arm-none-eabi/lib/thumb/v6-m/nofp/libc.a(lib_a-signalr.o)
+ .debug_frame   0x000000000000158c       0x20 /home/tulip/gcc-arm-none-eabi-10.3-2021.10-x86_64-linux/gcc-arm-none-eabi-10.3-2021.10/bin/../lib/gcc/arm-none-eabi/10.3.1/thumb/v6-m/nofp/libgcc.a(_udivsi3.o)
+ .debug_frame   0x00000000000015ac       0x20 /home/tulip/gcc-arm-none-eabi-10.3-2021.10-x86_64-linux/gcc-arm-none-eabi-10.3-2021.10/bin/../lib/gcc/arm-none-eabi/10.3.1/thumb/v6-m/nofp/libgcc.a(_divsi3.o)
+ .debug_frame   0x00000000000015cc       0x3c /home/tulip/gcc-arm-none-eabi-10.3-2021.10-x86_64-linux/gcc-arm-none-eabi-10.3-2021.10/bin/../lib/gcc/arm-none-eabi/10.3.1/thumb/v6-m/nofp/libgcc.a(_udivmoddi4.o)
+ .debug_frame   0x0000000000001608       0x38 /home/tulip/gcc-arm-none-eabi-10.3-2021.10-x86_64-linux/gcc-arm-none-eabi-10.3-2021.10/bin/../lib/gcc/arm-none-eabi/10.3.1/thumb/v6-m/nofp/libgcc.a(adddf3.o)
+ .debug_frame   0x0000000000001640       0x3c /home/tulip/gcc-arm-none-eabi-10.3-2021.10-x86_64-linux/gcc-arm-none-eabi-10.3-2021.10/bin/../lib/gcc/arm-none-eabi/10.3.1/thumb/v6-m/nofp/libgcc.a(divdf3.o)
+ .debug_frame   0x000000000000167c       0x38 /home/tulip/gcc-arm-none-eabi-10.3-2021.10-x86_64-linux/gcc-arm-none-eabi-10.3-2021.10/bin/../lib/gcc/arm-none-eabi/10.3.1/thumb/v6-m/nofp/libgcc.a(eqdf2.o)
+ .debug_frame   0x00000000000016b4       0x34 /home/tulip/gcc-arm-none-eabi-10.3-2021.10-x86_64-linux/gcc-arm-none-eabi-10.3-2021.10/bin/../lib/gcc/arm-none-eabi/10.3.1/thumb/v6-m/nofp/libgcc.a(gedf2.o)
+ .debug_frame   0x00000000000016e8       0x34 /home/tulip/gcc-arm-none-eabi-10.3-2021.10-x86_64-linux/gcc-arm-none-eabi-10.3-2021.10/bin/../lib/gcc/arm-none-eabi/10.3.1/thumb/v6-m/nofp/libgcc.a(ledf2.o)
+ .debug_frame   0x000000000000171c       0x3c /home/tulip/gcc-arm-none-eabi-10.3-2021.10-x86_64-linux/gcc-arm-none-eabi-10.3-2021.10/bin/../lib/gcc/arm-none-eabi/10.3.1/thumb/v6-m/nofp/libgcc.a(muldf3.o)
+ .debug_frame   0x0000000000001758       0x3c /home/tulip/gcc-arm-none-eabi-10.3-2021.10-x86_64-linux/gcc-arm-none-eabi-10.3-2021.10/bin/../lib/gcc/arm-none-eabi/10.3.1/thumb/v6-m/nofp/libgcc.a(subdf3.o)
+ .debug_frame   0x0000000000001794       0x2c /home/tulip/gcc-arm-none-eabi-10.3-2021.10-x86_64-linux/gcc-arm-none-eabi-10.3-2021.10/bin/../lib/gcc/arm-none-eabi/10.3.1/thumb/v6-m/nofp/libgcc.a(unorddf2.o)
+ .debug_frame   0x00000000000017c0       0x2c /home/tulip/gcc-arm-none-eabi-10.3-2021.10-x86_64-linux/gcc-arm-none-eabi-10.3-2021.10/bin/../lib/gcc/arm-none-eabi/10.3.1/thumb/v6-m/nofp/libgcc.a(fixdfsi.o)
+ .debug_frame   0x00000000000017ec       0x2c /home/tulip/gcc-arm-none-eabi-10.3-2021.10-x86_64-linux/gcc-arm-none-eabi-10.3-2021.10/bin/../lib/gcc/arm-none-eabi/10.3.1/thumb/v6-m/nofp/libgcc.a(floatsidf.o)
+ .debug_frame   0x0000000000001818       0x28 /home/tulip/gcc-arm-none-eabi-10.3-2021.10-x86_64-linux/gcc-arm-none-eabi-10.3-2021.10/bin/../lib/gcc/arm-none-eabi/10.3.1/thumb/v6-m/nofp/libgcc.a(floatunsidf.o)
