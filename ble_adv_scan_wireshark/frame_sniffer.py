@@ -11,6 +11,7 @@ import struct
 import binascii
 import pcaplib
 from datetime import datetime
+import argparse
 
 stop_read = False
 exit_app = False
@@ -34,7 +35,6 @@ def read_serial(serial_handle):
             continue
         buffer.extend(c)
         start_search_buffer.extend(c)
-        # print(c, end='')
         try:
             if c.decode() == '\n':
                 start_search_buffer = bytearray()
@@ -46,7 +46,6 @@ def read_serial(serial_handle):
                 start_search_buffer = bytearray()
                 buffer = bytearray()
         except UnicodeDecodeError as e:
-            # print(c, end='')
             pass
 
 def signal_handler(sig, frame):
@@ -56,9 +55,23 @@ def signal_handler(sig, frame):
     stop_read = True
     exit_app = True
 
+def clear_serial_input_buf(serial_handle):
+    time_start = time.time()
+    while True:
+        serial_handle.readline()
+        if time.time() - time_start > 1:
+            break
+
 if __name__ == '__main__':
     print("ble sniffer")
     signal.signal(signal.SIGINT, signal_handler)
+
+    parser = argparse.ArgumentParser(
+                    prog='ble_adv_sniffer',
+                    description='Recevices data using serial interface from nrf51422 sniffer, then generates pcap frames which are aby default passed to linux fifo',
+                    epilog=' ')
+    parser.add_argument('-o','--outfile', help='specifies output pcap file instead using fifo')
+    parsed = parser.parse_args()
 
     try:
         serial_handle = serial.Serial(
@@ -78,28 +91,29 @@ if __name__ == '__main__':
         print("Port not opened")
         exit(1)
 
-    # Clear input buffer
-    time_start = time.time()
-    while True:
-        serial_handle.readline()
-        if time.time() - time_start > 1:
-            break
+    clear_serial_input_buf(serial_handle)
 
     t = Thread(target=read_serial, args=[serial_handle])
     t.start()
 
-    path = "/tmp/ble_sniffer_fifo"
-    try:
-        os.mkfifo(path)
-        print(f"Named pipe created at: {path}")
-    except FileExistsError:
-        print(f"Named pipe already exists at: {path}")
-    except OSError as e:
-        print(f"Error: {e}")
+    path = None
 
-    print(f"Run wireshark:  wireshark -Y btle -k -i {path}")
-    input("Press Enter to continue...")
-    # pcaplib.generate_new_PCAP('ble_adv_dump.pcap')
+    if parsed.outfile is None:
+        path = "/tmp/ble_sniffer_fifo"
+        try:
+            os.mkfifo(path)
+            print(f"Named pipe created at: {path}")
+        except FileExistsError:
+            print(f"Named pipe already exists at: {path}")
+        except OSError as e:
+            print(f"Error: {e}")
+
+        print(f"Run wireshark:  wireshark -k -i {path}")
+        input("Press Enter to continue...")
+    else:
+        path = parsed.outfile
+        print(f"Output pcap file specified: {path}")
+
     pcaplib.generate_new_PCAP(path)
 
     first_frame = True
@@ -141,5 +155,6 @@ if __name__ == '__main__':
 
     t.join()
     serial_handle.close()
-    os.remove(path)
+    if parsed.outfile is None:
+        os.remove(path)
     print("\n\r")
