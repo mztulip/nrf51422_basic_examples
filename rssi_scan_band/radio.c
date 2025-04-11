@@ -78,7 +78,7 @@ void RADIO_IRQHandler()
     if (NRF_RADIO->EVENTS_READY && (NRF_RADIO->INTENSET & RADIO_INTENSET_READY_Msk))
     {
         NRF_RADIO->EVENTS_READY = 0;
-        printf("\n\rRadio ready");
+        // printf("\n\rRadio ready");
         NRF_RADIO->TASKS_RSSISTART = 1;
     }
 
@@ -95,15 +95,14 @@ void RADIO_IRQHandler()
     {
         NRF_RADIO->EVENTS_RSSIEND = 0;
         led_toogle(LED2);
-        printf("\n\rRSSI end event");
-        // int16_t rssi = -NRF_RADIO->RSSISAMPLE;
+        // printf("\n\rRSSI end event");
+        int16_t rssi = -NRF_RADIO->RSSISAMPLE;
    
 
     	// printf("\n\rRSSI: %ddBm \tMax: %d",rssi, max_rssi);
-        // print_colored(rssi, -100, -50);
+        print_colored(rssi, -100, -50);
      
-        NRF_RADIO->TASKS_DISABLE = 1;	
-        // NRF_RADIO->TASKS_RSSISTART = 1;	
+        NRF_RADIO->TASKS_DISABLE = 1;
     }
 
     if (NRF_RADIO->EVENTS_ADDRESS && (NRF_RADIO->INTENSET & RADIO_INTENSET_ADDRESS_Msk))
@@ -114,12 +113,12 @@ void RADIO_IRQHandler()
     if (NRF_RADIO->EVENTS_DISABLED && (NRF_RADIO->INTENSET & RADIO_INTENSET_DISABLED_Msk))
     {
         NRF_RADIO->EVENTS_DISABLED = 0;
-        printf("\n\rRadio disabled ");
+        // printf("\n\rRadio disabled ");
         static uint8_t frequency  = 0 ;
         frequency++;
         if (frequency > 100) {frequency = 0; printf("\n\r");}
         NRF_RADIO->FREQUENCY    = frequency;
-        printf("Freq: %d", frequency);
+        // printf("Freq: %d", frequency);
         NRF_RADIO->TASKS_RXEN  = 1;
     }
 }
