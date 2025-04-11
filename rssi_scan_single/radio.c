@@ -8,20 +8,15 @@
 
 static volatile uint8_t rx_pdu_buffer[255];
 
-void radio_init( uint8_t channel_number )
+void radio_init( void )
 {
     //nrf radio also have proprietary 1mbit mode
     NRF_RADIO->MODE = RADIO_MODE_MODE_Ble_1Mbit << RADIO_MODE_MODE_Pos;
 
-    // update_rf_payload_format_ble(channel_number);
-
 	const uint32_t radio_irq_priority = 1;
 	NVIC_SetPriority(RADIO_IRQn, radio_irq_priority & 0x03);
 
-    //Advertisement base address
-    //Tutaj wpisałem że base jest 3 bitowy wiec musze wyrzucić cześć do prefixu
-    //Bluetooth chce LSB FIRST wiec zacznie wysyłać od prawej stąd z adresu 0x8E89BED6
-    //0x8E jako ostatnie wyląduje w prefixie bo on jest wysyłany po base i też od LSB
+    //base address
     NRF_RADIO->BASE0 = 0x89BED611;
     NRF_RADIO->PREFIX0 = 0x8E;
 }

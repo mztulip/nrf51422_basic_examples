@@ -35,22 +35,19 @@ int main()
 	printf("\n\rHello rssi scanner.");
 
 	uint8_t channel = 37;
-	radio_init(channel);
+	radio_init();
 	radio_start_rx(channel);
 
 	uint32_t last_print = timer_get_time();
 
+	NRF_RADIO->TASKS_RSSISTART = 1;
 	while(1)
 	{
 	
 		if((timer_get_time() - last_print) > 1000) //execute every 1s
 		{
 			last_print = timer_get_time();
-			NRF_RADIO->TASKS_RSSISTART = 1;
-			// printf("\033[2J"); //VT100 clear screen
-			// uint8_t rssi = NRF_RADIO->RSSISAMPLE;
 			led_toogle(LED3);
-    		// printf("\n\rRSSI: -%ddBm",rssi);	
 		}
 	}
 }
