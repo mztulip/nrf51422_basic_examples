@@ -56,7 +56,7 @@ void radio_start_rx(void)
     NRF_RADIO->TASKS_RXEN  = 1;
 }
 
-uint8_t colors_vt100[] =  {90,94,34,36,96, 37,97,32,92,33,93,31,91};
+uint8_t colors_vt100[] =  {16,17,18,19,20,21,93,92,91,90,89,88,160};
 
 void print_colored(int16_t value, int16_t min, int16_t max)
 {
