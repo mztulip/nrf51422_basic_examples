@@ -5,5 +5,4 @@
 void update_frequency_marker(uint8_t dir);
 void draw_frequency_scale(void);
 void draw_frequency_marker(void);
-
 #endif

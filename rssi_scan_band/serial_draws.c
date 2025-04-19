@@ -1,5 +1,6 @@
 #include "serial_draws.h"
 #include <stdio.h>
+#include "uart.h"
 
 int32_t marker_pos = 0;
 int32_t marker_range = 125;
@@ -49,7 +50,6 @@ void draw_frequency_marker(void)
 {
 	draw_frequency_scale();
   	printf("\033[3;1H");//move cursor to row3 column1
-  	printf("\033[2K"); //erase line
  	uint32_t frequency = 2400+marker_pos;
   	printf("Marker pos: %luMHz",frequency);
 }
