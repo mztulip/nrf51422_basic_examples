@@ -116,7 +116,7 @@ void RADIO_IRQHandler()
         // printf("\n\rRadio disabled ");
         static uint8_t frequency  = 0 ;
         frequency++;
-        if (frequency > 100) {frequency = 0; printf("\n\r");}
+        if (frequency > 125) {frequency = 0; printf("\n\r");}
         NRF_RADIO->FREQUENCY    = frequency;
         // printf("Freq: %d", frequency);
         NRF_RADIO->TASKS_RXEN  = 1;
