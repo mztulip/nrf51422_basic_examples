@@ -57,7 +57,7 @@ void draw_frequency_marker(void)
 void draw_frequency_scale(void)
 {
   	printf("\033[2;1H");//move cursor to row2 column1
-//  	printf("\033[2K"); //erase line
+ 	printf("\033[2K"); //erase line
   	for(int i = 0; i <= marker_range; i++)
   	{
   		uint8_t backgorund_color = 0;

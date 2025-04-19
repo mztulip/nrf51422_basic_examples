@@ -40,7 +40,7 @@ int main()
   	printf("\033[4r");
 	printf("\033[0;1H");//move cursor to row0 column1
   	printf("\033[2K"); //erase line
-  	printf("2.4GHz    2.41GHz   2.42GHz    2.43GHz  2.44GHz   2.45GHz   2.46GHz   2.47GHz   2.48GHz   2.49GHz   2.50GHz   2.51GHz   2.52GHz   2.53GHz   2.54GHz   2.55GHz   2.56GHz   2.57GHz   2.58GHz   2.59GHz   2.6GHz");
+  	printf("2.4GHz    2.41GHz   2.42GHz    2.43GHz  2.44GHz   2.45GHz   2.46GHz   2.47GHz   2.48GHz   2.49GHz   2.50GHz   2.51GHz   2.52GHz");
   	draw_frequency_scale();
 
 	radio_init();
