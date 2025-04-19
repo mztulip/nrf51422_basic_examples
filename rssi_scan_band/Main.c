@@ -28,6 +28,8 @@ void clocks_start( void )
 
 void draw_header(void)
 {
+	// https://github.com/0x5c/VT100-Examples/blob/master/vt_seq.md
+	// Helpful document for VT100
 	printf("\033[!p");
 	printf("\033[2J");//Clear 
 	//start scroll from line 4
