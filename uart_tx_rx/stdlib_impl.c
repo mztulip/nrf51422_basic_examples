@@ -3,6 +3,8 @@
 #include <sys/stat.h>
 #include "uart.h"
 
+// #define STDLIB_DEBUG_ALLOC
+
 #undef errno
 extern int  errno;
 
@@ -22,17 +24,74 @@ _write (int   file,
         
   return nbytes;
 
-} 
+}
+#if defined STDLIB_DEBUG_ALLOC
+static void int_write(int n)
+{ 
+  if( n > 9 )
+  { 
+    int a = n / 10;
+
+    n -= 10 * a;
+    int_write(a);
+  }
+  uart_put('0'+n);
+}
+
+static void int_hex_write(int n)
+{ 
+  for(int i = 8; i > 0;i--)
+  {
+    int shift = (i-1)*4;
+    uint8_t bits4 = (n >> shift) &0x0f;
+    if(bits4 >= 10)
+    {
+      uart_put('A'+bits4-10);
+    }
+    else 
+    {
+      uart_put('0'+bits4);
+    }
+    
+  }
+}
+
+static void write_str(char *buff)
+{
+  int i  =0;
+  while(buff[i] != 0)
+  {
+    uart_put(buff[i]);
+    i++;
+  }
+}
+#endif
+
+#define HEAP_SIZE (5*1024)
 
 void *
 _sbrk (int nbytes)
 {
-  static uint8_t heap[2048];
+  static uint8_t heap[HEAP_SIZE];
   static uint16_t last = 0;
-  if(last+nbytes < 1024)
+
+  #if defined STDLIB_DEBUG_ALLOC
+  write_str("\n\rAllocating:");
+  int_write(nbytes);
+  write_str("bytes");
+  #endif
+
+  if(last+nbytes < HEAP_SIZE)
   {
     void* pointer = &heap[last];
     last+=nbytes;
+    #if defined STDLIB_DEBUG_ALLOC
+    write_str(" at: 0x");
+    int_hex_write((int)pointer);
+    write_str("(");
+    int_write((int)pointer);
+    write_str(")");
+    #endif
     return pointer;
   }
   else
