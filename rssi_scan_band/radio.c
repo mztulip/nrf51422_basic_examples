@@ -5,6 +5,7 @@
 #include "nrf51_bitfields.h"
 #include "radio.h"
 #include "leds.h"
+#include "serial_draws.h"
 
 static volatile uint8_t rx_pdu_buffer[255];
 
@@ -116,7 +117,14 @@ void RADIO_IRQHandler()
         // printf("\n\rRadio disabled ");
         static uint8_t frequency  = 0 ;
         frequency++;
-        if (frequency > 125) {frequency = 0; printf("\n\r");}
+        if (frequency > 125) 
+        {
+            frequency = 0;
+            printf("\e7"); //save cursor position
+			draw_frequency_marker();
+			printf("\e8"); //restore cursor position
+			printf("\033[0m\n\r");
+        }
         NRF_RADIO->FREQUENCY    = frequency;
         // printf("Freq: %d", frequency);
         NRF_RADIO->TASKS_RXEN  = 1;
