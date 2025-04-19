@@ -57,19 +57,15 @@ void radio_start_rx(void)
     NRF_RADIO->TASKS_RXEN  = 1;
 }
 
-uint8_t colors_vt100[] =  {16,17,18,19,20,21,93,92,91,90,89,88,160};
-
-void print_colored(int16_t value, int16_t min, int16_t max)
+volatile uint8_t rssi_updated = 0;
+int16_t RADIO_get_rssi(uint8_t freq_channel)
 {
-    int16_t colors_count = sizeof(colors_vt100);
-    int16_t values_per_color = (max-min)/colors_count;
-    int16_t color_index = (value-min)/values_per_color;
-    if(color_index >= colors_count)
-    {
-        color_index = colors_count-1;
-    }
-    // printf(" \033[%dm %d", colors_vt100[color_index],value);
-    printf("\033[48;5;%dm ", colors_vt100[color_index]);
+    NRF_RADIO->FREQUENCY = freq_channel;
+    NRF_RADIO->TASKS_RXEN  = 1;
+    while(rssi_updated == 0 ) {}
+    rssi_updated = 0;
+    int16_t rssi = -NRF_RADIO->RSSISAMPLE;
+    return rssi;
 }
 
 void RADIO_IRQHandler()
@@ -97,12 +93,6 @@ void RADIO_IRQHandler()
         NRF_RADIO->EVENTS_RSSIEND = 0;
         led_toogle(LED2);
         // printf("\n\rRSSI end event");
-        int16_t rssi = -NRF_RADIO->RSSISAMPLE;
-   
-
-    	// printf("\n\rRSSI: %ddBm \tMax: %d",rssi, max_rssi);
-        print_colored(rssi, -100, -50);
-     
         NRF_RADIO->TASKS_DISABLE = 1;
     }
 
@@ -115,18 +105,6 @@ void RADIO_IRQHandler()
     {
         NRF_RADIO->EVENTS_DISABLED = 0;
         // printf("\n\rRadio disabled ");
-        static uint8_t frequency  = 0 ;
-        frequency++;
-        if (frequency > 125) 
-        {
-            frequency = 0;
-            printf("\e7"); //save cursor position
-			draw_frequency_marker();
-			printf("\e8"); //restore cursor position
-			printf("\033[0m\n\r");
-        }
-        NRF_RADIO->FREQUENCY    = frequency;
-        // printf("Freq: %d", frequency);
-        NRF_RADIO->TASKS_RXEN  = 1;
+        rssi_updated = 1;
     }
 }

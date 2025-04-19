@@ -69,6 +69,37 @@ void serial_rx_read_handle_actions(void)
 	}
 }
 
+uint8_t colors_vt100[] =  {16,17,18,19,20,21,93,92,91,90,89,88,160};
+
+void print_colored(int16_t value, int16_t min, int16_t max)
+{
+    int16_t colors_count = sizeof(colors_vt100);
+    int16_t values_per_color = (max-min)/colors_count;
+    int16_t color_index = (value-min)/values_per_color;
+    if(color_index >= colors_count)
+    {
+        color_index = colors_count-1;
+    }
+    // printf(" \033[%dm %d", colors_vt100[color_index],value);
+    printf("\033[48;5;%dm ", colors_vt100[color_index]);
+}
+
+void print_rssi_point(void)
+{
+	static uint8_t frequency  = 0 ;
+	int16_t rssi = RADIO_get_rssi(frequency);
+	print_colored(rssi, -100, -50);
+	frequency++;
+	if (frequency > 125) 
+	{
+		frequency = 0;
+		printf("\e7"); //save cursor position
+		draw_frequency_marker();
+		printf("\e8"); //restore cursor position
+		printf("\033[0m\n\r");
+	}
+}
+
 int main()
 {
 	setbuf(stdout, NULL);
@@ -83,9 +114,11 @@ int main()
 	radio_start_rx();
 
 	uint32_t last_print = timer_get_time();
+	
 	while(1)
 	{
 		serial_rx_read_handle_actions();
+		print_rssi_point();
 		if((timer_get_time() - last_print) > 1000) //execute every 1s
 		{
 			last_print = timer_get_time();
