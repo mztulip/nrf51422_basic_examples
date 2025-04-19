@@ -32,9 +32,15 @@ int main()
 	uart_init();
 
 	printf("\n\rHello Uart");
+	printf("\n\rPress any key to check if rx works");
 	uint32_t loop_counter = 0;
 	while(1)
 	{
+		uint8_t byte;
+		if(uart_get_noblock(&byte))
+		{
+			printf("\n\rReceived: %c (0x%x)", byte, byte);
+		}
 		delay();
 		NRF_GPIO->OUTCLR = (1<<LED1);
 		delay();
