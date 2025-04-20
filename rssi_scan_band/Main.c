@@ -49,19 +49,25 @@ void serial_rx_read_handle_actions(void)
 	uint8_t byte ;
 	if(uart_get_noblock(&byte))
 	{
-//			printf("Received:%c", byte);
+		// printf("Received:%c", byte);
 		if(byte == '[')
 		{
 			uint8_t byte2 = uart_get_block();
-			if(byte2 == 'D')
+			if(byte2 == 'D') //Left key
 			{
-//				printf("left");
 				update_marker(0);
 			}
-			else if(byte2 == 'C')
+			else if(byte2 == 'C') //Right key
 			{
-//				printf("right");
 				update_marker(1);
+			}
+			else if(byte2 == 'A') //Up key
+			{
+				NRF_RADIO->MODE = RADIO_MODE_MODE_Nrf_2Mbit << RADIO_MODE_MODE_Pos;
+			}
+			else if(byte2 == 'B') //Down key
+			{
+				NRF_RADIO->MODE = RADIO_MODE_MODE_Nrf_1Mbit << RADIO_MODE_MODE_Pos;
 			}
 		}
 		else if(byte == 'r')

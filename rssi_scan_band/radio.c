@@ -11,8 +11,15 @@ static volatile uint8_t rx_pdu_buffer[255];
 
 void radio_init()
 {
-    //nrf radio also have proprietary 1mbit mode
-    NRF_RADIO->MODE = RADIO_MODE_MODE_Ble_1Mbit << RADIO_MODE_MODE_Pos;
+    //both modes seems to have the same intermediate frequency filter
+    // NRF_RADIO->MODE = RADIO_MODE_MODE_Ble_1Mbit << RADIO_MODE_MODE_Pos;
+    NRF_RADIO->MODE = RADIO_MODE_MODE_Nrf_1Mbit << RADIO_MODE_MODE_Pos;
+
+    //IT changes interrmediate frequency filter
+    // NRF_RADIO->MODE = RADIO_MODE_MODE_Nrf_2Mbit << RADIO_MODE_MODE_Pos;
+    //it looks like have the same intermediate frequnecy filter as 1Mbit mode
+    //channel selection also hops with 1MHz
+    // NRF_RADIO->MODE = RADIO_MODE_MODE_Nrf_250Kbit << RADIO_MODE_MODE_Pos;
 
 	const uint32_t radio_irq_priority = 1;
 	NVIC_SetPriority(RADIO_IRQn, radio_irq_priority & 0x03);
