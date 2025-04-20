@@ -2,9 +2,9 @@
 //mateusz@tulip.lol
 //Tested with PCA10028
 
-//Project aim is to read data from custom firmware https://github.com/atc1441/ATC_MiThermometer
-//used with Xiaomi Thermometer LYWSD03MMC
-//This app scans ble advertisements and prints data using UART
+//Scans frequences with 1MHz step staring from 2.4GHz
+//Data is printed using 1MHz baudrate, it can be viewed using 
+//for example picocom. VT100 is used to represent frequency points as waterfall
 
 #include <stdio.h>
 #include <stdbool.h>
